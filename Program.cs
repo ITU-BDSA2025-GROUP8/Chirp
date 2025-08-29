@@ -1,7 +1,4 @@
-﻿//List<string> cheeps = new() { "Hello, BDSA students!", "Welcome to the course!", "I hope you had a good summer.", "Cheeping cheeps on Chirp :)" };
-using System.Globalization;
-
-if (args[0] == "read")
+﻿if (args[0] == "read")
 {
     try
     {
@@ -12,6 +9,20 @@ if (args[0] == "read")
         Console.WriteLine(e);
     }
     
+} else if (args[0] == "cheep")
+{
+    try
+    {
+        Writer(args[1]);
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine(e);
+    }
+}
+else
+{
+    Console.WriteLine("command not recognized");
 }
 
 static void Reader(string args)
@@ -40,7 +51,7 @@ static void Reader(string args)
                 String message = line[messageRange];
                 
                 //print
-                Console.WriteLine(line[Range.EndAt(4)] + " @ " + prettyTime + ": " + message);
+                Console.WriteLine(line.Substring(0, line.IndexOf(",")) + " @ " + prettyTime + ": " + message);
             }
         }
     }
@@ -50,8 +61,16 @@ static void Reader(string args)
     }
 }
 
-/* goal output:
-ropf @ 08/01/23 14:09:20: Hello, BDSA students!
-adho @ 08/02/23 14:19:38: Welcome to the course!
-adho @ 08/02/23 14:37:38: I hope you had a good summer.
-ropf @ 08/02/23 15:04:47: Cheeping cheeps on Chirp :) */
+static void Writer(string args)
+{
+    using (StreamWriter sw = File.AppendText("C:\\Users\\marie\\RiderProjects\\Chirp.CLI\\chirp_cli_db.csv"))
+    {
+        //tager ikke højde for beskeder med citationstegn inde i beskeden
+        //time
+        DateTimeOffset now = DateTime.Now;
+        
+        //write
+        sw.Write(Environment.UserName + "," + '"' + args + '"' + "," + now.ToUnixTimeSeconds());
+    }
+
+}
