@@ -22,7 +22,7 @@
 }
 else
 {
-    Console.WriteLine("command not recognized");
+    Console.WriteLine("Command not recognized");
 }
 
 static void Reader(string args)
@@ -70,7 +70,7 @@ static void Writer(string args)
         DateTimeOffset now = DateTime.Now;
         
         //write
-        sw.Write(Environment.UserName + "," + '"' + args + '"' + "," + now.ToUnixTimeSeconds());
+        sw.WriteLine(Environment.UserName + "," + '"' + args + '"' + "," + now.ToUnixTimeSeconds());
     }
 
 }
