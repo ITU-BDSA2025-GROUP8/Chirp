@@ -63,7 +63,7 @@ static void Reader(string args)
 
 static void Writer(string args)
 {
-    using (StreamWriter sw = File.AppendText("C:\\Users\\marie\\RiderProjects\\Chirp.CLI\\chirp_cli_db.csv"))
+    using (StreamWriter sw = File.AppendText("chirp_cli_db.csv"))
     {
         //tager ikke højde for beskeder med citationstegn inde i beskeden
         //time
