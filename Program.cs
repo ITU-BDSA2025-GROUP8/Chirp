@@ -1,8 +1,12 @@
-﻿if (args[0] == "read")
+﻿using System.Globalization;
+using CsvHelper;
+using CsvHelper.Configuration;
+
+if (args[0] == "read")
 {
     try
     {
-        Reader(args[1]);
+        Reader();
     }
     catch (Exception e)
     {
@@ -25,40 +29,40 @@ else
     Console.WriteLine("Command not recognized");
 }
 
-static void Reader(string args)
+static void Reader()
 {
-    try
+    // csvHelper formatting
+    /*var config = new CsvConfiguration(CultureInfo.InvariantCulture)
     {
-        StreamReader input = new StreamReader(args);
-        input.ReadLine(); //skips first line
-
-        while (input.EndOfStream == false)
+        PrepareHeaderForMatch = args => args.Header.ToLower(), //controls how properties match against header names
+    };*/
+    using (var reader = new StreamReader("chirp_cli_db.csv"))
+    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+    {
+        var records = csv.GetRecords<Cheep>();
+        foreach (var cheep in records)
         {
-            String line = input.ReadLine();
-            
-            if (line != null)
-            {
-                //time and date
-                int index = line.LastIndexOf(',');
-                string time = line.Substring(index+1);
-                int unixTime = int.Parse(time);
-                DateTimeOffset date = DateTimeOffset.FromUnixTimeSeconds(unixTime);
-                DateTimeOffset localtime = date.LocalDateTime;
-                string prettyTime = localtime.ToString("MM/dd/yy HH:mm:ss").Replace("-", "/");
-
-                //message
-                Range messageRange = new Range(line.IndexOf(",") + 2, line.LastIndexOf(",") - 1);
-                String message = line[messageRange];
+            //time and date
+            long unixTime = cheep.Timestamp;
+            DateTimeOffset date = DateTimeOffset.FromUnixTimeSeconds(unixTime);
+            DateTimeOffset localtime = date.LocalDateTime;
+            string prettyTime = localtime.ToString("MM/dd/yy HH:mm:ss").Replace("-", "/");
                 
-                //print
-                Console.WriteLine(line.Substring(0, line.IndexOf(",")) + " @ " + prettyTime + ": " + message);
-            }
+            //print
+            Console.WriteLine(cheep.ToString());
         }
+        
     }
-    catch (Exception e)
-    {
-       Console.WriteLine(e);
-    }
+
+    /*foreach (Cheep cheep in records){
+        
+        
+            
+                
+        //print
+        Console.WriteLine(cheep.author + " @ " + prettyTime + ": " + cheep.message);
+            
+    }*/
 }
 
 static void Writer(string args)
@@ -74,3 +78,33 @@ static void Writer(string args)
     }
 
 }
+
+// Cheep record
+public record Cheep
+{
+    public string Author { get; set; }
+    public string Message { get; set; }
+    public long Timestamp { get; set; }
+    
+    public override string ToString()
+    {
+        return Author + " @ " + PrettyTime() + ": " + Message;;
+    }
+    /* Format:
+    ropf @ 08/01/23 14:09:20: Hello, BDSA students!
+    adho @ 08/02/23 14:19:38: Welcome to the course!
+    adho @ 08/02/23 14:37:38: I hope you had a good summer.
+    ropf @ 08/02/23 15:04:47: Cheeping cheeps on Chirp :)
+    */
+    string PrettyTime()
+    {
+        //time and date
+        long unixTime = Timestamp;
+        DateTimeOffset date = DateTimeOffset.FromUnixTimeSeconds(unixTime);
+        DateTimeOffset localtime = date.LocalDateTime;
+        string prettyTime = localtime.ToString("MM/dd/yy HH:mm:ss").Replace("-", "/");
+        return prettyTime;
+    }
+    
+}
+
