@@ -28,74 +28,55 @@ else
 {
     Console.WriteLine("Command not recognized");
 }
-
+//Reads all records from CSV-file using CsvHelper
+//Maps each line to an object and prints them in the console
 static void Reader()
 {
-    // csvHelper formatting
-    /*var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-    {
-        PrepareHeaderForMatch = args => args.Header.ToLower(), //controls how properties match against header names
-    };*/
     using (var reader = new StreamReader("chirp_cli_db.csv"))
     using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
     {
         var records = csv.GetRecords<Cheep>();
         foreach (var cheep in records)
         {
-            //time and date
-            long unixTime = cheep.Timestamp;
-            DateTimeOffset date = DateTimeOffset.FromUnixTimeSeconds(unixTime);
-            DateTimeOffset localtime = date.LocalDateTime;
-            string prettyTime = localtime.ToString("MM/dd/yy HH:mm:ss").Replace("-", "/");
-                
             //print
             Console.WriteLine(cheep.ToString());
         }
         
     }
-
-    /*foreach (Cheep cheep in records){
-        
-        
-            
-                
-        //print
-        Console.WriteLine(cheep.author + " @ " + prettyTime + ": " + cheep.message);
-            
-    }*/
 }
 
+//Adds a new Cheep to a specified csv file 
 static void Writer(string args)
 {
-    using (StreamWriter sw = File.AppendText("chirp_cli_db.csv"))
+    using var writer = new StreamWriter("chirp_cli_db.csv", true);
+    using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
     {
-        //tager ikke højde for beskeder med citationstegn inde i beskeden
-        //time
-        DateTimeOffset now = DateTime.Now;
+        long time = DateTimeOffset.Now.ToUnixTimeSeconds();
+
+        Cheep cheep = new Cheep { Author = Environment.UserName, Message = args, Timestamp = time};
         
-        //write
-        sw.WriteLine(Environment.UserName + "," + '"' + args + '"' + "," + now.ToUnixTimeSeconds());
+        //write all records to the chirp_cli_db.csv file
+        csv.WriteRecord(cheep);
+        csv.NextRecord();
+        Console.WriteLine("Cheeped: " + cheep);
     }
 
 }
 
-// Cheep record
+// Cheep record consisting of author, message and timestamp
 public record Cheep
 {
     public string Author { get; set; }
     public string Message { get; set; }
     public long Timestamp { get; set; }
     
+    //returns a string with author, time and message formatted like the following: ropf @ 08/01/23 14:09:20: Hello, BDSA students!
     public override string ToString()
     {
-        return Author + " @ " + PrettyTime() + ": " + Message;;
+        return Author + " @ " + PrettyTime() + ": " + Message;
     }
-    /* Format:
-    ropf @ 08/01/23 14:09:20: Hello, BDSA students!
-    adho @ 08/02/23 14:19:38: Welcome to the course!
-    adho @ 08/02/23 14:37:38: I hope you had a good summer.
-    ropf @ 08/02/23 15:04:47: Cheeping cheeps on Chirp :)
-    */
+   
+    //converts the timestamp to the intended format
     string PrettyTime()
     {
         //time and date
@@ -107,4 +88,3 @@ public record Cheep
     }
     
 }
-
