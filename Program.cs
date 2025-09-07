@@ -1,7 +1,4 @@
-﻿using System.Globalization;
-using CsvHelper;
-using CsvHelper.Configuration;
-using SimpleDB;
+﻿using SimpleDB;
 
 var database = new CSVDatabase<Cheep>();
 
@@ -9,7 +6,12 @@ if (args[0] == "read")
 {
     try
     {
-        Reader();
+        var cheeps = database.Read();
+        // Print all cheeps
+        foreach (var cheep in cheeps)
+        {
+            Console.WriteLine(cheep.ToString());
+        }
     }
     catch (Exception e)
     {
@@ -20,7 +22,9 @@ if (args[0] == "read")
 {
     try
     {
-        Writer(args[1]);
+        long time = DateTimeOffset.Now.ToUnixTimeSeconds();
+        Cheep cheep = new Cheep { Author = Environment.UserName, Message = args[1], Timestamp = time};
+        database.Store(cheep);
     }
     catch (Exception e)
     {
@@ -31,26 +35,6 @@ if (args[0] == "read")
 else
 {
     Console.WriteLine("Command not recognized");
-}
-
-void Reader()
-{
-    var cheeps = database.Read();
-    // Print all cheeps
-    foreach (var cheep in cheeps)
-    {
-        Console.WriteLine(cheep.ToString());
-    }
-}
-
-
-void Writer(string args)
-{
-    {
-        long time = DateTimeOffset.Now.ToUnixTimeSeconds();
-        Cheep cheep = new Cheep { Author = Environment.UserName, Message = args, Timestamp = time};
-        database.Store(cheep);
-    }
 }
 
 // Cheep record consisting of author, message and timestamp
