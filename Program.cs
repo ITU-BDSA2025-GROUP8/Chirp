@@ -1,6 +1,9 @@
 ﻿using System.Globalization;
 using CsvHelper;
 using CsvHelper.Configuration;
+using SimpleDB;
+
+var database = new CSVDatabase<Cheep>();
 
 if (args[0] == "read")
 {
@@ -24,43 +27,30 @@ if (args[0] == "read")
         Console.WriteLine(e);
     }
 }
+
 else
 {
     Console.WriteLine("Command not recognized");
 }
-//Reads all records from CSV-file using CsvHelper
-//Maps each line to an object and prints them in the console
-static void Reader()
+
+void Reader()
 {
-    using (var reader = new StreamReader("chirp_cli_db.csv"))
-    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+    var cheeps = database.Read();
+    // Print all cheeps
+    foreach (var cheep in cheeps)
     {
-        var records = csv.GetRecords<Cheep>();
-        foreach (var cheep in records)
-        {
-            //print
-            Console.WriteLine(cheep.ToString());
-        }
-        
+        Console.WriteLine(cheep.ToString());
     }
 }
 
-//Adds a new Cheep to a specified csv file 
-static void Writer(string args)
+
+void Writer(string args)
 {
-    using var writer = new StreamWriter("chirp_cli_db.csv", true);
-    using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
     {
         long time = DateTimeOffset.Now.ToUnixTimeSeconds();
-
         Cheep cheep = new Cheep { Author = Environment.UserName, Message = args, Timestamp = time};
-        
-        //write all records to the chirp_cli_db.csv file
-        csv.WriteRecord(cheep);
-        csv.NextRecord();
-        Console.WriteLine("Cheeped: " + cheep);
+        database.Store(cheep);
     }
-
 }
 
 // Cheep record consisting of author, message and timestamp
@@ -70,13 +60,14 @@ public record Cheep
     public string Message { get; set; }
     public long Timestamp { get; set; }
     
-    //returns a string with author, time and message formatted like the following: ropf @ 08/01/23 14:09:20: Hello, BDSA students!
+    // ToString method. Format:
+    // ropf @ 08/01/23 14:09:20: Hello, BDSA students!
     public override string ToString()
     {
         return Author + " @ " + PrettyTime() + ": " + Message;
     }
    
-    //converts the timestamp to the intended format
+    // Convert and format timestamp
     string PrettyTime()
     {
         //time and date
