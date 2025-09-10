@@ -1,4 +1,5 @@
-﻿using SimpleDB;
+﻿using Chirp.CLI.UserInterface;
+using SimpleDB;
 
 var database = new CSVDatabase<Cheep>();
 
@@ -6,12 +7,8 @@ if (args[0] == "read")
 {
     try
     {
-        var cheeps = database.Read();
         // Print all cheeps
-        foreach (var cheep in cheeps)
-        {
-            Console.WriteLine(cheep.ToString());
-        }
+        UserInterface.printCheeps(database.Read());
     }
     catch (Exception e)
     {
