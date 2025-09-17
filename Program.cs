@@ -1,36 +1,66 @@
-﻿using Chirp.CLI.UserInterface;
+﻿using CommandLine;
 using SimpleDB;
 
-var database = new CSVDatabase<Cheep>();
 
-if (args[0] == "read")
+namespace Chirp.CLI
 {
-    try
+
+    //The arguments that can be used with the program
+    //For the shortName use "-" and for the longName use "--"
+    public class Options
     {
-        // Print all cheeps
-        UserInterface.printCheeps(database.Read());
+        [Option('r', "read", Required = false, HelpText = "reads cheeps")]
+        public bool Read { get; set; }
+        [Option('c', "cheep", Required = false, HelpText = "writes cheeps")]
+        public string Cheep { get; set; }
     }
-    catch (Exception e)
+
+    class Program
     {
-        Console.WriteLine(e);
-    }
-    
-} else if (args[0] == "cheep")
-{
-    try
-    {
-        long time = DateTimeOffset.Now.ToUnixTimeSeconds();
-        Cheep cheep = new Cheep { Author = Environment.UserName, Message = args[1], Timestamp = time};
-        database.Store(cheep);
-    }
-    catch (Exception e)
-    {
-        Console.WriteLine(e);
-    }
+        
+        static void Main(string[] args)
+        {
+            // if argument is in optings it runs the app, else it error handles
+            Parser.Default.ParseArguments<Options>(args)
+                .WithParsed(RunApp)
+                .WithNotParsed(HandleErrors);
+        }
+
+        static void RunApp(Options opt)
+        {
+            // Initialize database
+            var database = new CSVDatabase<Cheep>();
+            // check if the command used is read of cheep
+            if (opt.Read)
+            {
+                try
+                {
+                    // Print all cheeps
+                    UserInterface.UserInterface.printCheeps(database.Read());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+
+            }
+            else if (opt.Cheep.Length !=0)
+            {
+                try
+                {
+                    long time = DateTimeOffset.Now.ToUnixTimeSeconds();
+                    Cheep cheep = new Cheep { Author = Environment.UserName, Message = opt.Cheep, Timestamp = time };
+                    database.Store(cheep);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            }
+        }
+        static void HandleErrors(IEnumerable<Error> errs)
+        {
+            Console.WriteLine("Failed to parse arguments");
+        }
+    }   
 }
-
-else
-{
-    Console.WriteLine("Command not recognized");
-}
-
