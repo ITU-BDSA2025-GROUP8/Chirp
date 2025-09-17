@@ -1,4 +1,4 @@
-﻿namespace SimpleDB;
+﻿namespace Chirp.CSVDB;
 
 using System.Globalization;
 using CsvHelper;
@@ -8,7 +8,8 @@ public sealed class CSVDatabase<T> : IDatabaseRepository<T>
     // Reads all records from CSV-file using CsvHelper
     public IEnumerable<T> Read(int? limit = null)
     {
-        using (var reader = new StreamReader("chirp_cli_db.csv"))
+        var _filePath = Path.Combine(AppContext.BaseDirectory, "chirp_cli_db.csv");
+        using (var reader = new StreamReader(_filePath))
         using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
             var records = csv.GetRecords<T>().ToList();
