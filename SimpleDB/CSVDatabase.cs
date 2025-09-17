@@ -21,10 +21,10 @@ public sealed class CSVDatabase<T> : IDatabaseRepository<T>
     {
         using var writer = new StreamWriter("chirp_cli_db.csv", true);
         using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-            {
+        {
                 csv.WriteRecord(record);
                 csv.NextRecord();
                 Console.WriteLine("Cheeped: " + record);
-            }
+        }
     }
 }

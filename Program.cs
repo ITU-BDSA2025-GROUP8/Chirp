@@ -1,74 +1,66 @@
-﻿using Chirp.CLI.UserInterface;
+﻿using CommandLine;
 using SimpleDB;
-using System.CommandLine;
-using System.CommandLine.Parsing;
-using System.CommandLine.Invocation;
 
 
-namespace Chirp.CLI;
-class Program
+namespace Chirp.CLI
 {
-    static void Main(string[] args)
+
+    //The arguments that can be used with the program
+    //For the shortName use "-" and for the longName use "--"
+    public class Options
     {
-        // Initialize database
-        var database = new CSVDatabase<Cheep>();
-        
-        // Creating the root command - should automatically have a help and a version option and a suggets directive
-        RootCommand rootCommand = new("Sample app for System.CommandLine"); //todo: skriv en anden description
-       
-        //Create subcommands and adds them to the root command. 
-        var readCommand = new Command("read", "Reads current cheeps"); //todo: opdater potentielt beskrivelsen
-        rootCommand.Add(readCommand);
-        
-        
-        var cheepCommand = new Command("cheep", "create a new cheep");
-        var messageArg = new Argument<string>("message");
-        rootCommand.Add(cheepCommand);
-        cheepCommand.Add(messageArg);
-        
-        // Command handlers
-        cheepCommand.SetAction((ParseResult parseResult) =>
-        {
-            var message = parseResult.GetValue(messageArg);
-
-            Console.WriteLine($"writes: {message} ({DateTime.Now})");
-        });
-
-
-        
-        if (args[0] == "read")
-        {
-            try
-            {
-                // Print all cheeps
-                UserInterface.UserInterface.printCheeps(database.Read());
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-
-        }
-        else if (args[0] == "cheep")
-        {
-            try
-            {
-                long time = DateTimeOffset.Now.ToUnixTimeSeconds();
-                Cheep cheep = new Cheep { Author = Environment.UserName, Message = args[1], Timestamp = time };
-                database.Store(cheep);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-        }
-
-        else
-        {
-            Console.WriteLine("Command not recognized");
-        }
+        [Option('r', "read", Required = false, HelpText = "reads cheeps")]
+        public bool Read { get; set; }
+        [Option('c', "cheep", Required = false, HelpText = "writes cheeps")]
+        public string Cheep { get; set; }
     }
-    
-    
-    
+
+    class Program
+    {
+        
+        static void Main(string[] args)
+        {
+            // if argument is in optings it runs the app, else it error handles
+            Parser.Default.ParseArguments<Options>(args)
+                .WithParsed(RunApp)
+                .WithNotParsed(HandleErrors);
+        }
+
+        static void RunApp(Options opt)
+        {
+            // Initialize database
+            var database = new CSVDatabase<Cheep>();
+            // check if the command used is read of cheep
+            if (opt.Read)
+            {
+                try
+                {
+                    // Print all cheeps
+                    UserInterface.UserInterface.printCheeps(database.Read());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+
+            }
+            else if (opt.Cheep.Length !=0)
+            {
+                try
+                {
+                    long time = DateTimeOffset.Now.ToUnixTimeSeconds();
+                    Cheep cheep = new Cheep { Author = Environment.UserName, Message = opt.Cheep, Timestamp = time };
+                    database.Store(cheep);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            }
+        }
+        static void HandleErrors(IEnumerable<Error> errs)
+        {
+            Console.WriteLine("Failed to parse arguments");
+        }
+    }   
 }
