@@ -20,7 +20,8 @@ public sealed class CSVDatabase<T> : IDatabaseRepository<T>
     //Adds a new Cheep to a specified csv file 
     public void Store(T record)
     {
-        using var writer = new StreamWriter("chirp_cli_db.csv", true);
+        var _filePath = Path.Combine(AppContext.BaseDirectory, "chirp_cli_db.csv");
+        using var writer = new StreamWriter(_filePath, true);
         using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
         {
                 csv.WriteRecord(record);
