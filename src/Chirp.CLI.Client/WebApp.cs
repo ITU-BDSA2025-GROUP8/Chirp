@@ -1,22 +1,29 @@
 using Database; //CSVDatabase<T>
-using Microsoft.AspNetCore.App //to not use full namespace when using 
+using Microsoft.AspNetCore.Builder; //to not use full namespace when using 
+using Microsoft.AspNetCore.Http;
+
 
 namespace Chirp.CLI.Client;
 
 public class webApp
 {
-    var WebApplicationBuilder = WebApplication.CreateBuilder(args); //Builder
+    static void RunWeb()
+    {
+    var WebApplicationBuilder = WebApplication.CreateBuilder(new string [] {}); //Builder
     var application = WebApplicationBuilder.Build(); //Build
 
-    application.MapGet("/cheeps", () => CSVDatabase<Cheep>.Read()); //when a GET request is made .Read
+    var database = new CSVDatabase<Cheep>();
+    
+    application.MapGet("/cheeps", () => database.Read()); //when a GET request is made .Read
 
-    application.MapPost("/cheep", ([FromBody] Cheep input) => )
+    application.MapPost("/cheep", async (HttpContext context) => 
     {
+        var input = await context.Request.ReadFromJsonAsync<Cheep>();
         long time = DateTimeOffset.Now.ToUnixTimeSeconds();
         Cheep cheep = new Cheep { Author = Environment.UserName, Message = input.Message, Timestamp = time };
-        CSVDatabase<Cheep>.Store(cheep);
+        database.Store(cheep);
     }); //appends JSON body to ??
     
     application.Run();
-
+    }
 }
