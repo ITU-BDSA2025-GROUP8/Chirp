@@ -1,8 +1,8 @@
 ﻿using CommandLine;
-using SimpleDB;
+using Chirp.CSVDB;
 
 
-namespace Chirp.CLI
+namespace Chirp.CLI.Client
 {
 
     //The arguments that can be used with the program
