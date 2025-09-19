@@ -3,8 +3,31 @@
 using System.Globalization;
 using CsvHelper;
 
+//the singleton pattern was taken from https://csharpindepth.com/Articles/Singleton
+
 public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 {
+    private static readonly CSVDatabase<T> _database = new CSVDatabase<T>(); //_ since it is a private field
+
+    //static constructor which tells the C# compiler that it should not mark it as beforefieldinit 
+    static CSVDatabase() 
+    {
+    }
+    
+    //private constructor to prevent instantiation of this class from other classes
+    private CSVDatabase()
+    {
+    }
+    
+    //Singleton instance of the database, returning the _database field
+    public static CSVDatabase<T> Instance
+    {
+        get
+        {
+            return _database;
+        }
+    }
+    
     // Reads all records from CSV-file using CsvHelper
     public IEnumerable<T> Read(int? limit = null)
     {
