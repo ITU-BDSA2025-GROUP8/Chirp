@@ -1,9 +1,22 @@
-var WebApplicationBuilder = WebApplication.CreateBuilder(args);
-var application = WebApplicationBuilder.Build();
+using Database; //CSVDatabase<T>
+using Microsoft.AspNetCore.App //to not use full namespace when using 
 
-application.MapGet("/cheeps", () => CSVDatabase<Cheep>.Read());
-application.MapPost("/cheep", (string Author, string Message, long Timestamp) => CSVDatabase<Cheep>.Store());
+namespace Chirp.CLI.Client;
 
-application.Run(); 
+public class webApp
+{
+    var WebApplicationBuilder = WebApplication.CreateBuilder(args); //Builder
+    var application = WebApplicationBuilder.Build(); //Build
 
-public record Cheep(string Author, string Message, long Timestamp)
+    application.MapGet("/cheeps", () => CSVDatabase<Cheep>.Read()); //when a GET request is made .Read
+
+    application.MapPost("/cheep", ([FromBody] Cheep input) => )
+    {
+        long time = DateTimeOffset.Now.ToUnixTimeSeconds();
+        Cheep cheep = new Cheep { Author = Environment.UserName, Message = input.Message, Timestamp = time };
+        CSVDatabase<Cheep>.Store(cheep);
+    }); //appends JSON body to ??
+    
+    application.Run();
+
+}
