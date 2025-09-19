@@ -19,10 +19,13 @@ namespace Chirp.CLI.Client
         
         static void Main(string[] args)
         {
+
+            WebApp.RunWeb();
+
             // if argument is in optings it runs the app, else it error handles
-            Parser.Default.ParseArguments<Options>(args)
-                .WithParsed(RunApp)
-                .WithNotParsed(HandleErrors);
+            //Parser.Default.ParseArguments<Options>(args)
+            //.WithParsed(RunApp)
+            //.WithNotParsed(HandleErrors);
         }
 
         static void RunApp(Options opt)
@@ -35,7 +38,8 @@ namespace Chirp.CLI.Client
                 try
                 {
                     // Print all cheeps
-                    UserInterface.UserInterface.printCheeps(database.Read());
+                    UserInterface.UserInterface.printCheeps(database.Read()); //todo: should call localhost:5000/cheeps
+                    // get the JSON content and unpack it so it can be printed, should be done in the UserInterface class
                 }
                 catch (Exception e)
                 {
@@ -50,6 +54,7 @@ namespace Chirp.CLI.Client
                     long time = DateTimeOffset.Now.ToUnixTimeSeconds();
                     Cheep cheep = new Cheep { Author = Environment.UserName, Message = opt.Cheep, Timestamp = time };
                     database.Store(cheep);
+                    //Make it to a JSON object that can be sendt as a push to localhost:5000/cheep instead of database.store
                 }
                 catch (Exception e)
                 {
