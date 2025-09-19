@@ -1,4 +1,4 @@
-﻿namespace Chirp.CSVDB;
+﻿namespace Database;
 
 interface IDatabaseRepository<T>
 {
