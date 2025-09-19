@@ -1,6 +1,5 @@
 ﻿using CommandLine;
-using Chirp.CSVDB;
-
+using Database;
 
 namespace Chirp.CLI.Client
 {

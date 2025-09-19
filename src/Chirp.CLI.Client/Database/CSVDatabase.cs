@@ -1,4 +1,4 @@
-﻿namespace Chirp.CSVDB;
+﻿namespace Database;
 
 using System.Globalization;
 using CsvHelper;
