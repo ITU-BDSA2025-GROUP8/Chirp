@@ -14,7 +14,10 @@ public class WebApp
 
     var database = new CSVDatabase<Cheep>();
     
-    application.MapGet("/cheeps", () => database.Read()); //when a GET request is made .Read
+    application.MapGet("/cheeps", () =>
+    {
+        return database.Read();
+    }); //when a GET request is made .Read
 
     application.MapPost("/cheep", async (HttpContext context) => //Get the http context/body
     {
