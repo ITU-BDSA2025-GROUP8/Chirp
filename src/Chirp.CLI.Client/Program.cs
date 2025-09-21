@@ -13,20 +13,22 @@ namespace Chirp.CLI.Client
         public bool Read { get; set; }
         [Option('c', "cheep", Required = false, HelpText = "writes cheeps")]
         public string Cheep { get; set; }
+		[Option('w', "web", Required = false, HelpText = "runs web service")]
+        public bool Web { get; set; }
     }
 
     class Program
     {
         
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
 
-            WebApp.RunWeb();
+            //WebApp.RunWeb();
 
             //if argument is in optings it runs the app, else it error handles
-            Parser.Default.ParseArguments<Options>(args)
-            .WithParsed(RunApp)
-            .WithNotParsed(HandleErrors);
+            var result = Parser.Default.ParseArguments<Options>(args);
+            await result.WithParsedAsync(RunApp); //async overload todo: why?
+            result.WithNotParsed(HandleErrors);
         }
 		//make http client
 		private static HttpClient baseClient = new () 
@@ -43,10 +45,12 @@ namespace Chirp.CLI.Client
                 try
                 {
 				
-					var cheeps = await baseClient.GetFromJsonAsync<List<Cheep>>("/cheeps");
+					var cheeps = await baseClient.GetFromJsonAsync<List<Cheep>>("/cheeps") //gets response from GET request to localhost:5000/cheeps
+								?? new List<Cheep>();//if nothing is returned from GET request
                     // Print all cheeps
-                    UserInterface.UserInterface.printCheeps(cheeps); //todo: should call localhost:5000/cheeps
-                    // get the JSON content and unpack it so it can be printed, should be done in the UserInterface class
+                    UserInterface.UserInterface.printCheeps(cheeps);
+					
+                   
                 }
                 catch (Exception e)
                 {
@@ -68,10 +72,16 @@ namespace Chirp.CLI.Client
                     Console.WriteLine(e);
                 }
             }
-        }
+			else if (opt.Web)
+			{
+				WebApp.RunWeb();
+        	}
+		}
+
         static void HandleErrors(IEnumerable<Error> errs)
         {
             Console.WriteLine("Failed to parse arguments");
         }
-    }   
+   
+}
 }
