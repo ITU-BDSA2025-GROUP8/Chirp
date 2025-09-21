@@ -1,5 +1,6 @@
 ﻿using CommandLine;
-using Database;
+//using Database;
+using System.Net.Http;
 using System.Net.Http.Json;
 
 namespace Chirp.CLI.Client
