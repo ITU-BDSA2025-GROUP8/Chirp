@@ -1,12 +1,12 @@
 ﻿using Database;
 namespace Chirp.CLI.Client.Tests;
 
-public class UnitTest1
+public class DatabaseUnitTests
 {
     [Fact]
     public void ReadFromDBTest()
     {
-        var database = new CSVDatabase<Cheep>();
+        var database = CSVDatabase<Cheep>.Instance;
 
         Cheep test = new Cheep { Author = Environment.UserName, Message = "This is a test", Timestamp = 10000 };
 
