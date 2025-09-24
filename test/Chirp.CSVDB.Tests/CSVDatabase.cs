@@ -21,4 +21,10 @@ public class CSVDatabase
         var database2 = CSVDatabase<Cheep>.Instance;
         Assert.Same(database1, database2); //tests that both instances are the same
     }
+    
+    /*
+     * Due to the singleton pattern, the tests above should be enough to test the database
+     * as the compiler will not allow multiple instances of the database to be created
+     * and therefore can't be tested.
+     */
 }
