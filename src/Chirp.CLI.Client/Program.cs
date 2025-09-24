@@ -59,7 +59,7 @@ namespace Chirp.CLI.Client
                 }
 
             }
-            else if (opt.Cheep.Length !=0)
+            else if ((opt.Cheep?.Length ?? 0) > 0) //check if is null and length > 0
             {
                 try
                 {
