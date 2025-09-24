@@ -21,11 +21,4 @@ public class CSVDatabase
         var database2 = CSVDatabase<Cheep>.Instance;
         Assert.Same(database1, database2); //tests that both instances are the same
     }
-    
-    [Fact]
-    //tests that the class returns the correct instance
-    public void CorrectInstanceTest2()
-    {
-        var database1 = CSVDatabase<Cheep>.Instance;
-    }
 }
