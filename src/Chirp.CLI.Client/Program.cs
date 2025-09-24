@@ -1,7 +1,8 @@
 ﻿using CommandLine;
-//using Database;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;//for jsonSerializer
+using System.Text;//for encoding
 
 namespace Chirp.CLI.Client
 {
