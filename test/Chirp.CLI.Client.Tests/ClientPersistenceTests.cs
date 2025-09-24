@@ -1,7 +1,7 @@
 ﻿using Database;
 namespace Chirp.CLI.Client.Tests;
 
-public class DatabaseUnitTests
+public class ClientPersistenceTests
 {
     [Fact]
     public void ReadFromDBTest()
