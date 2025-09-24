@@ -63,10 +63,26 @@ namespace Chirp.CLI.Client
             {
                 try
                 {
+                    
                     long time = DateTimeOffset.Now.ToUnixTimeSeconds();
                     Cheep cheep = new Cheep { Author = Environment.UserName, Message = opt.Cheep, Timestamp = time };
-                    //database.Store(cheep);
-                    //Make it to a JSON object that can be sendt as a push to localhost:5000/cheep instead of database.store
+                    //todo: make post request with body containing JSON with information { Author = Environment.UserName, Message = opt.Cheep, Timestamp = time}
+                    using StringContent jsonBody = new(
+                        JsonSerializer.Serialize(new
+                        {
+                            Author = Environment.UserName,
+                            Message = opt.Cheep,
+                            Timestamp = time
+                        }),
+                        Encoding.UTF8,
+                        "application/json"); //format: we are serializing into JSON. First argument is the object to serialize, the other is text encoding (UTF8), the third makes header for http (media type)
+                
+                    //todo: might want to add response.EnsureSuccessStatusCode()
+                    //write to console 
+
+                    //todo: send post request to BaseAddress/cheep
+                    using HttpResponseMessage response = await baseClient.PostAsync("cheep", jsonBody);
+
                 }
                 catch (Exception e)
                 {
