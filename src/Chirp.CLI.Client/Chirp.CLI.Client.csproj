@@ -18,13 +18,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Chirp.CSVDB\Chirp.CSVDB.csproj" />
   </ItemGroup>
-
-    <ItemGroup>
-        <None Include="..\..\data\chirp_cli_db.csv">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-            <Link>chirp_cli_db.csv</Link>
-        </None>
-    </ItemGroup>
-
+    
 
 </Project>
