@@ -25,7 +25,7 @@ namespace Chirp.CLI.Client
         static async Task Main(string[] args)
         {
 
-            //WebApp.RunWeb();
+            WebApp.RunWeb();
 
             //if argument is in optings it runs the app, else it error handles
             var result = Parser.Default.ParseArguments<Options>(args);
@@ -90,10 +90,7 @@ namespace Chirp.CLI.Client
                     Console.WriteLine(e);
                 }
             }
-			else if (opt.Web)
-			{
-				WebApp.RunWeb();
-        	}
+        	
 		}
 
         static void HandleErrors(IEnumerable<Error> errs)
