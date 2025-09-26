@@ -1,6 +1,6 @@
 using Chirp.Razor;
 
-public record CheepViewModel(string Author, string Message, string Timestamp);
+public record CheepViewModel(int Author, string Message, string Timestamp);
 
 public interface ICheepService
 {
@@ -11,31 +11,19 @@ public interface ICheepService
 public class CheepService : ICheepService
 {
     // These would normally be loaded from a database for example
-    private static readonly List<CheepViewModel> _cheeps = new()
-        {
-            new CheepViewModel("Helge", "Hello, BDSA students!", UnixTimeStampToDateTimeString(1690892208)),
-            new CheepViewModel("Adrian", "Hej, velkommen til kurset.", UnixTimeStampToDateTimeString(1690895308)),
-            new CheepViewModel("frede","hello world!",UnixTimeStampToDateTimeString(1690895158)),
-        };
+    private static List<CheepViewModel> _cheeps = new();
 
     public List<CheepViewModel> GetCheeps()
     {
-        DBFacade.Read();
-        return _cheeps;
+        return DBFacade.Read();
     }
 
     public List<CheepViewModel> GetCheepsFromAuthor(string author)
     {
         // filter by the provided author name
-        return _cheeps.Where(x => x.Author == author).ToList();
+        //return _cheeps.Where(x => x.Author == author).ToList();
+        return DBFacade.Read();
     }
-
-    private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
-    {
-        // Unix timestamp is seconds past epoch
-        DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-        dateTime = dateTime.AddSeconds(unixTimeStamp);
-        return dateTime.ToString("MM/dd/yy H:mm:ss");
-    }
+    
 
 }
