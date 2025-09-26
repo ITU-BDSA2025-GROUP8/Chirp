@@ -41,7 +41,11 @@ namespace Chirp.CLI.Client
 
         static async Task RunApp(Options opt)
         {
-          
+
+            // Initialize database
+            //var database = CSVDatabase<Cheep>.Instance;
+            // check if the command used is read of cheep
+
             if (opt.Read)
             {
                 try
