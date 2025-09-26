@@ -28,7 +28,7 @@ namespace Chirp.CLI.Client
         static void RunApp(Options opt)
         {
             // Initialize database
-            var database = CSVDatabase<Cheep>.Instance;
+            IDatabaseRepository<Cheep> database = CSVDatabase<Cheep>.Instance;
             // check if the command used is read of cheep
             if (opt.Read)
             {
