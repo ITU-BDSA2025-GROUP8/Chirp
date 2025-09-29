@@ -22,7 +22,7 @@ public class CheepService : ICheepService
     {
         // filter by the provided author name
         //return _cheeps.Where(x => x.Author == author).ToList();
-        return DBFacade.Read();
+        return DBFacade.ReadAuthor(author);
     }
     
 
