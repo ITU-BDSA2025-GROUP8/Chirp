@@ -1,6 +1,4 @@
-﻿using System.Data;
-
-namespace Chirp.Razor;
+﻿namespace Chirp.Razor;
 using Microsoft.Data.Sqlite;
 
 public class DBFacade
@@ -35,7 +33,7 @@ public class DBFacade
                 reader.GetValues(values);
                 
                 //assigns the column values to author, message and timestamp
-                int author = Convert.ToInt32(values[1]);
+                string author = GetAuthor(Convert.ToInt32(values[1]));
                 string message = (string) values[2];
                 string timestamp = UnixTimeStampToDateTimeString(Convert.ToDouble(values[3]));
                 
@@ -49,6 +47,29 @@ public class DBFacade
             return list;
         }
     }
+
+    //method to convert id to author name
+    private static string GetAuthor(int userId)
+    {
+        string author = "";
+        var sqlQuery = @"SELECT username FROM user WHERE user_id = @userId"; //query deciding to retrieve username based on user id
+        
+        //creates a connection, sets the author name 
+        using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
+        {
+            connection.Open();
+            var command = connection.CreateCommand();
+            command.CommandText = sqlQuery;
+            command.Parameters.AddWithValue("@userId", userId);
+            using var reader = command.ExecuteReader();
+            reader.Read();
+            author = reader.GetString(0);
+        }
+        return author;
+    }
+    
+    
+    //Coverts the Unix Time stamp to a Date time formatted 'month/day/year hour:minutes:seconds'
     private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
     {
         // Unix timestamp is seconds past epoch
