@@ -4,14 +4,12 @@ public record CheepViewModel(string Author, string Message, string Timestamp);
 
 public interface ICheepService
 {
-    public List<CheepViewModel> GetCheeps();
+    public List<CheepViewModel> GetCheeps(); //todo: check op på krav omkring denne method vs. data acces krav i DBfacade som krav
     public List<CheepViewModel> GetCheepsFromAuthor(string author);
 }
 
 public class CheepService : ICheepService
 {
-    // These would normally be loaded from a database for example
-    private static List<CheepViewModel> _cheeps = new();
 
     public List<CheepViewModel> GetCheeps()
     {

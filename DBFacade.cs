@@ -4,7 +4,7 @@ using Microsoft.Data.Sqlite;
 public class DBFacade
 {
     //The location of the database, which is currently stored locally
-    private static readonly string sqlDBFilePath = "/tmp/chirp.db";
+    private static readonly string sqlDBFilePath = GetDatabasePath();
 
     //method used to read all cheeps from the database
     public static List<CheepViewModel> Read(int? limit = null, int? offset = null)
@@ -148,4 +148,22 @@ public class DBFacade
         dateTime = dateTime.AddSeconds(unixTimeStamp);
         return dateTime.ToString("MM/dd/yy H:mm:ss");
     }
+
+    //Returns the environment variable if possible, otherwise it returns a backup path
+    private static string GetDatabasePath()
+    {
+        string? environment = Environment.GetEnvironmentVariable("CHIRPDBPATH"); //retrieves the environment variable locally
+        
+        //if it is not null or a whitespace, it returns the environment variable
+        if (!string.IsNullOrWhiteSpace(environment))
+        {
+            Console.WriteLine("found it");
+            return environment;
+        }
+
+        //otherwise it returns an already defined backup path
+        string tmpPath = "/tmp/chirp.db";
+        return tmpPath;
+    }
+    
 }
