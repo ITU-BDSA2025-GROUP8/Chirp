@@ -1,0 +1,74 @@
+name: Release Chirp Executable
+
+on:
+  push:
+    tags:
+      - "v*"   # Runs only when you push a tag like v1.0.0
+  pull_request:
+    tags:
+      - "v*"
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Run tests
+        run: dotnet test --no-build --verbosity normal
+
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build-and-test   # only runs if build-and-test succeeded
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build Linux
+        run: dotnet publish src/Chirp.CLI.Client/Chirp.CLI.Client.csproj -c Release -r linux-x64 --self-contained false /p:PublishSingleFile=true /p:UseAppHost=true -o out/linux
+        
+      - name: Build Windows
+        run: dotnet publish src/Chirp.CLI.Client/Chirp.CLI.Client.csproj -c Release -r win-x64 --self-contained false /p:PublishSingleFile=true /p:UseAppHost=true -o out/win
+
+      - name: Build macOS
+        run: dotnet publish src/Chirp.CLI.Client/Chirp.CLI.Client.csproj -c Release -r osx-x64 --self-contained false /p:PublishSingleFile=true /p:UseAppHost=true -o out/macos
+
+      - name: Package executables
+        run: |
+          cd out
+          zip -r ../chirp-linux-x64.zip linux/
+          zip -r ../chirp-win-x64.zip win/
+          zip -r ../chirp-osx-x64.zip macos/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            chirp-linux-x64.zip
+            chirp-win-x64.zip
+            chirp-osx-x64.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
