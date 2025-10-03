@@ -25,4 +25,10 @@
     <ProjectReference Include="..\Chirp.Razor\Chirp.Razor.csproj" />
   </ItemGroup>
 
+    <ItemGroup>
+        <None Update="chirp.db">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
 </Project>
