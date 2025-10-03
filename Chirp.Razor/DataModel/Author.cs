@@ -2,7 +2,8 @@
 
 public class Author
 {
-    public string  Name { get; set; }
-    public string  EmailAddress { get; set; }
+    public int AuthorId { get; set; }
+    public string Name { get; set; }
+    public string EmailAddress { get; set; }
     public ICollection<Cheep> Cheeps { get; set; }
 }

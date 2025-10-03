@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using "../DataModel/Cheep.cs";
+using Chirp.Razor.DataModel;
 
 namespace Chirp.Razor.data;
 
@@ -7,8 +7,9 @@ public class ChirpDBContext : DbContext
 {
     public ChirpDBContext(DbContextOptions<ChirpDBContext> options) : base(options)
     {
-        //empty on unpurpose
+        //empty on un purpose
     }
     
-    public Dbset<Cheep> Cheeps { get; set; }
+    public DbSet<Cheep> Cheeps { get; set; }
+    public DbSet<Author> Authors { get; set; }
 }
