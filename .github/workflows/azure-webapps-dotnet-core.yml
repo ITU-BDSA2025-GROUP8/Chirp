@@ -20,9 +20,8 @@
 name: Build and deploy ASP.Net Core app to an Azure Web App
 
 env:
-  AZURE_WEBAPP_NAME: bdsagroup8chirprazor25
-  AZURE_WEBAPP_PACKAGE_PATH: '.'       # deploy the artifact root
-  DOTNET_VERSION: '8.0.x'
+  AZURE_WEBAPP_NAME: bdsagroup8chirprazor25    # set this to the name of your Azure Web App
+  DOTNET_VERSION: '8.0.x'                      # use .NET 8
 
 on:
   push:
@@ -44,23 +43,31 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: Cache NuGet packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
       - name: Restore dependencies
-        run: dotnet restore Chirp.Razor/Chirp.Razor.csproj
+        run: dotnet restore ./Chirp.Razor/Chirp.Razor.csproj
 
       - name: Build
-        run: dotnet build Chirp.Razor/Chirp.Razor.csproj --configuration Release --no-restore
+        run: dotnet build ./Chirp.Razor/Chirp.Razor.csproj --configuration Release --no-restore
 
       - name: Publish
-        run: dotnet publish Chirp.Razor/Chirp.Razor.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish ./Chirp.Razor/Chirp.Razor.csproj -c Release -o ./publish
 
-      - name: Show publish output
-        run: ls -R ${{env.DOTNET_ROOT}}/myapp
+      - name: Check published output
+        run: ls -R ./publish
 
       - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
           name: chirp-razor-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          path: ./publish
 
   deploy:
     permissions:
@@ -68,17 +75,17 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     environment:
-      name: 'Production'
+      name: 'Development'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: Download artifact
+      - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: chirp-razor-app
           path: ./publish
 
-      - name: Show downloaded artifact
+      - name: Debug artifact contents
         run: ls -R ./publish
 
       - name: Deploy to Azure Web App
