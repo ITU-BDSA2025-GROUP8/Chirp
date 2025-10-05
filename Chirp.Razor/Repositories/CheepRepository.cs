@@ -44,5 +44,17 @@ public class CheepRepository : ICheepRepository
         var queryResult = await _context.Cheeps.AddAsync(cheep);
         await _context.SaveChangesAsync();
     }
-    
+
+    public async Task<List<CheepDTO>> GetAllCheeps()
+    {
+        var query = from cheep in _context.Cheeps
+            select new CheepDTO
+            {
+                CreatedAt = cheep.Date, 
+                Text = cheep.Text,
+                UserName = cheep.Author.Name
+            };
+        var result = await query.ToListAsync();
+        return result;
+    }
 }
