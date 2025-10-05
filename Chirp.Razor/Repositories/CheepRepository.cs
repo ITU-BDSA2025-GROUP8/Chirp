@@ -37,7 +37,7 @@ public class CheepRepository : ICheepRepository
         {
             Author = author,
             Text = newCheep.Text, 
-            Date = DateTime.Now
+            Date = newCheep.CreatedAt,
         };
         
         // Adds and saves the cheep in the database
