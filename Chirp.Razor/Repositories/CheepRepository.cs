@@ -39,8 +39,10 @@ public class CheepRepository : ICheepRepository
         await _context.SaveChangesAsync();
     }
 
+    // Read all cheeps
     public async Task<List<CheepDTO>> GetAllCheeps()
     {
+        // Construction of query
         var query = from cheep in _context.Cheeps
             select new CheepDTO
             {
@@ -48,12 +50,16 @@ public class CheepRepository : ICheepRepository
                 Text = cheep.Text,
                 UserName = cheep.Author.Name
             };
+        
+        // Executing the query
         var result = await query.ToListAsync();
+        
         return result;
     }
 
     public async Task<List<CheepDTO>> ReadCheepsBy(string authorName)
     {
+        // Construction of the query that selects cheeps written by the authorName //todo: should be changed to the author's ID
         var query = from cheep in _context.Cheeps
             where cheep.Author.Name == authorName
             select new CheepDTO
@@ -62,7 +68,10 @@ public class CheepRepository : ICheepRepository
                 Text = cheep.Text,
                 UserName = cheep.Author.Name
             };
+        
+        // Execution of the query
         var result = await query.ToListAsync();
+        
         return result;
     }
 
@@ -90,7 +99,7 @@ public class CheepRepository : ICheepRepository
 
     // Utility methods todo: should they be in the repository?
     
-    // Utility method to set the new properties of the Cheep
+    // Utility method: set the new properties of the Cheep
     async void UpdateCheep(Cheep originalCheep, CheepDTO alteredCheep)
     {
         // Find the author object of the alteredCheep
@@ -107,7 +116,8 @@ public class CheepRepository : ICheepRepository
         originalCheep.Date = alteredCheep.CreatedAt; //todo: is this a new time or the same as before?
         originalCheep.CheepId = alteredCheep.Id;
     }
-    // Utility methods to find the author object
+    
+    // Utility method: find the author object
     //todo: right now the author object is found by the name - this should be changed to the ID as this is the key of an author object in the data model
     async Task<Author> findAuthor(string AuthorName)
     {
