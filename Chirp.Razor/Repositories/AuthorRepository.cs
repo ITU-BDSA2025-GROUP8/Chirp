@@ -47,4 +47,39 @@ public class AuthorRepository : IAuthorRepository
 
         return result;
     }
+
+    // Update author
+    public async Task UpdateAuthor(AuthorDTO updatedAuthor)
+    {
+        // Construction of the query that selects cheeps written by the authorName //todo: should be changed to the author's ID
+        var query = from author in _context.Authors
+            where author.AuthorId == updatedAuthor.Id 
+            select author;
+        
+        var originalAuthor = await query.FirstOrDefaultAsync();
+
+        // Error handling
+        if (originalAuthor == null)
+        {
+            throw new Exception("Unable to find the cheep");
+        }
+
+        // Call to utility method that updates the properties of the original cheep
+        UpdateCheep(originalAuthor, updatedAuthor);
+
+        // Saves changes
+        await _context.SaveChangesAsync();
+    }
+
+    // Utility methods todo: should they be in the repository?
+
+    // Utility method: set the new properties of the Cheep
+    async void UpdateCheep(Author originalAuthor, AuthorDTO updatedAuthor)
+    {
+        // Sets the new properties
+        originalAuthor.AuthorId = updatedAuthor.Id;
+        originalAuthor.Name = updatedAuthor.Name;
+        originalAuthor.EmailAddress = updatedAuthor.Email;
+        originalAuthor.Cheeps = updatedAuthor.Cheeps;
+    }
 }
