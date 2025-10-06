@@ -157,7 +157,6 @@ public class DBFacade
         //if it is not null or a whitespace, it returns the environment variable
         if (!string.IsNullOrWhiteSpace(environment))
         {
-            Console.WriteLine("found it");
             return environment;
         }
 

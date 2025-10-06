@@ -1,6 +1,6 @@
 ﻿namespace Chirp.Razor.Test;
 
-public class DBFacedeTest
+public class GetCheepTest
 {
     
     private void Start()
@@ -13,7 +13,8 @@ public class DBFacedeTest
     public void CanReadFromEnvironmentVariableTest()
     {
         Start();
-        List<CheepViewModel> cheeps = DBFacade.Read();
+        CheepService  cheepService = new CheepService();
+        List<CheepViewModel> cheeps = cheepService.GetCheeps();
         Assert.NotNull(cheeps);
     }
 
@@ -22,7 +23,8 @@ public class DBFacedeTest
     {
         Start();
         List<CheepViewModel> cheeps;
-        cheeps = DBFacade.Read();
+        CheepService  cheepService = new CheepService();
+        cheeps = cheepService.GetCheeps();
         Assert.Equal("Jacqualine Gilcoine",cheeps[0].Author);
     }
 
@@ -31,7 +33,8 @@ public class DBFacedeTest
     {
         Start();
         List<CheepViewModel> cheeps;
-        cheeps =  DBFacade.Read();
+        CheepService  cheepService = new CheepService();
+        cheeps = cheepService.GetCheeps();
         Assert.Equal("Starbuck now is what we hear the worst.", cheeps[0].Message);
     }
     
@@ -40,7 +43,8 @@ public class DBFacedeTest
     {
         Start();
         List<CheepViewModel> cheeps;
-        cheeps = DBFacade.Read();
+        CheepService  cheepService = new CheepService();
+        cheeps = cheepService.GetCheeps();
         Assert.Equal("08-01-23 13:17:39",cheeps[0].Timestamp);
     }
 
@@ -49,7 +53,8 @@ public class DBFacedeTest
     {
         Start();
         List<CheepViewModel> cheeps;
-        cheeps = DBFacade.ReadAuthor("Jacqualine Gilcoine");
+        CheepService  cheepService = new CheepService();
+        cheeps = cheepService.GetCheepsFromAuthor("Jacqualine Gilcoine");
         foreach (var cheep in cheeps)
         {
             Assert.Equal("Jacqualine Gilcoine", cheep.Author);
@@ -67,7 +72,8 @@ public class DBFacedeTest
     {
         Start();
         List<CheepViewModel> cheeps;
-        cheeps = DBFacade.ReadAuthor(author);
+        CheepService  cheepService = new CheepService();
+        cheeps = cheepService.GetCheepsFromAuthor(author);
         foreach (var cheep in cheeps)
         {
             Assert.Equal(author, cheep.Author);
