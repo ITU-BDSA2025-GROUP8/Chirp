@@ -1,6 +1,7 @@
 ﻿using Chirp.Razor.data;
 using Chirp.Razor.DataModel;
 using Chirp.Razor.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Razor.Repositories;
 
@@ -27,5 +28,23 @@ public class AuthorRepository : IAuthorRepository
         // Adds and saves the cheep in the database
         var queryResult = await _context.Authors.AddAsync(author);
         await _context.SaveChangesAsync();
+    }
+
+    // Get all authors
+    public async Task<List<AuthorDTO>> GetAllAuthors()
+    {
+        // Construction of query
+        var query = from author in _context.Authors
+            select new AuthorDTO()
+            {
+                Name = author.Name,
+                Email = author.EmailAddress,
+                Cheeps = author.Cheeps
+            };
+
+        // Executing the query
+        var result = await query.ToListAsync();
+
+        return result;
     }
 }
