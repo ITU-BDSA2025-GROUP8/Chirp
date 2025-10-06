@@ -45,7 +45,7 @@ public class GetCheepTest
         List<CheepViewModel> cheeps;
         CheepService  cheepService = new CheepService();
         cheeps = cheepService.GetCheeps();
-        Assert.Equal("08-01-23 13:17:39",cheeps[0].Timestamp);
+        Assert.Equal("08/01/23 13:17:39",cheeps[0].Timestamp);
     }
 
     [Fact]
