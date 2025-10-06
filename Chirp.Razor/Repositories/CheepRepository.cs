@@ -32,6 +32,7 @@ public class CheepRepository : ICheepRepository
             Author = author,
             Text = newCheep.Text, 
             Date = newCheep.CreatedAt,
+            //todo: does not set the cheep ID
         };
         
         // Adds and saves the cheep in the database
