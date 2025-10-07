@@ -11,12 +11,14 @@ public interface ICheepService
 public class CheepService : ICheepService
 {
     
-    public List<CheepViewModel> GetCheeps(int? page)
+    //Calls DBFacade to get all cheeps
+    public List<CheepViewModel> GetCheeps(int? page = null)
     {
         return DBFacade.Read(page);
     }
 
-    public List<CheepViewModel> GetCheepsFromAuthor(string author, int? page)
+    //Calls DBFacade to get cheeps from a specific author
+    public List<CheepViewModel> GetCheepsFromAuthor(string author, int? page = null)
     {
         return DBFacade.ReadAuthor(author, page);
     }
