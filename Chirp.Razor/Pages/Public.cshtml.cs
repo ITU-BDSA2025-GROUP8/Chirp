@@ -16,9 +16,9 @@ public class PublicModel : PageModel
     }
 
     //Get all cheeps by all authors
-    public ActionResult OnGet()
+    public ActionResult OnGet([FromQuery] int page)
     {
-        Cheeps = _service.GetCheeps();
+        Cheeps = _service.GetCheeps(page);
         return Page();
     }
 }
