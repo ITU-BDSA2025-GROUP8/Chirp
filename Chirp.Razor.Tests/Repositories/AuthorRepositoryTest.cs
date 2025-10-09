@@ -27,6 +27,7 @@ public class AuthorRepositoryTest
             var authorDTOTest = new AuthorDTO()
             {
                 //todo: add ID - not added because of trouble with accessing the setter
+                //Id = 1,
                 Name = "John Doe",
                 Email = "test@itu.dk",
                 Cheeps = new List<Cheep>()
@@ -38,5 +39,39 @@ public class AuthorRepositoryTest
             Assert.Equal(1, numberOfCheeps);
         }
 
+    }
+
+    [Fact]
+    public void GetAllAuthorsTest()
+    {
+        var connection = new SqliteConnection("DataSource=:memory:");
+        connection.Open();
+
+        var options = new DbContextOptionsBuilder<ChirpDBContext>()
+            .UseSqlite(connection)
+            .Options;
+
+        using (var context = new ChirpDBContext(options))
+        {
+            context.Database.EnsureCreated();
+            context.Authors.AddRange(
+                new Author { AuthorId = 1, Cheeps = new List<Cheep>(), EmailAddress = "test1@itu.dk", Name = "Test1" },
+                new Author { AuthorId = 2, Cheeps = new List<Cheep>(), EmailAddress = "test2@itu.dk", Name = "Test2" },
+                new Author { AuthorId = 3, Cheeps = new List<Cheep>(), EmailAddress = "test3@itu.dk", Name = "Test3" }
+            );
+            context.SaveChanges();
+        }
+
+        using (var context = new ChirpDBContext(options))
+        {
+            var repository = new AuthorRepository(context);
+            var authors = repository.GetAllAuthors();
+            Assert.Equal(3, authors.Result.Count);
+            Assert.True(authors.Result.Any(a => a.Id == 1));
+            Assert.True(authors.Result.Any(a => a.Id == 2));
+            Assert.True(authors.Result.Any(a => a.Id == 3));
+        }        
+        
+            
     }
 }
