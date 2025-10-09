@@ -37,6 +37,7 @@ public class AuthorRepository : IAuthorRepository
         var query = from author in _context.Authors
             select new AuthorDTO()
             {
+                Id = author.AuthorId,
                 Name = author.Name,
                 Email = author.EmailAddress,
                 Cheeps = author.Cheeps
@@ -64,8 +65,8 @@ public class AuthorRepository : IAuthorRepository
             throw new Exception("Unable to find the cheep");
         }
 
-        // Call to utility method that updates the properties of the original cheep
-        UpdateCheep(originalAuthor, updatedAuthor);
+        // Call to utility method that updates the properties of the original author
+        UpdateAuthor(originalAuthor, updatedAuthor);
 
         // Saves changes
         await _context.SaveChangesAsync();
@@ -73,8 +74,8 @@ public class AuthorRepository : IAuthorRepository
 
     // Utility methods todo: should they be in the repository?
 
-    // Utility method: set the new properties of the Cheep
-    async void UpdateCheep(Author originalAuthor, AuthorDTO updatedAuthor)
+    // Utility method: set the new properties of the Author
+    async void UpdateAuthor(Author originalAuthor, AuthorDTO updatedAuthor)
     {
         // Sets the new properties
         originalAuthor.AuthorId = updatedAuthor.Id;
