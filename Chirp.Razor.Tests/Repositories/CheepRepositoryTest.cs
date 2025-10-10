@@ -26,19 +26,23 @@ public class CheepRepositoryTest
         {
             context.Database.EnsureCreated(); 
             var repository = new CheepRepository(context);
+            var author = new Author { Name = "Test1", EmailAddress = "test1@itu.dk" };
+
+            context.Authors.AddRange(author);
+            context.SaveChanges();
+            
             var newCheep = new CheepDTO
             {
-                UserName = "Jasmine",
+                UserName = "Test1",
                 Text = "I chirped",
-                CreatedAt = new DateTime(2025, 10, 8, 0, 0, 0, 0),
+                CreatedAt = new DateTime(2025, 10, 8),
             };
+            //Act
             repository.CreateCheep(newCheep);
-            //Assert.Equal(4, context.Cheeps.Count());
 
+            //Assert
             var numberOfCheeps = repository.GetAllCheeps().Result.Count;
             Assert.Equal(1, numberOfCheeps);
-
-            //todo: should probably check for some more things
         }
     }
 
@@ -127,50 +131,50 @@ public class CheepRepositoryTest
     public void UpdateCheepTest()
     {
         
-            var connection = new SqliteConnection("DataSource=:memory:");
-            connection.Open();
+        var connection = new SqliteConnection("DataSource=:memory:");
+        connection.Open();
 
-            var options = new DbContextOptionsBuilder<ChirpDBContext>()
-                .UseSqlite(connection)
-                .Options;
+        var options = new DbContextOptionsBuilder<ChirpDBContext>()
+            .UseSqlite(connection)
+            .Options;
 
-            int cheepId;
+        int cheepId;
 
-            using (var context = new ChirpDBContext(options))
+        using (var context = new ChirpDBContext(options))
+        {
+            context.Database.EnsureCreated();
+
+            var author1 = new Author { Name = "Test1", EmailAddress = "test1@itu.dk" };
+            var author2 = new Author { Name = "Test2",   EmailAddress = "test2@itu.dk" };
+            context.Authors.AddRange(author1, author2);
+
+            var cheep = new Cheep { Author = author1, Text = "old text", Date = new DateTime(2025, 10, 10) };
+            context.Cheeps.Add(cheep);
+            context.SaveChanges();
+
+            cheepId = cheep.CheepId;
+        }
+
+        using (var context = new ChirpDBContext(options))
+        {
+            //act
+            var repository = new CheepRepository(context);
+            var dto = new CheepDTO
             {
-                context.Database.EnsureCreated();
+                Id = cheepId,
+                Text = "altered text",
+                CreatedAt = new DateTime(2025, 10, 11),
+                UserName = "Test1"
+            };
 
-                var author1 = new Author { Name = "Test1", EmailAddress = "test1@itu.dk" };
-                var author2 = new Author { Name = "Test2",   EmailAddress = "test2@itu.dk" };
-                context.Authors.AddRange(author1, author2);
-
-                var cheep = new Cheep { Author = author1, Text = "old text", Date = new DateTime(2025, 10, 10) };
-                context.Cheeps.Add(cheep);
-                context.SaveChanges();
-
-                cheepId = cheep.CheepId;
-            }
-
-            using (var context = new ChirpDBContext(options))
-            {
-                //act
-                var repository = new CheepRepository(context);
-                var dto = new CheepDTO
-                {
-                    Id = cheepId,
-                    Text = "altered text",
-                    CreatedAt = new DateTime(2025, 10, 11),
-                    UserName = "Test1"
-                };
-
-                repository.UpdateCheep(dto);
-                //assert a change has happened
-                Assert.True(context.Cheeps.Any(c => c.Text == "altered text"));
-                //assert new time exists
-                Assert.True(context.Cheeps.Any(c => c.Date == new DateTime(2025, 10, 11)));
-                //assert old text is gone
-                Assert.False(context.Cheeps.Any(c => c.Text == "old text"));
-            }
+            repository.UpdateCheep(dto);
+            //assert a change has happened
+            Assert.True(context.Cheeps.Any(c => c.Text == "altered text"));
+            //assert new time exists
+            Assert.True(context.Cheeps.Any(c => c.Date == new DateTime(2025, 10, 11)));
+            //assert old text is gone
+            Assert.False(context.Cheeps.Any(c => c.Text == "old text"));
+        }
         
     }
     

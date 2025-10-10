@@ -23,7 +23,7 @@ public class CheepRepository : ICheepRepository
         if (author == null)
         {
             //todo: call method to create new author instead of throw exception
-            //for now throw expection - written by ChatGPT
+            //for now throw exception - written by ChatGPT
             throw new Exception($"Author with username '{newCheep.UserName}' not found.");
         }
         // Creates new cheep
