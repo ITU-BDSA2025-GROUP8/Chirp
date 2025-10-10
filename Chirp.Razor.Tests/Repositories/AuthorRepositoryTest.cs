@@ -75,6 +75,7 @@ public class AuthorRepositoryTest
     [Fact]
     public void UpdateAuthorTest()
     {
+        // Make in memory database
         var connection = new SqliteConnection("DataSource=:memory:");
         connection.Open();
 
@@ -82,6 +83,7 @@ public class AuthorRepositoryTest
             .UseSqlite(connection)
             .Options;
 
+        // Add to the database
         using (var context = new ChirpDBContext(options))
         {
             context.Database.EnsureCreated();
@@ -92,6 +94,7 @@ public class AuthorRepositoryTest
             context.SaveChanges();
         }
 
+        // Test the method
         using (var context = new ChirpDBContext(options))
         {
             var repository = new AuthorRepository(context);
@@ -105,10 +108,14 @@ public class AuthorRepositoryTest
             
             repository.UpdateAuthor(authorDTOTest);
             
+            // Assert
             Assert.True(context.Authors.Any(a => a.Name == "John Doe"));
+            var updatedCheep = context.Authors.Find(1);
+            Assert.True(updatedCheep.EmailAddress == "test@itu.dk");
+            Assert.True(updatedCheep.Cheeps.Count == 0);
             Assert.False(context.Authors.Any(a => a.Name == "Test1"));
             Assert.True(context.Authors.Count() == 2);
         }
-        
+
     }
 }
