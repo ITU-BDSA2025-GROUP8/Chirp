@@ -104,6 +104,7 @@ public class CheepRepositoryTest
             var author2   = new Author { Name = "Test2", EmailAddress = "test2@itu.dk" };
             context.Authors.AddRange(author1, author2);
 
+            //note: setup for these 3 test cheeps was suggested by ChatGPT
             context.Cheeps.AddRange(
                 new Cheep { Author = author1, Text = "a1", Date = new DateTime(2025, 10, 10) },
                 new Cheep { Author = author1, Text = "a2", Date = new DateTime(2025, 10, 11) },
@@ -125,6 +126,51 @@ public class CheepRepositoryTest
     [Fact]
     public void UpdateCheepTest()
     {
+        
+            var connection = new SqliteConnection("DataSource=:memory:");
+            connection.Open();
+
+            var options = new DbContextOptionsBuilder<ChirpDBContext>()
+                .UseSqlite(connection)
+                .Options;
+
+            int cheepId;
+
+            using (var context = new ChirpDBContext(options))
+            {
+                context.Database.EnsureCreated();
+
+                var author1 = new Author { Name = "Test1", EmailAddress = "test1@itu.dk" };
+                var author2 = new Author { Name = "Test2",   EmailAddress = "test2@itu.dk" };
+                context.Authors.AddRange(author1, author2);
+
+                var cheep = new Cheep { Author = author1, Text = "old text", Date = new DateTime(2025, 10, 10) };
+                context.Cheeps.Add(cheep);
+                context.SaveChanges();
+
+                cheepId = cheep.CheepId;
+            }
+
+            using (var context = new ChirpDBContext(options))
+            {
+                //act
+                var repository = new CheepRepository(context);
+                var dto = new CheepDTO
+                {
+                    Id = cheepId,
+                    Text = "altered text",
+                    CreatedAt = new DateTime(2025, 10, 11),
+                    UserName = "Test1"
+                };
+
+                repository.UpdateCheep(dto);
+                //assert a change has happened
+                Assert.True(context.Cheeps.Any(c => c.Text == "altered text"));
+                //assert new time exists
+                Assert.True(context.Cheeps.Any(c => c.Date == new DateTime(2025, 10, 11)));
+                //assert old text is gone
+                Assert.False(context.Cheeps.Any(c => c.Text == "old text"));
+            }
         
     }
     
