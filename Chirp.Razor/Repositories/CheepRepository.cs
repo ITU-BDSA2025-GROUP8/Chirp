@@ -114,7 +114,7 @@ public class CheepRepository : ICheepRepository
         // Sets the new properties
         originalCheep.Author = author;
         originalCheep.Text = alteredCheep.Text;
-        originalCheep.Date = alteredCheep.CreatedAt; //todo: is this a new time or the same as before?
+        originalCheep.Date = alteredCheep.CreatedAt;
         originalCheep.CheepId = alteredCheep.Id;
     }
     
