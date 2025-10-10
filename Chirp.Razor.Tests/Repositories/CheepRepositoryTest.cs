@@ -68,8 +68,9 @@ public class CheepRepositoryTest
             context.Authors.AddRange(author1, author2);
             //making cheeps
             context.Cheeps.AddRange(
-                new Cheep { Author = author1, Text = "hi", Date = new DateTime(2025, 10, 1) },
-                new Cheep { Author = author2, Text = "hello", Date = new DateTime(2025, 10, 2) }
+                new Cheep { Author = author1, Text = "hi", Date = new DateTime(2025, 10, 2) },
+                new Cheep { Author = author2, Text = "hello", Date = new DateTime(2025, 10, 3) },
+                new Cheep { Author = author1, Text = "hey", Date = new DateTime(2025, 10, 1) } 
             );
             context.SaveChanges();
         }
@@ -82,10 +83,15 @@ public class CheepRepositoryTest
             var allCheeps = repository.GetAllCheeps().Result;
 
             //Assert
-            Assert.Equal(2, allCheeps.Count);
+            Assert.Equal(3, allCheeps.Count);
             Assert.Contains(allCheeps, c => c.Text == "hi" && c.UserName == "Test1");
             Assert.Contains(allCheeps, c => c.Text == "hello" && c.UserName == "Test2");
             //Assert.All(allCheeps, c => Assert.True(c.Id > 0)); // Id should exist todo: check if this is needed?
+            
+            //Assert cheeps are in correct order (newest first)
+            Assert.True(allCheeps[0].CreatedAt > allCheeps[1].CreatedAt);
+            Assert.True(allCheeps[1].CreatedAt > allCheeps[2].CreatedAt);
+            Assert.True(allCheeps[0].CreatedAt > allCheeps[2].CreatedAt);
         }
     }
 
@@ -124,6 +130,8 @@ public class CheepRepositoryTest
             var author1Cheeps = repository.ReadCheepsBy("Test1").Result;
             Assert.Equal(2, author1Cheeps.Count);
             Assert.All(author1Cheeps, c => Assert.Equal("Test1", c.UserName));
+            //Assert cheeps are in correct order (newest first)
+            Assert.True(author1Cheeps[0].CreatedAt > author1Cheeps[1].CreatedAt);
         }
     }
 
