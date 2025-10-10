@@ -88,7 +88,38 @@ public class CheepRepositoryTest
     [Fact]
     public void ReadCheepsByTest()
     {
-        
+        //Arrange
+        var connection = new SqliteConnection("DataSource=:memory:");
+        connection.Open();
+
+        var options = new DbContextOptionsBuilder<ChirpDBContext>()
+            .UseSqlite(connection)
+            .Options;
+
+        using (var context = new ChirpDBContext(options))
+        {
+            context.Database.EnsureCreated();
+
+            var author1 = new Author { Name = "Test1", EmailAddress = "test1@itu.dk" };
+            var author2   = new Author { Name = "Test2", EmailAddress = "test2@itu.dk" };
+            context.Authors.AddRange(author1, author2);
+
+            context.Cheeps.AddRange(
+                new Cheep { Author = author1, Text = "a1", Date = new DateTime(2025, 10, 10) },
+                new Cheep { Author = author1, Text = "a2", Date = new DateTime(2025, 10, 11) },
+                new Cheep { Author = author2,   Text = "b1", Date = new DateTime(2025, 10, 12) }
+            );
+            context.SaveChanges();
+        }
+
+        using (var context = new ChirpDBContext(options))
+        {
+            var repository = new CheepRepository(context);
+
+            var author1Cheeps = repository.ReadCheepsBy("Test1").Result;
+            Assert.Equal(2, author1Cheeps.Count);
+            Assert.All(author1Cheeps, c => Assert.Equal("Test1", c.UserName));
+        }
     }
 
     [Fact]
