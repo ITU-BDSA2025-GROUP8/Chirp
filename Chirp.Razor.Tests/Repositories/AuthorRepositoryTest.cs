@@ -12,6 +12,7 @@ public class AuthorRepositoryTest
     [Fact]
     public void CreateAuthorTest()
     {
+        // Make in memory database
         var connection = new SqliteConnection("DataSource=:memory:");
         connection.Open();
 
@@ -19,6 +20,7 @@ public class AuthorRepositoryTest
             .UseSqlite(connection)
             .Options;
 
+        // Test the method
         using (var context = new ChirpDBContext(options))
         {
             context.Database.EnsureCreated();
@@ -34,6 +36,7 @@ public class AuthorRepositoryTest
 
             repository.CreateAuthor(authorDTOTest);
 
+            // Assert
             var numberOfCheeps = repository.GetAllAuthors().Result.Count;
             Assert.Equal(1, numberOfCheeps);
         }
@@ -43,6 +46,7 @@ public class AuthorRepositoryTest
     [Fact]
     public void GetAllAuthorsTest()
     {
+        // Make in memory database
         var connection = new SqliteConnection("DataSource=:memory:");
         connection.Open();
 
@@ -50,6 +54,7 @@ public class AuthorRepositoryTest
             .UseSqlite(connection)
             .Options;
 
+        // Add to the database
         using (var context = new ChirpDBContext(options))
         {
             context.Database.EnsureCreated();
@@ -61,10 +66,13 @@ public class AuthorRepositoryTest
             context.SaveChanges();
         }
 
+        // Test the method
         using (var context = new ChirpDBContext(options))
         {
             var repository = new AuthorRepository(context);
             var authors = repository.GetAllAuthors();
+            
+            // Assert
             Assert.Equal(3, authors.Result.Count);
             Assert.True(authors.Result.Any(a => a.Id == 1));
             Assert.True(authors.Result.Any(a => a.Id == 2));
