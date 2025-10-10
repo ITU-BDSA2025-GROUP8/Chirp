@@ -45,6 +45,7 @@ public class CheepRepository : ICheepRepository
     {
         // Construction of query
         var query = from cheep in _context.Cheeps
+            orderby cheep.Date descending
             select new CheepDTO
             {
                 CreatedAt = cheep.Date, 
@@ -63,6 +64,7 @@ public class CheepRepository : ICheepRepository
         // Construction of the query that selects cheeps written by the authorName //todo: should be changed to the author's ID
         var query = from cheep in _context.Cheeps
             where cheep.Author.Name == authorName
+            orderby cheep.Date descending
             select new CheepDTO
             {
                 CreatedAt = cheep.Date,
