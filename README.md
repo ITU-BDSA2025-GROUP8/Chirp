@@ -15,7 +15,7 @@ This will make the database in the tmp directory. Then run:
 and the program will run
 
 # Run on Windows
-In i windows terminal you first need to set an enviroment variable, that can be done using the command:
+In windows terminal you first need to set an enviroment variable, that can be done using the command:
 
 `$env:CHIRPDBPATH = "./chirp.db" `
 
