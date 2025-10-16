@@ -7,12 +7,11 @@ public class DBFacade
     private static readonly string sqlDBFilePath = GetDatabasePath();
 
     //method used to read all cheeps from the database
-    public static List<CheepViewModel> Read(int? limit = null, int? offset = null)
+    public static List<CheepViewModel> Read(int? page = null)
     {
-        
         List<CheepViewModel> list = new();
         
-        var sqlQuery = @"SELECT * FROM message ORDER by message.pub_date desc"; //creates a query which get the data from the database
+        var sqlQuery = @"SELECT * FROM message ORDER by message.pub_date desc LIMIT 32 OFFSET @offset"; //creates a query which decide what data to get from the database
         
         //creates the connection to the database 
         using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
@@ -22,6 +21,7 @@ public class DBFacade
             //sets the query as a command
             var command = connection.CreateCommand();
             command.CommandText = sqlQuery;
+            command.Parameters.AddWithValue("@offset", GetOffset(page));
 
             //reads through the database, retrieves data based on the query
             using var reader = command.ExecuteReader(); //var = SqlDataReader
@@ -50,13 +50,12 @@ public class DBFacade
     }
 
     //Method that returns a list of Cheeps written by a specific author 
-    public static List<CheepViewModel> ReadAuthor(string author, int? limit = null, int? offset = null)
+    public static List<CheepViewModel> ReadAuthor(string author, int? page = null)
     {
         
         List<CheepViewModel> list = new();
         
-        
-        var sqlQuery = @"SELECT * FROM message WHERE author_id = @authorId ORDER by message.pub_date desc"; //creates a query which get the data from the database
+        var sqlQuery = @"SELECT * FROM message WHERE author_id = @authorId ORDER by message.pub_date desc LIMIT 32 OFFSET @offset"; //creates a query which get the data from the database
         
         //creates the connection to the database 
         using (var connection = new SqliteConnection($"Data Source={sqlDBFilePath}"))
@@ -67,6 +66,7 @@ public class DBFacade
             var command = connection.CreateCommand();
             command.CommandText = sqlQuery;
             command.Parameters.AddWithValue("@authorId", GetAuthorId(author));
+            command.Parameters.AddWithValue("@offset", GetOffset(page));
 
             //reads through the database, retrieves data based on the query
             using var reader = command.ExecuteReader(); //var = SqlDataReader
@@ -91,6 +91,17 @@ public class DBFacade
             connection.Close();
             return list;
         }
+    }
+
+    //method to get the offset of the cheeps based on what page we want to read from
+    private static int GetOffset(int? page)
+    {
+        int offset = 0; //default offset is 0
+        if (page != null && page > 1)
+        {
+            offset = (page.Value-1) * 32;
+        }
+        return offset;
     }
     
     //method to convert id to author name
@@ -146,7 +157,7 @@ public class DBFacade
         // Unix timestamp is seconds past epoch
         DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
         dateTime = dateTime.AddSeconds(unixTimeStamp);
-        return dateTime.ToString("MM/dd/yy H:mm:ss");
+        return dateTime.ToString("MM'/'dd'/'yy H':'mm':'ss");
     }
 
     //Returns the environment variable if possible, otherwise it returns a backup path
@@ -157,7 +168,6 @@ public class DBFacade
         //if it is not null or a whitespace, it returns the environment variable
         if (!string.IsNullOrWhiteSpace(environment))
         {
-            Console.WriteLine("found it");
             return environment;
         }
 
