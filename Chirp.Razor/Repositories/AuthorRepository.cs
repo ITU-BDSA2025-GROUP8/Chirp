@@ -72,10 +72,8 @@ public class AuthorRepository : IAuthorRepository
         await _context.SaveChangesAsync();
     }
 
-    // Utility methods todo: should they be in the repository?
-
     // Utility method: set the new properties of the Author
-    async void UpdateAuthor(Author originalAuthor, AuthorDTO updatedAuthor)
+    private void UpdateAuthor(Author originalAuthor, AuthorDTO updatedAuthor)
     {
         // Sets the new properties
         originalAuthor.AuthorId = updatedAuthor.Id;

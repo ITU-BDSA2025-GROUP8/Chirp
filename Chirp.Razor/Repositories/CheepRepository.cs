@@ -103,7 +103,7 @@ public class CheepRepository : ICheepRepository
     // Utility methods todo: should they be in the repository?
     
     // Utility method: set the new properties of the Cheep
-    async void UpdateCheep(Cheep originalCheep, CheepDTO alteredCheep)
+    private async void UpdateCheep(Cheep originalCheep, CheepDTO alteredCheep)
     {
         // Find the author object of the alteredCheep
         var author = await findAuthor(alteredCheep.UserName);
@@ -122,7 +122,7 @@ public class CheepRepository : ICheepRepository
     
     // Utility method: find the author object
     //todo: right now the author object is found by the name - this should be changed to the ID as this is the key of an author object in the data model
-    async Task<Author> findAuthor(string AuthorName)
+    private async Task<Author> findAuthor(string AuthorName)
     {
         // Suggestion from ChatGPT
         // Gets one Author object from the database
