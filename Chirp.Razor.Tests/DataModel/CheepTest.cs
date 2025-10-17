@@ -20,6 +20,7 @@ public class CheepTest
             EmailAddress = "test@itu.dk"
         };
         cheep.Date = new DateTime(2025, 1, 1);
+        cheep.Author = author;
         
         Assert.Equal(1, cheep.CheepId);
         Assert.Equal(author, cheep.Author);
