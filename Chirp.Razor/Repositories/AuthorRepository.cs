@@ -19,10 +19,9 @@ public class AuthorRepository : IAuthorRepository
         // Creates new Author
         Author author = new()
         {
-            //todo: does not set AuthorId
             Name = newUser.Name,
             EmailAddress = newUser.Email,
-            Cheeps = new List<Cheep>() //todo: is this to be done in the repository
+            Cheeps = new List<Cheep>()
         };
 
         // Adds and saves the cheep in the database
@@ -52,7 +51,7 @@ public class AuthorRepository : IAuthorRepository
     // Update author
     public async Task UpdateAuthor(AuthorDTO updatedAuthor)
     {
-        // Construction of the query that selects cheeps written by the authorName //todo: should be changed to the author's ID
+        // Construction of the query that selects cheeps written by the same AuthorID
         var query = from author in _context.Authors
             where author.AuthorId == updatedAuthor.Id 
             select author;
