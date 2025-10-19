@@ -1,10 +1,11 @@
-﻿using Chirp.Razor.data;
-using Chirp.Razor.DataModel;
-using Chirp.Razor.Models;
+﻿using Chirp.Core.DTO;
+using Chirp.Infrastructure.Data;
+using Chirp.Infrastructure.Entities;
+using Chirp.Infrastructure.Repositories;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
-namespace Chirp.Razor.Repositories;
+namespace Chirp.Infrastructure.Tests.Repositories;
 
 public class AuthorRepositoryTest
 {
@@ -31,7 +32,7 @@ public class AuthorRepositoryTest
                 Id = 1,
                 Name = "John Doe",
                 Email = "test@itu.dk",
-                Cheeps = new List<Cheep>()
+                Cheeps = new List<CheepDTO>()
             };
 
             repository.CreateAuthor(authorDTOTest);
@@ -59,9 +60,9 @@ public class AuthorRepositoryTest
         {
             context.Database.EnsureCreated();
             context.Authors.AddRange(
-                new Author { AuthorId = 1, Cheeps = new List<Cheep>(), EmailAddress = "test1@itu.dk", Name = "Test1" },
-                new Author { AuthorId = 2, Cheeps = new List<Cheep>(), EmailAddress = "test2@itu.dk", Name = "Test2" },
-                new Author { AuthorId = 3, Cheeps = new List<Cheep>(), EmailAddress = "test3@itu.dk", Name = "Test3" }
+                new Author { AuthorId = 1, Cheeps = new List<CheepDTO>(), EmailAddress = "test1@itu.dk", Name = "Test1" },
+                new Author { AuthorId = 2, Cheeps = new List<CheepDTO>(), EmailAddress = "test2@itu.dk", Name = "Test2" },
+                new Author { AuthorId = 3, Cheeps = new List<CheepDTO>(), EmailAddress = "test3@itu.dk", Name = "Test3" }
             );
             context.SaveChanges();
         }
@@ -96,8 +97,8 @@ public class AuthorRepositoryTest
         {
             context.Database.EnsureCreated();
             context.Authors.AddRange(
-                new Author { AuthorId = 1, Cheeps = new List<Cheep>(), EmailAddress = "test1@itu.dk", Name = "Test1" },
-                new Author { AuthorId = 2, Cheeps = new List<Cheep>(), EmailAddress = "test2@itu.dk", Name = "Test2" }
+                new Author { AuthorId = 1, Cheeps = new List<CheepDTO>(), EmailAddress = "test1@itu.dk", Name = "Test1" },
+                new Author { AuthorId = 2, Cheeps = new List<CheepDTO>(), EmailAddress = "test2@itu.dk", Name = "Test2" }
             );
             context.SaveChanges();
         }
@@ -111,7 +112,7 @@ public class AuthorRepositoryTest
                 Id = 1,
                 Name = "John Doe",
                 Email = "test@itu.dk",
-                Cheeps = new List<Cheep>()
+                Cheeps = new List<CheepDTO>()
             };
             
             repository.UpdateAuthor(authorDTOTest);

@@ -1,6 +1,8 @@
-﻿using Chirp.Razor.DataModel;
+﻿
 
-namespace Chirp.Razor.Test.DataModel;
+using Chirp.Infrastructure.Entities;
+
+namespace Chirp.Infrastructure.Tests.DataModel;
 
 public class CheepTest
 {

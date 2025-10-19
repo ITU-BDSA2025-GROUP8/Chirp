@@ -1,6 +1,6 @@
-﻿using Chirp.Razor.Models;
+﻿using Chirp.Core.DTO;
 
-namespace Chirp.Razor.Repositories;
+namespace Chirp.Core.Interfaces;
 
 public interface ICheepRepository
 {

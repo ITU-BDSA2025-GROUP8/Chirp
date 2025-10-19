@@ -1,6 +1,7 @@
-﻿using Chirp.Razor.DataModel;
+﻿using Chirp.Core.DTO;
+using Chirp.Infrastructure.Entities;
 
-namespace Chirp.Razor.Test.DataModel;
+namespace Chirp.Infrastructure.Tests.DataModel;
 
 public class AuthorTest
 {
@@ -16,7 +17,7 @@ public class AuthorTest
         author.Name = "Test";
         author.EmailAddress = "test@itu.dk";
 
-        var cheeps = new List<Cheep> { new Cheep { Text = "test" } };
+        var cheeps = new List<CheepDTO> { new CheepDTO { Text = "test" } };
         author.Cheeps = cheeps;
         
         Assert.Equal(1, author.AuthorId);

@@ -1,10 +1,11 @@
-﻿using Chirp.Razor.data;
-using Chirp.Razor.DataModel;
-using Chirp.Razor.Models;
+﻿using Chirp.Core.DTO;
+using Chirp.Infrastructure.Data;
+using Chirp.Infrastructure.Entities;
+using Chirp.Infrastructure.Repositories;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
-namespace Chirp.Razor.Repositories;
+namespace Chirp.Infrastructure.Tests.Repositories;
 
 // Use chapter 36.4 in the book as reference. PDF page 1785
 

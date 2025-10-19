@@ -1,6 +1,7 @@
-﻿using Chirp.Razor.Models;
+﻿
+using Chirp.Core.DTO;
 
-namespace Chirp.Razor.Test.Models;
+namespace Chirp.Core.Tests.DTO;
 
 public class CheepDTOTest
 {

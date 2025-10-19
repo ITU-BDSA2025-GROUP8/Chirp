@@ -1,6 +1,4 @@
-﻿using Chirp.Razor.DataModel;
-
-namespace Chirp.Razor.Models;
+﻿namespace Chirp.Core.DTO;
 
 public class AuthorDTO
 {
@@ -9,5 +7,5 @@ public class AuthorDTO
     public int Id { get; set; }
     public string Name { get; set; }
     public string Email { get; set; }
-    public ICollection<Cheep> Cheeps { get; set; }
+    public ICollection<CheepDTO> Cheeps { get; set; }
 }
