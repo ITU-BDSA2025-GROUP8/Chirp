@@ -7,7 +7,6 @@ on:
   push:
     branches:
       - main
-      - 59-71f-onion-architecture
   workflow_dispatch:
 
 jobs:
@@ -63,4 +62,5 @@ jobs:
           app-name: 'bdsa2024group8chirprazor2025'
           slot-name: 'Production'
           package: ./myapp
+
           
