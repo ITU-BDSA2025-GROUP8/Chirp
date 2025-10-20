@@ -11,16 +11,21 @@ public class CheepTest
     [Fact]
     public void CheepStoresAndReturnsAssignedValues()
     {
-        var cheep = new Cheep{Text = "This is a test"};
-        cheep.CheepId = 1;
         var author = new Author
         {
             Name = "Tester",
             AuthorId = 10,
             EmailAddress = "test@itu.dk"
         };
-        cheep.Date = new DateTime(2025, 1, 1);
-        cheep.Author = author;
+        var date = new DateTime(2025, 1, 1);
+        var cheep = new Cheep
+        {
+            CheepId = 1,
+            Text = "This is a test",
+            Date = date,
+            Author = author,
+            
+        };
         
         Assert.Equal(1, cheep.CheepId);
         Assert.Equal(author, cheep.Author);
