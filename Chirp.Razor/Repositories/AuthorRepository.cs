@@ -81,4 +81,24 @@ public class AuthorRepository : IAuthorRepository
         originalAuthor.EmailAddress = updatedAuthor.Email;
         originalAuthor.Cheeps = updatedAuthor.Cheeps;
     }
+    // Find author by name
+    public async Task<AuthorDTO?> FindByName(string name)
+    => await _context.Authors
+        .Where (a => a.Name == name)
+        .Select (a => new AuthorDTO
+        {
+            Id = a.AuthorId, Name = a.Name, Email = a.EmailAddress, Cheeps = a.Cheeps
+            })
+        .FirstOrDefaultAsync();
+    
+    
+    // Find author by email
+    public async Task<AuthorDTO?> FindByEmail(string email)
+    => await _context.Authors
+        .Where (a => a.EmailAddress == email)
+        .Select (a => new AuthorDTO
+        {
+            Id = a.AuthorId, Name = a.Name, Email = a.EmailAddress, Cheeps = a.Cheeps
+        })
+        .FirstOrDefaultAsync();
 }
