@@ -1,4 +1,5 @@
-﻿using Chirp.Core.DTO;
+﻿using System.Collections;
+using Chirp.Core.DTO;
 using Chirp.Core.Interfaces;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Entities;
@@ -23,7 +24,7 @@ public class AuthorRepository : IAuthorRepository
             //todo: does not set AuthorId
             Name = newUser.Name,
             EmailAddress = newUser.Email,
-            Cheeps = new List<CheepDTO>() //todo: is this to be done in the repository
+            Cheeps = new List<Cheep>() //todo: is this to be done in the repository
         };
 
         // Adds and saves the cheep in the database
@@ -42,6 +43,13 @@ public class AuthorRepository : IAuthorRepository
                 Name = author.Name,
                 Email = author.EmailAddress,
                 Cheeps = author.Cheeps
+                    .Select(c => new CheepDTO
+                    {
+                        Id = c.CheepId,
+                        Text = c.Text,
+                        CreatedAt = c.Date
+                    })
+                    .ToList()
             };
 
         // Executing the query
@@ -80,6 +88,26 @@ public class AuthorRepository : IAuthorRepository
         originalAuthor.AuthorId = updatedAuthor.Id;
         originalAuthor.Name = updatedAuthor.Name;
         originalAuthor.EmailAddress = updatedAuthor.Email;
-        originalAuthor.Cheeps = updatedAuthor.Cheeps;
+
+        ICollection<Cheep> cheeps = new List<Cheep>();
+
+        foreach (var cheep in updatedAuthor.Cheeps)
+        {
+            Cheep newCheep = FromCheepDtoToCheep(cheep).Result;
+            cheeps.Add(newCheep);
+        }
+        
+        originalAuthor.Cheeps = cheeps;
+
+
+    }
+
+    private async Task<Cheep> FromCheepDtoToCheep(CheepDTO oldCheep)
+    {
+        var query = from cheep in _context.Cheeps
+            where cheep.CheepId == oldCheep.Id
+                select cheep;
+        var originalCheep = await query.FirstOrDefaultAsync();
+        return originalCheep;
     }
 }

@@ -60,9 +60,9 @@ public class AuthorRepositoryTest
         {
             context.Database.EnsureCreated();
             context.Authors.AddRange(
-                new Author { AuthorId = 1, Cheeps = new List<CheepDTO>(), EmailAddress = "test1@itu.dk", Name = "Test1" },
-                new Author { AuthorId = 2, Cheeps = new List<CheepDTO>(), EmailAddress = "test2@itu.dk", Name = "Test2" },
-                new Author { AuthorId = 3, Cheeps = new List<CheepDTO>(), EmailAddress = "test3@itu.dk", Name = "Test3" }
+                new Author { AuthorId = 1, Cheeps = new List<Cheep>(), EmailAddress = "test1@itu.dk", Name = "Test1" },
+                new Author { AuthorId = 2, Cheeps = new List<Cheep>(), EmailAddress = "test2@itu.dk", Name = "Test2" },
+                new Author { AuthorId = 3, Cheeps = new List<Cheep>(), EmailAddress = "test3@itu.dk", Name = "Test3" }
             );
             context.SaveChanges();
         }
@@ -97,8 +97,8 @@ public class AuthorRepositoryTest
         {
             context.Database.EnsureCreated();
             context.Authors.AddRange(
-                new Author { AuthorId = 1, Cheeps = new List<CheepDTO>(), EmailAddress = "test1@itu.dk", Name = "Test1" },
-                new Author { AuthorId = 2, Cheeps = new List<CheepDTO>(), EmailAddress = "test2@itu.dk", Name = "Test2" }
+                new Author { AuthorId = 1, Cheeps = new List<Cheep>(), EmailAddress = "test1@itu.dk", Name = "Test1" },
+                new Author { AuthorId = 2, Cheeps = new List<Cheep>(), EmailAddress = "test2@itu.dk", Name = "Test2" }
             );
             context.SaveChanges();
         }
