@@ -46,25 +46,25 @@ public class CheepTest
     public void constraintLengthOnCheepTest(string name, string input, bool expected)
     {
        
-            var author = new Author()
-            {
-                Name = name,
-                EmailAddress = "text@test.dk"
-            };
+        var author = new Author()
+        {
+            Name = name,
+            EmailAddress = "text@test.dk"
+        };
 
-            var cheep = new Cheep
-            {
-                Author = author,
-                Date = new DateTime(2025, 1, 1),
-                Text = input
-            };
+        var cheep = new Cheep
+        {
+            Author = author,
+            Date = new DateTime(2025, 1, 1),
+            Text = input
+        };
 
-            var validationContext = new ValidationContext(cheep);
-            var validationResults = new List<ValidationResult>();
-            
-            bool result = Validator.TryValidateObject(cheep, validationContext, validationResults, true);
-            
-            Assert.Equal(result, expected);
+        var validationContext = new ValidationContext(cheep);
+        var validationResults = new List<ValidationResult>();
+        
+        bool result = Validator.TryValidateObject(cheep, validationContext, validationResults, true);
+        
+        Assert.Equal(result, expected);
     }
     
 }
