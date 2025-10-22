@@ -1,4 +1,6 @@
-﻿using Chirp.Razor.DataModel;
+﻿using System.ComponentModel.DataAnnotations;
+using Chirp.Razor.DataModel;
+
 
 namespace Chirp.Razor.Test.DataModel;
 
@@ -32,4 +34,37 @@ public class CheepTest
         Assert.Equal("This is a test", cheep.Text);
         Assert.Equal(new DateTime(2025, 1, 1), cheep.Date);
     }
+
+    [Theory]
+   [InlineData("test1","Hello world! This is a short cheep under 160 characters.", true)]
+   [InlineData("test2",
+       "This cheep has exactly one hundred sixty characters. It is carefully crafted so that the total number of characters in this string adds up to 159",
+        true)]
+    [InlineData("test3",
+        "This cheep is way too long. It exceeds one hundred sixty characters easily. Its purpose is to test how the system handles cheeps that are over the maximum allowed length limit.",
+        false)]
+    public void constraintLengthOnCheepTest(string name, string input, bool expected)
+    {
+       
+            var author = new Author()
+            {
+                Name = name,
+                EmailAddress = "text@test.dk"
+            };
+
+            var cheep = new Cheep
+            {
+                Author = author,
+                Date = new DateTime(2025, 1, 1),
+                Text = input
+            };
+
+            var validationContext = new ValidationContext(cheep);
+            var validationResults = new List<ValidationResult>();
+            
+            bool result = Validator.TryValidateObject(cheep, validationContext, validationResults, true);
+            
+            Assert.Equal(result, expected);
+    }
+    
 }
