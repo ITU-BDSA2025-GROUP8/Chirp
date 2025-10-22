@@ -20,7 +20,7 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
 
     var context = services.GetRequiredService<ChirpDBContext>();
-    context.Database.EnsureCreated(); //todo: unsure if it should use EnsureCreated as the tutorial highlights but also says can't be used with migrations. If changed, change the comment above
+    context.Database.EnsureCreated(); 
     DbInitializer.SeedDatabase(context);
 }
 
