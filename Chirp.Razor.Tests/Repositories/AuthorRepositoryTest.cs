@@ -28,14 +28,14 @@ public class AuthorRepositoryTest
     private void Dispose() => _connection.Dispose();
 
     [Fact]
-    public void CreateAuthorTest()
+    public async Task CreateAuthorTest()
     {
         // Test the method
         using var context = CreateDbContext();
         context.Database.EnsureCreated();
         var repository = new AuthorRepository(context);
 
-        var authorDTOTest = new AuthorDTO()
+        var authorDtoTest = new AuthorDTO()
         {
             Id = 1,
             Name = "John Doe",
@@ -43,10 +43,11 @@ public class AuthorRepositoryTest
             Cheeps = new List<Cheep>()
         };
 
-        repository.CreateAuthor(authorDTOTest);
+        await repository.CreateAuthor(authorDtoTest);
 
         // Assert
-        var numberOfCheeps = repository.GetAllAuthors().Result.Count;
+        var cheeps = await repository.GetAllAuthors();
+        var numberOfCheeps = cheeps.Count();
         Assert.Equal(1, numberOfCheeps);
 
         //Clean up
@@ -54,7 +55,7 @@ public class AuthorRepositoryTest
     }
 
     [Fact]
-    public void GetAllAuthorsTest()
+    public async Task GetAllAuthorsTest()
     {
         // Add to the database
         using var context = CreateDbContext();
@@ -68,20 +69,20 @@ public class AuthorRepositoryTest
 
         // Test the method
         var repository = new AuthorRepository(context);
-        var authors = repository.GetAllAuthors();
+        var authors = await repository.GetAllAuthors();
 
         // Assert
-        Assert.Equal(3, authors.Result.Count);
-        Assert.True(authors.Result.Any(a => a.Id == 1));
-        Assert.True(authors.Result.Any(a => a.Id == 2));
-        Assert.True(authors.Result.Any(a => a.Id == 3));
+        Assert.Equal(3, authors.Count);
+        Assert.Contains(authors, a => a.Id == 1);
+        Assert.Contains(authors, a => a.Id == 2);
+        Assert.Contains(authors, a => a.Id == 3);
 
         //Clean up
         Dispose();
     }
 
     [Fact]
-    public void UpdateAuthorTest()
+    public async Task UpdateAuthorTest()
     {
         // Add to the database
         using var context = CreateDbContext();
@@ -97,7 +98,7 @@ public class AuthorRepositoryTest
         // Test the method
 
         var repository = new AuthorRepository(context);
-        var authorDTOTest = new AuthorDTO()
+        var authorDtoTest = new AuthorDTO()
         {
             Id = 1,
             Name = "John Doe",
@@ -105,13 +106,17 @@ public class AuthorRepositoryTest
             Cheeps = new List<Cheep>()
         };
 
-        repository.UpdateAuthor(authorDTOTest);
+        await repository.UpdateAuthor(authorDtoTest);
 
         // Assert
         Assert.True(context.Authors.Any(a => a.Name == "John Doe"));
-        var updatedCheep = context.Authors.Find(1);
-        Assert.True(updatedCheep.EmailAddress == "test@itu.dk");
-        Assert.True(updatedCheep.Cheeps.Count == 0);
+        var queryToFindUpdatedAuthor = from Author in context.Authors
+            where Author.AuthorId == 1
+            select Author;
+        var updatedAuthor = queryToFindUpdatedAuthor.Single();
+        Assert.NotNull(updatedAuthor);
+        Assert.Equal("test@itu.dk", updatedAuthor.EmailAddress);
+        Assert.True(updatedAuthor.Cheeps.Count == 0);
         Assert.False(context.Authors.Any(a => a.Name == "Test1"));
         Assert.True(context.Authors.Count() == 2);
 
