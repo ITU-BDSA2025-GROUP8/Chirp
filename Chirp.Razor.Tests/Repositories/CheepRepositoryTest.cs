@@ -9,25 +9,25 @@ namespace Chirp.Razor.Repositories;
 
 public class CheepRepositoryTest
 {
-    private readonly DbConnection connection;
-    private readonly DbContextOptions<ChirpDBContext> options;
+    private readonly DbConnection _connection;
+    private readonly DbContextOptions<ChirpDBContext> _options;
 
     public CheepRepositoryTest()
     {
-        connection = new SqliteConnection("Filename=:memory:");
-        connection.Open();
+        _connection = new SqliteConnection("Filename=:memory:");
+        _connection.Open();
 
-        options = new DbContextOptionsBuilder<ChirpDBContext>()
-            .UseSqlite(connection)
+        _options = new DbContextOptionsBuilder<ChirpDBContext>()
+            .UseSqlite(_connection)
             .Options;
     }
 
-    ChirpDBContext CreateDbContext() => new ChirpDBContext(options);
+    ChirpDBContext CreateDbContext() => new ChirpDBContext(_options);
 
-    public void Dispose() => connection.Dispose();
+    private void Dispose() => _connection.Dispose();
 
     [Fact]
-    public void CreateCheepTest()
+    public async Task CreateCheepTest()
     {
         //Arrange
         using var context = CreateDbContext();
@@ -45,10 +45,11 @@ public class CheepRepositoryTest
             CreatedAt = new DateTime(2025, 10, 8),
         };
         //Act
-        repository.CreateCheep(newCheep);
+        await repository.CreateCheep(newCheep);
 
         //Assert
-        var numberOfCheeps = repository.GetAllCheeps().Result.Count;
+        var cheeps = await repository.GetAllCheeps();
+        var numberOfCheeps = cheeps.Count();
         Assert.Equal(1, numberOfCheeps);
 
         // Clean up
@@ -56,7 +57,7 @@ public class CheepRepositoryTest
     }
 
     [Fact]
-    public void GetAllCheepsTest()
+    public async Task GetAllCheepsTest()
     {
         //Arrange
         using var context = CreateDbContext();
@@ -78,7 +79,7 @@ public class CheepRepositoryTest
         context.SaveChanges();
 
         //Act
-        var allCheeps = repository.GetAllCheeps().Result;
+        var allCheeps = await repository.GetAllCheeps();
 
         //Assert
         Assert.Equal(3, allCheeps.Count);
@@ -96,7 +97,7 @@ public class CheepRepositoryTest
     }
 
     [Fact]
-    public void ReadCheepsByTest()
+    public async Task ReadCheepsByTest()
     {
         //Arrange
         using var context = CreateDbContext();
@@ -116,7 +117,7 @@ public class CheepRepositoryTest
         context.SaveChanges();
 
         //Act
-        var author1Cheeps = repository.ReadCheepsBy("Test1").Result;
+        var author1Cheeps = await repository.ReadCheepsBy("Test1");
 
         //Assert
         Assert.Equal(2, author1Cheeps.Count);
@@ -130,7 +131,7 @@ public class CheepRepositoryTest
     }
 
     [Fact]
-    public void UpdateCheepTest()
+    public async Task UpdateCheepTest()
     {
         //Arrange
         using var context = CreateDbContext();
@@ -156,7 +157,7 @@ public class CheepRepositoryTest
             UserName = "Test1"
         };
 
-        repository.UpdateCheep(dto);
+        await repository.UpdateCheep(dto);
 
         //assert a change has happened
         Assert.True(context.Cheeps.Any(c => c.Text == "altered text"));
