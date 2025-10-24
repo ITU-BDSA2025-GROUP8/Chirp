@@ -1,0 +1,130 @@
+﻿using Chirp.Core.DTO;
+using Chirp.Infrastructure.Data;
+using Chirp.Infrastructure.Entities;
+using Chirp.Infrastructure.Repositories;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+
+namespace Chirp.Infrastructure.Tests.Repositories;
+
+public class AuthorRepositoryTest
+{
+
+    [Fact]
+    public void CreateAuthorTest()
+    {
+        // Make in memory database
+        var connection = new SqliteConnection("DataSource=:memory:");
+        connection.Open();
+
+        var options = new DbContextOptionsBuilder<ChirpDBContext>()
+            .UseSqlite(connection)
+            .Options;
+
+        // Test the method
+        using (var context = new ChirpDBContext(options))
+        {
+            context.Database.EnsureCreated();
+            var repository = new AuthorRepository(context);
+
+            var authorDTOTest = new AuthorDTO()
+            {
+                Id = 1,
+                Name = "John Doe",
+                Email = "test@itu.dk",
+                Cheeps = new List<CheepDTO>()
+            };
+
+            repository.CreateAuthor(authorDTOTest);
+
+            // Assert
+            var numberOfCheeps = repository.GetAllAuthors().Result.Count;
+            Assert.Equal(1, numberOfCheeps);
+        }
+
+    }
+
+    [Fact]
+    public void GetAllAuthorsTest()
+    {
+        // Make in memory database
+        var connection = new SqliteConnection("DataSource=:memory:");
+        connection.Open();
+
+        var options = new DbContextOptionsBuilder<ChirpDBContext>()
+            .UseSqlite(connection)
+            .Options;
+
+        // Add to the database
+        using (var context = new ChirpDBContext(options))
+        {
+            context.Database.EnsureCreated();
+            context.Authors.AddRange(
+                new Author { AuthorId = 1, Cheeps = new List<Cheep>(), EmailAddress = "test1@itu.dk", Name = "Test1" },
+                new Author { AuthorId = 2, Cheeps = new List<Cheep>(), EmailAddress = "test2@itu.dk", Name = "Test2" },
+                new Author { AuthorId = 3, Cheeps = new List<Cheep>(), EmailAddress = "test3@itu.dk", Name = "Test3" }
+            );
+            context.SaveChanges();
+        }
+
+        // Test the method
+        using (var context = new ChirpDBContext(options))
+        {
+            var repository = new AuthorRepository(context);
+            var authors = repository.GetAllAuthors();
+            
+            // Assert
+            Assert.Equal(3, authors.Result.Count);
+            Assert.True(authors.Result.Any(a => a.Id == 1));
+            Assert.True(authors.Result.Any(a => a.Id == 2));
+            Assert.True(authors.Result.Any(a => a.Id == 3));
+        }       
+    }
+
+    [Fact]
+    public void UpdateAuthorTest()
+    {
+        // Make in memory database
+        var connection = new SqliteConnection("DataSource=:memory:");
+        connection.Open();
+
+        var options = new DbContextOptionsBuilder<ChirpDBContext>()
+            .UseSqlite(connection)
+            .Options;
+
+        // Add to the database
+        using (var context = new ChirpDBContext(options))
+        {
+            context.Database.EnsureCreated();
+            context.Authors.AddRange(
+                new Author { AuthorId = 1, Cheeps = new List<Cheep>(), EmailAddress = "test1@itu.dk", Name = "Test1" },
+                new Author { AuthorId = 2, Cheeps = new List<Cheep>(), EmailAddress = "test2@itu.dk", Name = "Test2" }
+            );
+            context.SaveChanges();
+        }
+
+        // Test the method
+        using (var context = new ChirpDBContext(options))
+        {
+            var repository = new AuthorRepository(context);
+            var authorDTOTest = new AuthorDTO()
+            {
+                Id = 1,
+                Name = "John Doe",
+                Email = "test@itu.dk",
+                Cheeps = new List<CheepDTO>()
+            };
+            
+            repository.UpdateAuthor(authorDTOTest);
+            
+            // Assert
+            Assert.True(context.Authors.Any(a => a.Name == "John Doe"));
+            var updatedCheep = context.Authors.Find(1);
+            Assert.True(updatedCheep.EmailAddress == "test@itu.dk");
+            Assert.True(updatedCheep.Cheeps.Count == 0);
+            Assert.False(context.Authors.Any(a => a.Name == "Test1"));
+            Assert.True(context.Authors.Count() == 2);
+        }
+
+    }
+}
