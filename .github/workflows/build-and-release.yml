@@ -28,7 +28,7 @@ jobs:
         run: dotnet build --no-restore --configuration Release
 
       - name: Run tests
-        run: dotnet test Chirp.Razor.sln --no-build --verbosity normal
+        run: dotnet test --configuration Release --no-build --verbosity normal
 
 
   release:
