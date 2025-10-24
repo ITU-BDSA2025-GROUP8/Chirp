@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Razor.Repositories;
 
-public class AuthorRepositoryTest
+public class AuthorRepositoryTest : IDisposable
 {
     private readonly DbConnection _connection;
     private readonly DbContextOptions<ChirpDBContext> _options;
@@ -25,7 +25,7 @@ public class AuthorRepositoryTest
 
     ChirpDBContext CreateDbContext() => new ChirpDBContext(_options);
 
-    private void Dispose() => _connection.Dispose();
+    public void Dispose() => _connection.Dispose();
 
     [Fact]
     public async Task CreateAuthorTest()
@@ -35,7 +35,7 @@ public class AuthorRepositoryTest
         context.Database.EnsureCreated();
         var repository = new AuthorRepository(context);
 
-        var authorDtoTest = new AuthorDTO()
+        var authorDTOTest = new AuthorDTO()
         {
             Id = 1,
             Name = "John Doe",
@@ -43,7 +43,7 @@ public class AuthorRepositoryTest
             Cheeps = new List<Cheep>()
         };
 
-        await repository.CreateAuthor(authorDtoTest);
+        await repository.CreateAuthor(authorDTOTest);
 
         // Assert
         var cheeps = await repository.GetAllAuthors();

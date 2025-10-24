@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Razor.Repositories;
 
-public class CheepRepositoryTest
+public class CheepRepositoryTest : IDisposable
 {
     private readonly DbConnection _connection;
     private readonly DbContextOptions<ChirpDBContext> _options;
@@ -24,7 +24,7 @@ public class CheepRepositoryTest
 
     ChirpDBContext CreateDbContext() => new ChirpDBContext(_options);
 
-    private void Dispose() => _connection.Dispose();
+    public void Dispose() => _connection.Dispose();
 
     [Fact]
     public async Task CreateCheepTest()
