@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Chirp.Razor.DataModel;
 
 using Chirp.Infrastructure.Entities;
 
