@@ -1,6 +1,7 @@
-using Chirp.Razor.DataModel;
+using Chirp.Infrastructure.Data;
+using Chirp.Infrastructure.Entities;
 
-namespace Chirp.Razor.data;
+namespace Chirp.Infrastructure.Data;
 
 using System;
 
