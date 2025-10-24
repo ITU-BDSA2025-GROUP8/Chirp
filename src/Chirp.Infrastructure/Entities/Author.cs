@@ -1,4 +1,5 @@
 using Chirp.Core.DTO;
+using System.ComponentModel.DataAnnotations;
 
 namespace Chirp.Infrastructure.Entities;
 
