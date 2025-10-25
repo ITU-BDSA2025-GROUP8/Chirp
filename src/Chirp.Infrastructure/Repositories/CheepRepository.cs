@@ -16,7 +16,7 @@ public class CheepRepository : ICheepRepository
         _context = context;
     }
     
-    // Create a new cheep todo: not run or tested
+    // Create a new cheep
     public async Task CreateCheep(CheepDTO newCheep)
     {
         var author = await findAuthor(newCheep.UserName);
@@ -33,7 +33,6 @@ public class CheepRepository : ICheepRepository
             Author = author,
             Text = newCheep.Text, 
             Date = newCheep.CreatedAt,
-            //todo: does not set the cheep ID
         };
         
         // Adds and saves the cheep in the database
@@ -100,8 +99,6 @@ public class CheepRepository : ICheepRepository
         // Saves changes
         await _context.SaveChangesAsync();
     }
-
-    // Utility methods todo: should they be in the repository?
     
     // Utility method: set the new properties of the Cheep
     private async void UpdateCheep(Cheep originalCheep, CheepDTO alteredCheep)

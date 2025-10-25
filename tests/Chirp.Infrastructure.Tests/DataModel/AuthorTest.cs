@@ -12,12 +12,24 @@ public class AuthorTest
     [Fact]
     public void AuthorStoresAndReturnsAssignedValues()
     {
-        var author = new Author();
-        author.AuthorId = 1;
-        author.Name = "Test";
-        author.EmailAddress = "test@itu.dk";
+        var author = new Author()
+        {
+            AuthorId = 1,
+            Name = "Test",
+            EmailAddress = "test@itu.dk"
+            
+        };
 
-        var cheeps = new List<Cheep> { new Cheep { Text = "test" } };
+        var cheeps = new List<Cheep>
+        {
+            new Cheep
+            {
+                CheepId = 1,
+                Text = "This is a test",
+                Date = new DateTime(2025, 1, 1),
+                Author = new Author() { Name = "Test", EmailAddress = "test@itu.dk" }
+            }
+        };
         author.Cheeps = cheeps;
         
         Assert.Equal(1, author.AuthorId);

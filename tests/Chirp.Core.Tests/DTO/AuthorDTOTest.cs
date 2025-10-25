@@ -1,6 +1,4 @@
-﻿
-
-using Chirp.Core.DTO;
+﻿using Chirp.Core.DTO;
 
 namespace Chirp.Core.Tests.DTO;
 
