@@ -1,7 +1,8 @@
-using Chirp.Core.Common;
+using System.Data.Common;
+using Chirp.Core.DTO;
 using Chirp.Infrastructure.Data;
-using Chirp.Infrastructure.DataModel;
-using Chirp.Infrastructure.Models;
+using Chirp.Infrastructure.Entities;
+using Chirp.Infrastructure.Repositories;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 

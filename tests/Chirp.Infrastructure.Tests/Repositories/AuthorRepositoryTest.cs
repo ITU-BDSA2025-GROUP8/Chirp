@@ -1,6 +1,8 @@
+using System.Data.Common;
+using Chirp.Core.DTO;
 using Chirp.Infrastructure.Data;
-using Chirp.Infrastructure.DataModel;
-using Chirp.Infrastructure.Models;
+using Chirp.Infrastructure.Entities;
+using Chirp.Infrastructure.Repositories;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
@@ -39,7 +41,7 @@ public class AuthorRepositoryTest : IDisposable
             Id = 1,
             Name = "John Doe",
             Email = "test@itu.dk",
-            Cheeps = new List<Cheep>()
+            Cheeps = new List<CheepDTO>()
         };
 
         await repository.CreateAuthor(authorDTOTest);
@@ -102,7 +104,7 @@ public class AuthorRepositoryTest : IDisposable
             Id = 1,
             Name = "John Doe",
             Email = "test@itu.dk",
-            Cheeps = new List<Cheep>()
+            Cheeps = new List<CheepDTO>()
         };
 
         await repository.UpdateAuthor(authorDtoTest);
