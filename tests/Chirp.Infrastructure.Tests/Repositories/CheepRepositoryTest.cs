@@ -1,4 +1,5 @@
-﻿using Chirp.Core.DTO;
+using System.Data.Common;
+using Chirp.Core.DTO;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Entities;
 using Chirp.Infrastructure.Repositories;
@@ -7,184 +8,166 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure.Tests.Repositories;
 
-// Use chapter 36.4 in the book as reference. PDF page 1785
-
-public class CheepRepositoryTest
+public class CheepRepositoryTest : IDisposable
 {
-    
-    [Fact]
-    public void CreateCheepTest()
+    private readonly DbConnection _connection;
+    private readonly DbContextOptions<ChirpDBContext> _options;
+
+    public CheepRepositoryTest()
     {
-        var connection = new SqliteConnection("DataSource=:memory:");
-        connection.Open();
+        _connection = new SqliteConnection("Filename=:memory:");
+        _connection.Open();
 
-        var options = new DbContextOptionsBuilder<ChirpDBContext>()
-            .UseSqlite(connection)
+        _options = new DbContextOptionsBuilder<ChirpDBContext>()
+            .UseSqlite(_connection)
             .Options;
-        
-        //Arrange
-        using (var context = new ChirpDBContext(options))
-        {
-            context.Database.EnsureCreated(); 
-            var repository = new CheepRepository(context);
-            var author = new Author { Name = "Test1", EmailAddress = "test1@itu.dk" };
-
-            context.Authors.AddRange(author);
-            context.SaveChanges();
-            
-            var newCheep = new CheepDTO
-            {
-                UserName = "Test1",
-                Text = "I chirped",
-                CreatedAt = new DateTime(2025, 10, 8),
-            };
-            //Act
-            repository.CreateCheep(newCheep);
-
-            //Assert
-            var numberOfCheeps = repository.GetAllCheeps().Result.Count;
-            Assert.Equal(1, numberOfCheeps);
-        }
     }
 
+    ChirpDBContext CreateDbContext() => new ChirpDBContext(_options);
+
+    public void Dispose() => _connection.Dispose();
+
     [Fact]
-    public void GetAllCheepsTest()
+    public async Task CreateCheepTest()
     {
         //Arrange
-        var connection = new SqliteConnection("DataSource=:memory:");
-        connection.Open();
+        using var context = CreateDbContext();
+        context.Database.EnsureCreated();
+        var repository = new CheepRepository(context);
+        var author = new Author { Name = "Test1", EmailAddress = "test1@itu.dk" };
 
-        var options = new DbContextOptionsBuilder<ChirpDBContext>()
-            .UseSqlite(connection)
-            .Options;
+        context.Authors.AddRange(author);
+        context.SaveChanges();
 
-        using (var context = new ChirpDBContext(options))
+        var newCheep = new CheepDTO
         {
-            context.Database.EnsureCreated();
+            UserName = "Test1",
+            Text = "I chirped",
+            CreatedAt = new DateTime(2025, 10, 8),
+        };
+        //Act
+        await repository.CreateCheep(newCheep);
 
-            //making authors to relate to the cheeps
-            var author1 = new Author { Name = "Test1", EmailAddress = "test@itu.dk" };
-            var author2 = new Author { Name = "Test2", EmailAddress = "test2@itu.dk" };
+        //Assert
+        var cheeps = await repository.GetAllCheeps();
+        var numberOfCheeps = cheeps.Count();
+        Assert.Equal(1, numberOfCheeps);
 
-            context.Authors.AddRange(author1, author2);
-            //making cheeps
-            context.Cheeps.AddRange(
-                new Cheep { Author = author1, Text = "hi", Date = new DateTime(2025, 10, 2) },
-                new Cheep { Author = author2, Text = "hello", Date = new DateTime(2025, 10, 3) },
-                new Cheep { Author = author1, Text = "hey", Date = new DateTime(2025, 10, 1) } 
-            );
-            context.SaveChanges();
-        }
-
-        using (var context = new ChirpDBContext(options))
-        {
-            var repository = new CheepRepository(context);
-
-            //Act
-            var allCheeps = repository.GetAllCheeps().Result;
-
-            //Assert
-            Assert.Equal(3, allCheeps.Count);
-            Assert.Contains(allCheeps, c => c.Text == "hi" && c.UserName == "Test1");
-            Assert.Contains(allCheeps, c => c.Text == "hello" && c.UserName == "Test2");
-            //Assert.All(allCheeps, c => Assert.True(c.Id > 0)); // Id should exist todo: check if this is needed?
-            
-            //Assert cheeps are in correct order (newest first)
-            Assert.True(allCheeps[0].CreatedAt > allCheeps[1].CreatedAt);
-            Assert.True(allCheeps[1].CreatedAt > allCheeps[2].CreatedAt);
-            Assert.True(allCheeps[0].CreatedAt > allCheeps[2].CreatedAt);
-        }
+        // Clean up
+        Dispose();
     }
 
     [Fact]
-    public void ReadCheepsByTest()
+    public async Task GetAllCheepsTest()
     {
         //Arrange
-        var connection = new SqliteConnection("DataSource=:memory:");
-        connection.Open();
+        using var context = CreateDbContext();
 
-        var options = new DbContextOptionsBuilder<ChirpDBContext>()
-            .UseSqlite(connection)
-            .Options;
+        context.Database.EnsureCreated();
+        var repository = new CheepRepository(context);
 
-        using (var context = new ChirpDBContext(options))
-        {
-            context.Database.EnsureCreated();
+        //making authors to relate to the cheeps
+        var author1 = new Author { Name = "Test1", EmailAddress = "test@itu.dk" };
+        var author2 = new Author { Name = "Test2", EmailAddress = "test2@itu.dk" };
 
-            var author1 = new Author { Name = "Test1", EmailAddress = "test1@itu.dk" };
-            var author2   = new Author { Name = "Test2", EmailAddress = "test2@itu.dk" };
-            context.Authors.AddRange(author1, author2);
+        context.Authors.AddRange(author1, author2);
+        //making cheeps
+        context.Cheeps.AddRange(
+            new Cheep { Author = author1, Text = "hi", Date = new DateTime(2025, 10, 2) },
+            new Cheep { Author = author2, Text = "hello", Date = new DateTime(2025, 10, 3) },
+            new Cheep { Author = author1, Text = "hey", Date = new DateTime(2025, 10, 1) }
+        );
+        context.SaveChanges();
 
-            //note: setup for these 3 test cheeps was suggested by ChatGPT
-            context.Cheeps.AddRange(
-                new Cheep { Author = author1, Text = "a1", Date = new DateTime(2025, 10, 10) },
-                new Cheep { Author = author1, Text = "a2", Date = new DateTime(2025, 10, 11) },
-                new Cheep { Author = author2,   Text = "b1", Date = new DateTime(2025, 10, 12) }
-            );
-            context.SaveChanges();
-        }
+        //Act
+        var allCheeps = await repository.GetAllCheeps();
 
-        using (var context = new ChirpDBContext(options))
-        {
-            var repository = new CheepRepository(context);
+        //Assert
+        Assert.Equal(3, allCheeps.Count);
+        Assert.Contains(allCheeps, c => c.Text == "hi" && c.UserName == "Test1");
+        Assert.Contains(allCheeps, c => c.Text == "hello" && c.UserName == "Test2");
+        //Assert.All(allCheeps, c => Assert.True(c.Id > 0)); // Id should exist todo: check if this is needed?
 
-            var author1Cheeps = repository.ReadCheepsBy("Test1").Result;
-            Assert.Equal(2, author1Cheeps.Count);
-            Assert.All(author1Cheeps, c => Assert.Equal("Test1", c.UserName));
-            //Assert cheeps are in correct order (newest first)
-            Assert.True(author1Cheeps[0].CreatedAt > author1Cheeps[1].CreatedAt);
-        }
+        //Assert cheeps are in correct order (newest first)
+        Assert.True(allCheeps[0].CreatedAt > allCheeps[1].CreatedAt);
+        Assert.True(allCheeps[1].CreatedAt > allCheeps[2].CreatedAt);
+        Assert.True(allCheeps[0].CreatedAt > allCheeps[2].CreatedAt);
+
+        // Clean up
+        Dispose();
     }
 
     [Fact]
-    public void UpdateCheepTest()
+    public async Task ReadCheepsByTest()
     {
-        
-        var connection = new SqliteConnection("DataSource=:memory:");
-        connection.Open();
+        //Arrange
+        using var context = CreateDbContext();
+        context.Database.EnsureCreated();
+        var repository = new CheepRepository(context);
 
-        var options = new DbContextOptionsBuilder<ChirpDBContext>()
-            .UseSqlite(connection)
-            .Options;
+        var author1 = new Author { Name = "Test1", EmailAddress = "test1@itu.dk" };
+        var author2 = new Author { Name = "Test2", EmailAddress = "test2@itu.dk" };
+        context.Authors.AddRange(author1, author2);
 
-        int cheepId;
+        //note: setup for these 3 test cheeps was suggested by ChatGPT
+        context.Cheeps.AddRange(
+            new Cheep { Author = author1, Text = "a1", Date = new DateTime(2025, 10, 10) },
+            new Cheep { Author = author1, Text = "a2", Date = new DateTime(2025, 10, 11) },
+            new Cheep { Author = author2, Text = "b1", Date = new DateTime(2025, 10, 12) }
+        );
+        context.SaveChanges();
 
-        using (var context = new ChirpDBContext(options))
-        {
-            context.Database.EnsureCreated();
+        //Act
+        var author1Cheeps = await repository.ReadCheepsBy("Test1");
 
-            var author1 = new Author { Name = "Test1", EmailAddress = "test1@itu.dk" };
-            var author2 = new Author { Name = "Test2",   EmailAddress = "test2@itu.dk" };
-            context.Authors.AddRange(author1, author2);
+        //Assert
+        Assert.Equal(2, author1Cheeps.Count);
+        Assert.All(author1Cheeps, c => Assert.Equal("Test1", c.UserName));
 
-            var cheep = new Cheep { Author = author1, Text = "old text", Date = new DateTime(2025, 10, 10) };
-            context.Cheeps.Add(cheep);
-            context.SaveChanges();
+        //Assert cheeps are in correct order (newest first)
+        Assert.True(author1Cheeps[0].CreatedAt > author1Cheeps[1].CreatedAt);
 
-            cheepId = cheep.CheepId;
-        }
-
-        using (var context = new ChirpDBContext(options))
-        {
-            //act
-            var repository = new CheepRepository(context);
-            var dto = new CheepDTO
-            {
-                Id = cheepId,
-                Text = "altered text",
-                CreatedAt = new DateTime(2025, 10, 11),
-                UserName = "Test1"
-            };
-
-            repository.UpdateCheep(dto);
-            //assert a change has happened
-            Assert.True(context.Cheeps.Any(c => c.Text == "altered text"));
-            //assert new time exists
-            Assert.True(context.Cheeps.Any(c => c.Date == new DateTime(2025, 10, 11)));
-            //assert old text is gone
-            Assert.False(context.Cheeps.Any(c => c.Text == "old text"));
-        }
-        
+        // Clean up
+        Dispose();
     }
-    
+
+    [Fact]
+    public async Task UpdateCheepTest()
+    {
+        //Arrange
+        using var context = CreateDbContext();
+        context.Database.EnsureCreated();
+        var repository = new CheepRepository(context);
+
+        var author1 = new Author { Name = "Test1", EmailAddress = "test1@itu.dk" };
+        var author2 = new Author { Name = "Test2", EmailAddress = "test2@itu.dk" };
+        context.Authors.AddRange(author1, author2);
+
+        var cheep = new Cheep { Author = author1, Text = "old text", Date = new DateTime(2025, 10, 10) };
+        context.Cheeps.Add(cheep);
+        context.SaveChanges();
+
+        int cheepId = cheep.CheepId;
+
+        //act
+        var dto = new CheepDTO
+        {
+            Id = cheepId,
+            Text = "altered text",
+            CreatedAt = new DateTime(2025, 10, 11),
+            UserName = "Test1"
+        };
+
+        await repository.UpdateCheep(dto);
+
+        //assert a change has happened
+        Assert.True(context.Cheeps.Any(c => c.Text == "altered text"));
+        //assert new time exists
+        Assert.True(context.Cheeps.Any(c => c.Date == new DateTime(2025, 10, 11)));
+        //assert old text is gone
+        Assert.False(context.Cheeps.Any(c => c.Text == "old text"));
+
+        // Clean up
+        Dispose();
+    }
 }
