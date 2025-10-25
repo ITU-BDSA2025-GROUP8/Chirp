@@ -1,4 +1,4 @@
-To run this program from either development or realese you need to have dotnet 8 installed
+To run this program from either development or release you need to have dotnet 8 installed
 
 # Running from repository code
 
@@ -35,11 +35,11 @@ Then go to the directory that has the program.cs file, which is `src/Chirp.Web` 
 `dotnet run`
 
 
-# Run from realese
+# Run from release
 
 ## Windows
 
-To run from the realese files you first need to download the folder for your OS, and open the directory in a terminal.
+To run from the release files you first need to download the folder for your OS, and open the directory in a terminal.
 Then you need to set the environment variable with the command:
 
 `$env:CHIRPDBPATH = "./chirp.db" `
@@ -49,7 +49,7 @@ Then run:
 
 ## Linux and Mac
 
-To run from the realese files you first need to download the folder for your OS and open the directory in a terminal
+To run from the release files you first need to download the folder for your OS and open the directory in a terminal
 Then you need to set the environment variable with the command:
 
 `export CHIRPDBPATH=./chirp.db`
