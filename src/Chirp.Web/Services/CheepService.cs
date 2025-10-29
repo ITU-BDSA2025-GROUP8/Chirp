@@ -23,7 +23,7 @@ public class CheepService : ICheepService
     // Fetches all cheeps by form repository
     public List<CheepViewModel> GetCheeps(int? page = null)
     {
-        var cheeps = _cheepRepository.GetAllCheeps().Result;
+        var cheeps = _cheepRepository.GetAllCheeps(page).Result;
 
         return cheeps.Select(cheep => new CheepViewModel(Author: cheep.UserName, Message: cheep.Text, Timestamp: cheep.CreatedAt.ToLongDateString())).ToList();
     }
@@ -31,7 +31,7 @@ public class CheepService : ICheepService
     // Fetches cheeps by specified author form repository
     public List<CheepViewModel> GetCheepsFromAuthor(string author, int? page = null)
     {
-        var cheeps = _cheepRepository.ReadCheepsBy(author).Result;
+        var cheeps = _cheepRepository.ReadCheepsBy(author,page).Result;
 
         return cheeps.Select(cheep => new CheepViewModel(Author: cheep.UserName, Message: cheep.Text, Timestamp: cheep.CreatedAt.ToLongDateString())).ToList();
     }

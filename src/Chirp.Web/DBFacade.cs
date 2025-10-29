@@ -1,4 +1,6 @@
-﻿using Chirp.Web.Services;
+﻿// Todo: Kill this class
+
+using Chirp.Web.Services;
 
 namespace Chirp.Web;
 using Microsoft.Data.Sqlite;
