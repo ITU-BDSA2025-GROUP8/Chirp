@@ -54,7 +54,7 @@ Then you need to set the environment variable with the command:
 
 `export CHIRPDBPATH=./chirp.db`
 
-Then make it an executebal with the command:
+Then make it an executable with the command:
 `chmod +x Chirp.Web`
 
 And then you can run it using
