@@ -3,12 +3,15 @@ using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Chirp.Web.Services;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Load database connection via configuration - from slides session 6
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ChirpDBContext>(options => options.UseSqlite(connectionString));
+
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ChirpDBContext>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -41,6 +44,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapRazorPages();
 
