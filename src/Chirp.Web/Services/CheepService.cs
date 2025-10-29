@@ -1,4 +1,7 @@
-using Chirp.Web;
+
+using Chirp.Core.Interfaces;
+
+namespace Chirp.Web.Services;
 
 public record CheepViewModel(string Author, string Message, string Timestamp);
 
@@ -10,17 +13,27 @@ public interface ICheepService
 
 public class CheepService : ICheepService
 {
+    private readonly ICheepRepository _cheepRepository;
+
+    public CheepService(ICheepRepository cheepRepository)
+    {
+        _cheepRepository = cheepRepository;
+    }
     
-    //Calls DBFacade to get all cheeps
+    // Fetches all cheeps by form repository
     public List<CheepViewModel> GetCheeps(int? page = null)
     {
-        return DBFacade.Read(page);
+        var cheeps = _cheepRepository.GetAllCheeps().Result;
+
+        return cheeps.Select(cheep => new CheepViewModel(Author: cheep.UserName, Message: cheep.Text, Timestamp: cheep.CreatedAt.ToLongDateString())).ToList();
     }
 
-    //Calls DBFacade to get cheeps from a specific author
+    // Fetches cheeps by specified author form repository
     public List<CheepViewModel> GetCheepsFromAuthor(string author, int? page = null)
     {
-        return DBFacade.ReadAuthor(author, page);
+        var cheeps = _cheepRepository.ReadCheepsBy(author).Result;
+
+        return cheeps.Select(cheep => new CheepViewModel(Author: cheep.UserName, Message: cheep.Text, Timestamp: cheep.CreatedAt.ToLongDateString())).ToList();
     }
     
 

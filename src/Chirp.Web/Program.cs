@@ -2,6 +2,7 @@ using Chirp.Core.Interfaces;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Chirp.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

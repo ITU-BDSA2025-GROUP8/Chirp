@@ -1,4 +1,6 @@
-﻿namespace Chirp.Web;
+﻿using Chirp.Web.Services;
+
+namespace Chirp.Web;
 using Microsoft.Data.Sqlite;
 
 public class DBFacade
