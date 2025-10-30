@@ -48,6 +48,7 @@ public class CheepRepository : ICheepRepository
             orderby cheep.Date descending
             select new CheepDTO
             {
+                Id = cheep.CheepId,
                 CreatedAt = cheep.Date, 
                 Text = cheep.Text,
                 UserName = cheep.Author.Name
@@ -67,6 +68,7 @@ public class CheepRepository : ICheepRepository
             orderby cheep.Date descending
             select new CheepDTO
             {
+                Id = cheep.CheepId,
                 CreatedAt = cheep.Date,
                 Text = cheep.Text,
                 UserName = cheep.Author.Name
