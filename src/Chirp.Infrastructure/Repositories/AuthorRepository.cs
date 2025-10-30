@@ -23,7 +23,7 @@ public class AuthorRepository : IAuthorRepository
         {
             Name = newUser.Name,
             EmailAddress = newUser.Email,
-            Cheeps = new List<Cheep>()
+            Cheeps = new List<Cheep>() 
         };
 
         // Adds and saves the cheep in the database
@@ -45,6 +45,7 @@ public class AuthorRepository : IAuthorRepository
                     .Select(c => new CheepDTO
                     {
                         Id = c.CheepId,
+                        UserName = author.Name,
                         Text = c.Text,
                         CreatedAt = c.Date
                     })
