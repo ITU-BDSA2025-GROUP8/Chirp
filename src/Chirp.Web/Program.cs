@@ -11,9 +11,16 @@ var builder = WebApplication.CreateBuilder(args);
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ChirpDBContext>(options => options.UseSqlite(connectionString));
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(
-    options => options.SignIn.RequireConfirmedAccount = false)
-    .AddEntityFrameworkStores<ChirpDBContext>();
+builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+    {
+        options.SignIn.RequireConfirmedAccount = false;
+        options.Password.RequireDigit = false;
+        options.Password.RequireLowercase = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequireNonAlphanumeric = false; // disables special character requirement
+        options.Password.RequiredLength = 6;
+    }
+).AddEntityFrameworkStores<ChirpDBContext>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();

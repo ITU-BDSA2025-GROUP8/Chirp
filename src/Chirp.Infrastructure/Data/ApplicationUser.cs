@@ -2,4 +2,7 @@
 
 namespace Chirp.Infrastructure.Data;
 
-public class ApplicationUser : IdentityUser {}
+public class ApplicationUser : IdentityUser
+{
+    public string? DisplayName { get; set; }
+}
