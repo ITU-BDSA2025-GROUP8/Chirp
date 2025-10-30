@@ -11,7 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ChirpDBContext>(options => options.UseSqlite(connectionString));
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ChirpDBContext>();
+builder.Services.AddDefaultIdentity<ApplicationUser>(
+    options => options.SignIn.RequireConfirmedAccount = false)
+    .AddEntityFrameworkStores<ChirpDBContext>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
