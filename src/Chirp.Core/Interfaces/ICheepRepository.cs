@@ -7,9 +7,9 @@ public interface ICheepRepository
     // Create a new cheep
     Task CreateCheep(CheepDTO newCheep);
     // Read all cheeps
-    Task<List<CheepDTO>> GetAllCheeps();
+    Task<List<CheepDTO>> GetAllCheeps(int? page = null);
     // Read cheeps by a specific author
-    Task<List<CheepDTO>> ReadCheepsBy(string authorName);
+    Task<List<CheepDTO>> ReadCheepsBy(string authorName, int? page = null);
     // Update an existing cheep
     Task UpdateCheep(CheepDTO alteredCheep);
 }
