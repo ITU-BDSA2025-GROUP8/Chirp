@@ -33,8 +33,14 @@ public class AuthorRepository : IAuthorRepository
     // Get all authors
     public async Task<List<AuthorDTO>> GetAllAuthors()
     {
-        // Construction of query
-        var query = from author in _context.Authors
+        // AI helped with syntax problems in this method
+        // Construction of query gets all authors
+        var authorsQuery = (from author in _context.Authors select author)
+            .Include(a => a.Cheeps);
+            
+        var authors = await authorsQuery.ToListAsync();
+        
+        var query = from author in authors
             select new AuthorDTO()
             {
                 Id = author.AuthorId,
@@ -51,9 +57,8 @@ public class AuthorRepository : IAuthorRepository
                     .ToList()
             };
 
-        // Executing the query
-        var result = await query.ToListAsync();
-
+        var result =  query.ToList();
+        
         return result;
     }
 
