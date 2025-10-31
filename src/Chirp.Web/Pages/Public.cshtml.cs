@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Chirp.Razor.Pages;
+namespace Chirp.Web.Pages;
 
 //Pages for cheeps from all authors
 public class PublicModel : PageModel
@@ -13,6 +13,7 @@ public class PublicModel : PageModel
     public PublicModel(ICheepService service)
     {
         _service = service;
+        Cheeps = new List<CheepViewModel>();
     }
 
     //Get all cheeps by all authors
