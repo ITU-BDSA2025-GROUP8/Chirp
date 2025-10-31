@@ -5,6 +5,8 @@
 using System;
 using System.Threading.Tasks;
 using Chirp.Infrastructure.Data;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +28,14 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
+            // Sign out identity
             await _signInManager.SignOutAsync();
+            
+            // Sign out OAuth
+            await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);      // "Identity.Application"
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);         // "Identity.External"
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme); // default cookie
+            
             _logger.LogInformation("User logged out.");
             if (returnUrl != null)
             {
