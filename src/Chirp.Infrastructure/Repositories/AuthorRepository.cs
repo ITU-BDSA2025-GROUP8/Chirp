@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using Chirp.Core.DTO;
+﻿using Chirp.Core.DTO;
 using Chirp.Core.Interfaces;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Entities;
@@ -108,6 +107,10 @@ public class AuthorRepository : IAuthorRepository
             where cheep.CheepId == oldCheep.Id
                 select cheep;
         var originalCheep = await query.FirstOrDefaultAsync();
+        if (originalCheep == null)
+        {
+            throw new Exception("Unable to find the original cheep");
+        }
         return originalCheep;
     }
 }
