@@ -7,12 +7,14 @@ public class AuthorDTOTest
     [Fact]
     public void AuthorDTOStoresAndReturnsAssignedValues()
     {
-        var authorDTO = new AuthorDTO();
-        authorDTO.Id = 1;
-        authorDTO.Name = "Test";
-        authorDTO.Email = "test@itu.dk";
+        AuthorDTO authorDTO = new()
+        {
+            Id = 1,
+            Name = "Test",
+            Email = "test@itu.dk"
+        };
 
-        var cheeps = new List<CheepDTO> { new CheepDTO { Text = "test" } };
+        var cheeps = new List<CheepDTO> { new CheepDTO { Id = 1, UserName = "Test", Text = "Test1"} };
         authorDTO.Cheeps = cheeps;
         
         Assert.Equal(1, authorDTO.Id);
