@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Chirp.Web.Services;
 
-namespace Chirp.Razor.Pages;
+namespace Chirp.Web.Pages;
 
 //Pages for cheeps from all authors
 public class PublicModel : PageModel

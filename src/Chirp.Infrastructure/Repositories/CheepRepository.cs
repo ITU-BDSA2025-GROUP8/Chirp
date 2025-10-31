@@ -41,17 +41,17 @@ public class CheepRepository : ICheepRepository
     }
 
     // Read all cheeps
-    public async Task<List<CheepDTO>> GetAllCheeps()
+    public async Task<List<CheepDTO>> GetAllCheeps(int? page = null)
     {
         // Construction of query
-        var query = from cheep in _context.Cheeps
+        var query = (from cheep in _context.Cheeps
             orderby cheep.Date descending
             select new CheepDTO
             {
-                CreatedAt = cheep.Date, 
+                CreatedAt = cheep.Date,
                 Text = cheep.Text,
                 UserName = cheep.Author.Name
-            };
+            }).Skip(GetOffset(page)).Take(32);
         
         // Executing the query
         var result = await query.ToListAsync();
@@ -59,10 +59,10 @@ public class CheepRepository : ICheepRepository
         return result;
     }
 
-    public async Task<List<CheepDTO>> ReadCheepsBy(string authorName)
+    public async Task<List<CheepDTO>> ReadCheepsBy(string authorName, int? page = null)
     {
         // Construction of the query that selects cheeps written by the authorName //todo: should be changed to the author's ID
-        var query = from cheep in _context.Cheeps
+        var query = (from cheep in _context.Cheeps
             where cheep.Author.Name == authorName
             orderby cheep.Date descending
             select new CheepDTO
@@ -70,7 +70,7 @@ public class CheepRepository : ICheepRepository
                 CreatedAt = cheep.Date,
                 Text = cheep.Text,
                 UserName = cheep.Author.Name
-            };
+            }).Skip(GetOffset(page)).Take(32);
         
         // Execution of the query
         var result = await query.ToListAsync();
@@ -131,5 +131,15 @@ public class CheepRepository : ICheepRepository
         ).FirstOrDefaultAsync(); // Runs the query and return the first author with that name or default value 
 
         return author;
+    }
+    //method to get the offset of the cheeps based on what page we want to read from
+    private static int GetOffset(int? page)
+    {
+        int offset = 0; //default offset is 0
+        if (page != null && page > 1)
+        {
+            offset = (page.Value-1) * 32;
+        }
+        return offset;
     }
 }
