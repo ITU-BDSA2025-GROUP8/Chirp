@@ -32,12 +32,7 @@ builder.Services.AddScoped<ICheepService, CheepService>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 
-builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = "GitHub";
-    })
+builder.Services.AddAuthentication()
     .AddCookie()
     .AddGitHub(o =>
     {
