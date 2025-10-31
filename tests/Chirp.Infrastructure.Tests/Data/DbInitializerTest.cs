@@ -106,4 +106,29 @@ public class DbInitializerTest : IDisposable
         Assert.DoesNotContain(cheeps, cheep => cheep.Text == "It is he, then?");
         
     }
+
+    [Fact]
+    public void TestDbInitializerDoesNotDoubleSeededDataIfCalledTwice()
+    {
+        using var context = CreateDbContext();
+        context.Database.EnsureCreated();
+        bool isDatabaseEmpty = !context.Authors.Any() && !context.Cheeps.Any();
+        Assert.True(isDatabaseEmpty);
+        
+        DbInitializer.SeedDatabase(context);
+        
+        isDatabaseEmpty = !context.Authors.Any() && !context.Cheeps.Any();
+        Assert.False(isDatabaseEmpty);
+        HashSet<Author> authors = context.Authors.ToHashSet();
+        Assert.Equal(12, authors.Count);
+        HashSet<Cheep> cheeps = context.Cheeps.ToHashSet();
+        Assert.Equal(657, cheeps.Count);
+        
+        DbInitializer.SeedDatabase(context);
+        authors = context.Authors.ToHashSet();
+        Assert.Equal(12, authors.Count);
+        cheeps = context.Cheeps.ToHashSet();
+        Assert.Equal(657, cheeps.Count);
+        
+    }
 }
