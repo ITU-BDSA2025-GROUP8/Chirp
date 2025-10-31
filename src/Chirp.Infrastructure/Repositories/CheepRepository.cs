@@ -19,7 +19,7 @@ public class CheepRepository : ICheepRepository
     // Create a new cheep
     public async Task CreateCheep(CheepDTO newCheep)
     {
-        var author = await findAuthor(newCheep.UserName);
+        var author = await FindAuthor(newCheep.UserName);
         
         if (author == null)
         {
@@ -36,7 +36,7 @@ public class CheepRepository : ICheepRepository
         };
         
         // Adds and saves the cheep in the database
-        var queryResult = await _context.Cheeps.AddAsync(cheep);
+        await _context.Cheeps.AddAsync(cheep);
         await _context.SaveChangesAsync();
     }
 
@@ -106,7 +106,7 @@ public class CheepRepository : ICheepRepository
     private async void UpdateCheep(Cheep originalCheep, CheepDTO alteredCheep)
     {
         // Find the author object of the alteredCheep
-        var author = await findAuthor(alteredCheep.UserName);
+        var author = await FindAuthor(alteredCheep.UserName);
         
         if (author == null)
         {
@@ -122,16 +122,15 @@ public class CheepRepository : ICheepRepository
     
     // Utility method: find the author object
     //todo: right now the author object is found by the name - this should be changed to the ID as this is the key of an author object in the data model
-    private async Task<Author> findAuthor(string AuthorName)
+    private async Task<Author?> FindAuthor(string authorName)
     {
         // Suggestion from ChatGPT
         // Gets one Author object from the database
-        var author = await(
-            from a in _context.Authors
-            where a.Name == AuthorName
-            select a
-        ).FirstOrDefaultAsync(); // Runs the query and return the first author with that name or default value 
+        var query = from author in _context.Authors
+            where  author.Name == authorName
+            select author;
+        var foundAuthor = await query.FirstOrDefaultAsync();
 
-        return author;
+        return foundAuthor;
     }
 }
