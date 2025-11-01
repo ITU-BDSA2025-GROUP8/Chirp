@@ -1,9 +1,5 @@
-﻿@using Chirp.Infrastructure.Data
-@using Microsoft.AspNetCore.Identity
-@using Chirp.Infrastructure.Data;
-@using Chirp.Infrastructure.Entities
+﻿@using Chirp.Infrastructure.Entities
 @inject SignInManager<Author> SignInManager
-@inject UserManager<Author> UserManager 
 
 
 <ul class="navbar-nav">
@@ -12,7 +8,7 @@
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity"
                asp-page="/Account/Manage/Index" title="Manage">
-                Hello @User.Identity.Name!</a>
+                Hello @User.Identity!.Name!</a>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-page="/Account/Logout"
