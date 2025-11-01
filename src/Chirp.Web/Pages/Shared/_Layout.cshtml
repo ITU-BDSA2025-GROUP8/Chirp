@@ -1,6 +1,7 @@
 ﻿@using Chirp.Infrastructure.Data
+@using Chirp.Infrastructure.Entities
 @using Microsoft.AspNetCore.Identity
-@inject UserManager<ApplicationUser> UserManager
+@inject UserManager<Author> UserManager
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +19,7 @@
             <div>
                 @{
                     var currentUser = await UserManager.GetUserAsync(User);
-                    var displayName = currentUser?.DisplayName ?? User.Identity.Name;
+                    var displayName = currentUser?.Name ?? User.Identity.Name;
                 }
                 <a href="/@displayName">my timeline</a> |
                 <a href="/">public timeline</a> |

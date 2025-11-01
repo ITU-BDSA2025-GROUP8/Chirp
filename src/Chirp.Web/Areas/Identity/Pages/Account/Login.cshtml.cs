@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Chirp.Infrastructure.Data;
+using Chirp.Infrastructure.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -20,11 +21,11 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<Author> _signInManager;
+        private readonly UserManager<Author> _userManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager,UserManager<ApplicationUser> userManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<Author> signInManager,UserManager<Author> userManager, ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -128,7 +129,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    var displayname = user.DisplayName;
+                    var displayname = user.Name;
                     return LocalRedirect("/" + displayname);
                 }
                 if (result.RequiresTwoFactor)

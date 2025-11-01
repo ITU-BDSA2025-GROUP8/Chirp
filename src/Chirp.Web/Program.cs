@@ -1,5 +1,6 @@
 using Chirp.Core.Interfaces;
 using Chirp.Infrastructure.Data;
+using Chirp.Infrastructure.Entities;
 using Chirp.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Chirp.Web.Services;
@@ -15,12 +16,12 @@ var builder = WebApplication.CreateBuilder(args);
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ChirpDBContext>(options => options.UseSqlite(connectionString));
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+builder.Services.AddDefaultIdentity<Author>(options =>
     {
         options.SignIn.RequireConfirmedAccount = false;
-        options.Password.RequireDigit = false;
-        options.Password.RequireLowercase = false;
-        options.Password.RequireUppercase = false;
+        options.Password.RequireDigit = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequireUppercase = true;
         options.Password.RequireNonAlphanumeric = false; // disables special character requirement
         options.Password.RequiredLength = 6;
     }

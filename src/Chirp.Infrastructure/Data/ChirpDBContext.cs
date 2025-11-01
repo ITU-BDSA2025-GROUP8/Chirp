@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace Chirp.Infrastructure.Data;
 
-public class ChirpDBContext : IdentityDbContext<ApplicationUser>
+public class ChirpDBContext : IdentityDbContext<Author>
 {
     public ChirpDBContext(DbContextOptions<ChirpDBContext> options) : base(options)
     {
