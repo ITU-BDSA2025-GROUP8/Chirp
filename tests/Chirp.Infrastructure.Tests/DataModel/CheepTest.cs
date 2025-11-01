@@ -16,8 +16,8 @@ public class CheepTest
         var author = new Author
         {
             Name = "Tester",
-            AuthorId = 10,
-            EmailAddress = "test@itu.dk"
+            Id = "10",
+            Email = "test@itu.dk"
         };
         var date = new DateTime(2025, 1, 1);
         var cheep = new Cheep
@@ -49,7 +49,7 @@ public class CheepTest
         var author = new Author()
         {
             Name = name,
-            EmailAddress = "text@test.dk"
+            Email = "text@test.dk"
         };
 
         var cheep = new Cheep

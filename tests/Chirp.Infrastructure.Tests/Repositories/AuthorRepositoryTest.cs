@@ -38,7 +38,7 @@ public class AuthorRepositoryTest : IDisposable
 
         var authorDTOTest = new AuthorDTO()
         {
-            Id = 1,
+            Id = "1",
             Name = "John Doe",
             Email = "test@itu.dk",
             Cheeps = new List<CheepDTO>()
@@ -62,9 +62,9 @@ public class AuthorRepositoryTest : IDisposable
         using var context = CreateDbContext();
         context.Database.EnsureCreated();
         context.Authors.AddRange(
-            new Author { AuthorId = 1, Cheeps = new List<Cheep>(), EmailAddress = "test1@itu.dk", Name = "Test1" },
-            new Author { AuthorId = 2, Cheeps = new List<Cheep>(), EmailAddress = "test2@itu.dk", Name = "Test2" },
-            new Author { AuthorId = 3, Cheeps = new List<Cheep>(), EmailAddress = "test3@itu.dk", Name = "Test3" }
+            new Author { Id = "1", Cheeps = new List<Cheep>(), Email = "test1@itu.dk", Name = "Test1" },
+            new Author { Id = "2", Cheeps = new List<Cheep>(), Email = "test2@itu.dk", Name = "Test2" },
+            new Author { Id = "3", Cheeps = new List<Cheep>(), Email = "test3@itu.dk", Name = "Test3" }
         );
         context.SaveChanges();
 
@@ -74,9 +74,9 @@ public class AuthorRepositoryTest : IDisposable
 
         // Assert
         Assert.Equal(3, authors.Count);
-        Assert.Contains(authors, a => a.Id == 1);
-        Assert.Contains(authors, a => a.Id == 2);
-        Assert.Contains(authors, a => a.Id == 3);
+        Assert.Contains(authors, a => a.Id == "1");
+        Assert.Contains(authors, a => a.Id == "2");
+        Assert.Contains(authors, a => a.Id == "3");
 
         //Clean up
         Dispose();
@@ -90,8 +90,8 @@ public class AuthorRepositoryTest : IDisposable
 
         context.Database.EnsureCreated();
         context.Authors.AddRange(
-            new Author { AuthorId = 1, Cheeps = new List<Cheep>(), EmailAddress = "test1@itu.dk", Name = "Test1" },
-            new Author { AuthorId = 2, Cheeps = new List<Cheep>(), EmailAddress = "test2@itu.dk", Name = "Test2" }
+            new Author { Id = "1", Cheeps = new List<Cheep>(), Email = "test1@itu.dk", Name = "Test1" },
+            new Author { Id = "2", Cheeps = new List<Cheep>(), Email = "test2@itu.dk", Name = "Test2" }
         );
         context.SaveChanges();
 
@@ -101,7 +101,7 @@ public class AuthorRepositoryTest : IDisposable
         var repository = new AuthorRepository(context);
         var authorDtoTest = new AuthorDTO()
         {
-            Id = 1,
+            Id = "1",
             Name = "John Doe",
             Email = "test@itu.dk",
             Cheeps = new List<CheepDTO>()
@@ -112,11 +112,11 @@ public class AuthorRepositoryTest : IDisposable
         // Assert
         Assert.True(context.Authors.Any(a => a.Name == "John Doe"));
         var queryToFindUpdatedAuthor = from Author in context.Authors
-            where Author.AuthorId == 1
+            where Author.Id == "1"
             select Author;
         var updatedAuthor = queryToFindUpdatedAuthor.Single();
         Assert.NotNull(updatedAuthor);
-        Assert.Equal("test@itu.dk", updatedAuthor.EmailAddress);
+        Assert.Equal("test@itu.dk", updatedAuthor.Email);
         Assert.True(updatedAuthor.Cheeps.Count == 0);
         Assert.False(context.Authors.Any(a => a.Name == "Test1"));
         Assert.True(context.Authors.Count() == 2);
