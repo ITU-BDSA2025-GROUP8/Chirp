@@ -100,7 +100,8 @@ public class AuthorRepository : IAuthorRepository
 
 
     }
-
+    
+    // Translate from CheepDTO to Cheeps by querying DB
     private async Task<Cheep> FromCheepDtoToCheep(CheepDTO oldCheep)
     {
         var query = from cheep in _context.Cheeps
