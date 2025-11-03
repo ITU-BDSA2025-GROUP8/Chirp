@@ -2,8 +2,6 @@
 
 public class AuthorDTO
 {
-    // public int Id { get; set; }
-    // You could have one for ID but ID should probably be hidden from users
     public string Id { get; set; }
     public string Name { get; set; }
     public string Email { get; set; }
