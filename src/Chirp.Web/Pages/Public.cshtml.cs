@@ -33,7 +33,7 @@ public class PublicModel : PageModel
        var cheepDTO = new CheepDTO()
        {
            CreatedAt = DateTime.Now,
-           //Id = 1,
+           Id = 1,
            Text = CheepText,
            UserName = "TestyTester" //Riders ide: HttpContext.User.Identity.Name 
        };
