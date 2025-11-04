@@ -28,7 +28,6 @@ public class PublicModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
-        Console.WriteLine(">>> OnPostAsync called! CheepText = " + CheepText); //todo: debug
        //Create CheepDTO // todo: get the correct values, this is just dummy stuff
        var cheepDTO = new CheepDTO()
        {
