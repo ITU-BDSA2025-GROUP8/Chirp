@@ -11,7 +11,7 @@ public class PublicModel : PageModel
     private readonly ICheepService _service;
     public List<CheepViewModel> Cheeps { get; set; }
     [BindProperty]
-    public string cheepText { get; set; }
+    public string? CheepText { get; set; }
 
     //Inject the cheep service, sets a specific "model"
     public PublicModel(ICheepService service)
@@ -26,18 +26,21 @@ public class PublicModel : PageModel
         return Page();
     }
 
-    public ActionResult OnPost()
+    public async Task<IActionResult> OnPostAsync()
     {
+        Console.WriteLine(">>> OnPostAsync called! CheepText = " + CheepText); //todo: debug
        //Create CheepDTO // todo: get the correct values, this is just dummy stuff
        var cheepDTO = new CheepDTO()
        {
            CreatedAt = DateTime.Now,
-           Id = 1,
-           Text = cheepText,
-           UserName = "TestyTester" //Riders ide: HttpContext.User.Identity.Name
+           //Id = 1,
+           Text = CheepText,
+           UserName = "TestyTester" //Riders ide: HttpContext.User.Identity.Name 
        };
-       //Call repository method for creating a cheep
-       _service.CreateCheepFromDTO(cheepDTO);
+       
+       //Call the repository method for creating a cheep
+       await _service.CreateCheepFromDTO(cheepDTO);
        return RedirectToPage();
     }
+    
 }

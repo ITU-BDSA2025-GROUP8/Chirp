@@ -15,6 +15,8 @@ public class UserTimelineModel : PageModel
     {
         _service = service;
     }
+    [BindProperty]
+    public string? Text { get; set; }
 
     //Gets all cheeps from a specific author
     public ActionResult OnGet(string author, [FromQuery] int page)

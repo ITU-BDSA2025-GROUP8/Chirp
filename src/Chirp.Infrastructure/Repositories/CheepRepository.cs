@@ -21,11 +21,17 @@ public class CheepRepository : ICheepRepository
     {
         var author = await findAuthor(newCheep.UserName);
         
+        
+        
         if (author == null)
         {
             //todo: call method to create new author instead of throw exception
             //for now throw exception - written by ChatGPT
-            throw new Exception($"Author with username '{newCheep.UserName}' not found.");
+            //todo: Opdater det her. Det er bare midlertidigt. 
+            //throw new Exception($"Author with username '{newCheep.UserName}' not found."); //todo: udkommenteret for nu for at få program til at køre
+            author = new Author { Name = newCheep.UserName, EmailAddress = newCheep.UserName + "@itu.dk"};
+            await _context.Authors.AddAsync(author);
+            await _context.SaveChangesAsync();
         }
         // Creates new cheep
         Cheep cheep = new()

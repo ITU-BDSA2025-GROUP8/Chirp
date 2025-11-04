@@ -11,7 +11,7 @@ public interface ICheepService
 {
     public List<CheepViewModel> GetCheeps(int? page);
     public List<CheepViewModel> GetCheepsFromAuthor(string author, int? page);
-    public void CreateCheepFromDTO(CheepDTO cheep);
+    public Task CreateCheepFromDTO(CheepDTO cheep);
 }
 
 public class CheepService : ICheepService
@@ -40,9 +40,9 @@ public class CheepService : ICheepService
     }
     
     // Creates new cheep
-    public void CreateCheepFromDTO(CheepDTO cheep)
+    public async Task CreateCheepFromDTO(CheepDTO cheep)
     {
-        _cheepRepository.CreateCheep(cheep);
+        await _cheepRepository.CreateCheep(cheep);
     }
 
 }
