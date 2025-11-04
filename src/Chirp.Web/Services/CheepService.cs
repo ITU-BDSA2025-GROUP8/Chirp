@@ -1,5 +1,7 @@
 
+using Chirp.Core.DTO;
 using Chirp.Core.Interfaces;
+using Chirp.Infrastructure.Entities;
 
 namespace Chirp.Web.Services;
 
@@ -9,6 +11,7 @@ public interface ICheepService
 {
     public List<CheepViewModel> GetCheeps(int? page);
     public List<CheepViewModel> GetCheepsFromAuthor(string author, int? page);
+    public void CreateCheepFromDTO(CheepDTO cheep);
 }
 
 public class CheepService : ICheepService
@@ -36,5 +39,10 @@ public class CheepService : ICheepService
         return cheeps.Select(cheep => new CheepViewModel(Author: cheep.UserName, Message: cheep.Text, Timestamp: cheep.CreatedAt.ToLongDateString())).ToList();
     }
     
+    // Creates new cheep
+    public void CreateCheepFromDTO(CheepDTO cheep)
+    {
+        _cheepRepository.CreateCheep(cheep);
+    }
 
 }
