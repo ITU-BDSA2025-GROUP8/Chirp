@@ -9,7 +9,7 @@ namespace Chirp.Web.Pages;
 public class PublicModel : PageModel
 {
     private readonly ICheepService _service;
-    public List<CheepViewModel> Cheeps { get; set; }
+    public List<CheepViewModel>? Cheeps { get; set; }
     [BindProperty]
     public string? CheepText { get; set; }
 

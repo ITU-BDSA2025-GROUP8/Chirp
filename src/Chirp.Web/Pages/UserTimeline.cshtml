@@ -15,11 +15,11 @@
             <input type="submit" value="Share">
         </form>
     </div>
-    
-    @if (Model.Cheeps.Any())
+
+    @if (Model.Cheeps!.Any())
     {
         <ul id="messagelist" class="cheeps">
-            @foreach (var cheep in Model.Cheeps)
+            @foreach (var cheep in Model.Cheeps!)
             {
                 <li>
                     <p>
