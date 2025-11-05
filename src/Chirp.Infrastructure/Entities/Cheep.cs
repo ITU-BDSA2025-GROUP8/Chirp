@@ -17,5 +17,5 @@ public class Cheep
     [Required]
     public required Author Author { get; set; }
     
-    public int AuthorId { get; set; } //foreign key pointing to the author class
+    public string AuthorId { get; set; } //foreign key pointing to the author class
 }

@@ -34,7 +34,7 @@ public class CheepRepositoryTest : IDisposable
         using var context = CreateDbContext();
         context.Database.EnsureCreated();
         var repository = new CheepRepository(context);
-        var author = new Author { Name = "Test1", EmailAddress = "test1@itu.dk" };
+        var author = new Author { Name = "Test1", Email = "test1@itu.dk" };
 
         context.Authors.AddRange(author);
         context.SaveChanges();
@@ -67,8 +67,8 @@ public class CheepRepositoryTest : IDisposable
         var repository = new CheepRepository(context);
 
         //making authors to relate to the cheeps
-        var author1 = new Author { Name = "Test1", EmailAddress = "test@itu.dk" };
-        var author2 = new Author { Name = "Test2", EmailAddress = "test2@itu.dk" };
+        var author1 = new Author { Name = "Test1", Email = "test@itu.dk" };
+        var author2 = new Author { Name = "Test2", Email = "test2@itu.dk" };
 
         context.Authors.AddRange(author1, author2);
         //making cheeps
@@ -105,8 +105,8 @@ public class CheepRepositoryTest : IDisposable
         context.Database.EnsureCreated();
         var repository = new CheepRepository(context);
 
-        var author1 = new Author { Name = "Test1", EmailAddress = "test1@itu.dk" };
-        var author2 = new Author { Name = "Test2", EmailAddress = "test2@itu.dk" };
+        var author1 = new Author { Name = "Test1", Email = "test1@itu.dk" };
+        var author2 = new Author { Name = "Test2", Email = "test2@itu.dk" };
         context.Authors.AddRange(author1, author2);
 
         //note: setup for these 3 test cheeps was suggested by ChatGPT
@@ -139,8 +139,8 @@ public class CheepRepositoryTest : IDisposable
         context.Database.EnsureCreated();
         var repository = new CheepRepository(context);
 
-        var author1 = new Author { Name = "Test1", EmailAddress = "test1@itu.dk" };
-        var author2 = new Author { Name = "Test2", EmailAddress = "test2@itu.dk" };
+        var author1 = new Author { Name = "Test1", Email = "test1@itu.dk" };
+        var author2 = new Author { Name = "Test2", Email = "test2@itu.dk" };
         context.Authors.AddRange(author1, author2);
 
         var cheep = new Cheep { Author = author1, Text = "old text", Date = new DateTime(2025, 10, 10) };

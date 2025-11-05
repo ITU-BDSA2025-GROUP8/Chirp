@@ -8,7 +8,7 @@ namespace Chirp.Web.Pages;
 public class PublicModel : PageModel
 {
     private readonly ICheepService _service;
-    public List<CheepViewModel> Cheeps { get; set; }
+    public List<CheepViewModel>? Cheeps { get; set; }
 
     //Inject the cheep service, sets a specific "model"
     public PublicModel(ICheepService service)
