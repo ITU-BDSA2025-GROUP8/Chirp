@@ -4,6 +4,7 @@ You need to have dotnet 8 installed.
 # Running in development environment
 
 Navigate to the `src/Chirp.Web` folder.
+<br>
 Run `dotnet run`
 
 ## Register user with OAuth
@@ -19,11 +20,12 @@ Client ID and secrets are stored in the Azure for this web app, bdsa2024group8ch
 
 There should be a `env.sample` file in the same folder, you can use as a template.
 
-
 # Run from release
 
-To run from release download the release for your operating system and run the Chirp.Web executable. In the realeased version you can not registor or login using github. If you want those functions you can use the deployed version at https://bdsa2024group8chirprazor2025.azurewebsites.net/
+Download the release for your operating system and run the `Chirp.Web` executable. <br>
+OAuth Github functionality is NOT supported in the released version. If you want to register via Github use the deployed version detailed below.
 
 # Deployed version
 
-The deployed version is the same as the released version and can be found at https://bdsa2024group8chirprazor2025.azurewebsites.net/
+Go to `https://bdsa2024group8chirprazor2025.azurewebsites.net/` <br>
+This version supports login using OAuth Github.
