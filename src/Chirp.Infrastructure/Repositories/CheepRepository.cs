@@ -29,7 +29,7 @@ public class CheepRepository : ICheepRepository
             //for now throw exception - written by ChatGPT
             //todo: Opdater det her. Det er bare midlertidigt. Lige pt. bliver der her ikke knyttet andet til author end navn og email.  
             //throw new Exception($"Author with username '{newCheep.UserName}' not found."); //todo: udkommenteret for nu for at få program til at køre
-            author = new Author { Name = newCheep.UserName, EmailAddress = newCheep.UserName + "@itu.dk"};
+            author = new Author { Name = newCheep.UserName, Email = newCheep.UserName + "@itu.dk"};
             await _context.Authors.AddAsync(author);
             await _context.SaveChangesAsync();
         }
