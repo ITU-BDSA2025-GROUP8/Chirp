@@ -16,11 +16,12 @@
             @{
                 var currentUser = await UserManager.GetUserAsync(User);
                 var displayName = currentUser?.Name ?? User.Identity.Name;
+                var UserId = currentUser.Id; 
             }
             <h3>What's on your mind @(displayName)?</h3>
 
             <form method="post" asp-page-handler="" asp-antiforgery="true">
-                <input type="hidden" asp-for="UserName" value="@displayName"/>
+                <input type="hidden" asp-for="UserId" value="@UserId"/>
                 <input style="float: left" type="text" asp-for="CheepText">
                 <input type="submit" value="Share">
             </form>

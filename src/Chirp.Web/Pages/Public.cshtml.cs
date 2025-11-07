@@ -13,7 +13,7 @@ public class PublicModel : PageModel
     [BindProperty]
     public string? CheepText { get; set; }
     [BindProperty]
-    public string? UserName { get; set; }
+    public string? UserId { get; set; }
 
     //Inject the cheep service, sets a specific "model"
     public PublicModel(ICheepService service)
@@ -35,7 +35,7 @@ public class PublicModel : PageModel
        {
            CreatedAt = DateTime.Now,
            Text = CheepText,
-           AuthorId = UserName
+           AuthorId = UserId
        };
        
        //Call the repository method for creating a cheep

@@ -14,6 +14,8 @@ public class UserTimelineModel : PageModel
     public string? CheepText { get; set; }
     [BindProperty]
     public string? UserName { get; set; }
+    [BindProperty]
+    public string? UserId { get; set; }
 
     //Inject the cheep service, sets a specific "model"
     public UserTimelineModel(ICheepService service)
@@ -36,7 +38,7 @@ public class UserTimelineModel : PageModel
             CreatedAt = DateTime.Now,
             Id = 1,
             Text = CheepText,
-            AuthorId = UserName
+            AuthorId = UserId
         };
        
         //Call the repository method for creating a cheep
