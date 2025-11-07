@@ -12,6 +12,8 @@ public class UserTimelineModel : PageModel
     public List<CheepViewModel>? Cheeps { get; set; }
     [BindProperty]
     public string? CheepText { get; set; }
+    [BindProperty]
+    public string? UserName { get; set; }
 
     //Inject the cheep service, sets a specific "model"
     public UserTimelineModel(ICheepService service)
@@ -34,7 +36,7 @@ public class UserTimelineModel : PageModel
             CreatedAt = DateTime.Now,
             Id = 1,
             Text = CheepText,
-            UserName = "TestyTester" //Riders ide: HttpContext.User.Identity.Name 
+            UserName = UserName
         };
        
         //Call the repository method for creating a cheep
