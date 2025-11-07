@@ -12,9 +12,4 @@ public interface ICheepRepository
     Task<List<CheepDTO>> ReadCheepsBy(string authorName, int? page = null);
     // Update an existing cheep
     Task UpdateCheep(CheepDTO alteredCheep);
-    // Get a paginated list of cheeps
-    Task<List<CheepDTO>> GetCheepsPage(int pageNumber, int pageSize);
-    //Get a paginated list of cheeps from a specific author
-    Task<List<CheepDTO>> GetCheepsPageByAuthor(string authorName, int pageNumber, int pageSize);
-    //todo: maybe add CreateCheep if cheep is from an unknown author?
 }
