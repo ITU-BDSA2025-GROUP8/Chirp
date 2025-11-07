@@ -12,6 +12,8 @@ public class PublicModel : PageModel
     public List<CheepViewModel>? Cheeps { get; set; }
     [BindProperty]
     public string? CheepText { get; set; }
+    [BindProperty]
+    public string? UserName { get; set; }
 
     //Inject the cheep service, sets a specific "model"
     public PublicModel(ICheepService service)
@@ -32,9 +34,8 @@ public class PublicModel : PageModel
        var cheepDTO = new CheepDTO()
        {
            CreatedAt = DateTime.Now,
-           Id = 1,
            Text = CheepText,
-           UserName = "TestyTester" //Riders ide: HttpContext.User.Identity.Name 
+           UserName = UserName
        };
        
        //Call the repository method for creating a cheep

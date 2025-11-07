@@ -1,5 +1,7 @@
 ﻿@page "/"
+@using Chirp.Infrastructure.Entities
 @model Chirp.Web.Pages.PublicModel
+@inject UserManager<Author> UserManager
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
@@ -7,13 +9,22 @@
 
 <div>
     <h2> Public Timeline </h2>
-    <div class="CheepBox">
-        <h3>What's on your mind @(User.Identity.Name)?</h3>
-        <form method="post" asp-page-handler="" asp-antiforgery="true">
-            <input style="float: left" type="text" asp-for="CheepText">
-            <input type="submit" value="Share">
-        </form>
-    </div>
+@if (User.Identity!.IsAuthenticated)
+    {
+        <div class="CheepBox">
+            @{
+                var currentUser = await UserManager.GetUserAsync(User);
+                var displayName = currentUser?.Name ?? User.Identity.Name;
+            }
+            <h3>What's on your mind @(displayName)?</h3>
+
+            <form method="post" asp-page-handler="" asp-antiforgery="true">
+                <input type="hidden" asp-for="UserName" value="@displayName"/>
+                <input style="float: left" type="text" asp-for="CheepText">
+                <input type="submit" value="Share">
+            </form>
+        </div>
+    }
 
     @if (Model.Cheeps!.Any())
     {
