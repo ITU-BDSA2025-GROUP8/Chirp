@@ -45,7 +45,7 @@ public class AuthorRepository : IAuthorRepository
             {
                 Id = author.Id,
                 Name = author.Name,
-                Email = author.Email!,
+                Email = author.Email,
                 Cheeps = author.Cheeps
                     .Select(c => new CheepDTO
                     {
@@ -118,66 +118,5 @@ public class AuthorRepository : IAuthorRepository
             throw new Exception("Unable to find the original cheep");
         }
         return originalCheep;
-    } 
-    
-    //Query selecting author whose name matches the provided
-    public async Task<AuthorDTO?> FindByName(string name)
-    {
-        // Construction of query gets the matching author incl. cheeps
-        var authorsQuery = (from author in _context.Authors
-                where author.Name == name
-                select author)
-            .Include(a => a.Cheeps);
-
-        var authors = await authorsQuery.ToListAsync();
-        var query = from author in authors
-        select new AuthorDTO()
-            {
-                Id = author.Id, 
-                Name = author.Name,
-                Email = author.Email,
-                Cheeps = author.Cheeps 
-                    .Select(c => new CheepDTO 
-                    {
-                        Id = c.CheepId,
-                        UserName = author.Name,
-                        Text = c.Text,
-                        CreatedAt = c.Date
-                    })
-                    .ToList()
-            };
-            var result = query.FirstOrDefault();
-            return result;
-    }
-    //Query that selects the author whose email matches the provided
-    public async Task<AuthorDTO?> FindByEmail(string email){
-        // Construction of query gets the matching author incl. cheeps
-        var authorsQuery = (from author in _context.Authors
-                where author.Email == email
-                select author)
-            .Include(a => a.Cheeps);
-        
-    var authors = await authorsQuery.ToListAsync();
-
-    var query = from author in authors
-        select new AuthorDTO()
-        {
-            Id = author.Id,
-            Name = author.Name,
-            Email = author.Email,
-            //for each cheep, create new CheepDTO object
-            Cheeps = author.Cheeps
-                //projects the Author entity into an AuthorDTO including the cheeps
-                .Select(c => new CheepDTO
-                {
-                    Id = c.CheepId,
-                    UserName = author.Name,
-                    Text = c.Text,
-                    CreatedAt = c.Date
-                })
-                .ToList()
-        };
-        var result = query.FirstOrDefault();
-        return result;
     }
 }
