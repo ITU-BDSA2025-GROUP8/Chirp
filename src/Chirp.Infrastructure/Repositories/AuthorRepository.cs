@@ -123,7 +123,7 @@ public class AuthorRepository : IAuthorRepository
     public async Task<AuthorDTO?> FindByName(string name)
     {
         return await _context.Authors
-            .Where(a => a.Name == name)
+            .Where(a => a.Name == name)//filters authors by name
             .Select(a => new AuthorDTO
             {
                 Id = a.Id, 
@@ -145,7 +145,7 @@ public class AuthorRepository : IAuthorRepository
     public async Task<AuthorDTO?> FindByEmail(string email)
     {
         return await _context.Authors
-            .Where(a => a.Email == email)
+            .Where(a => a.Email == email)//filters authors by email
             .Select(a => new AuthorDTO
             {
                 Id = a.Id,
