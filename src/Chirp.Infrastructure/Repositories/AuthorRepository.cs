@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using Chirp.Core.DTO;
+﻿using Chirp.Core.DTO;
 using Chirp.Core.Interfaces;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Entities;
@@ -34,8 +33,14 @@ public class AuthorRepository : IAuthorRepository
     // Get all authors
     public async Task<List<AuthorDTO>> GetAllAuthors()
     {
-        // Construction of query
-        var query = from author in _context.Authors
+        // AI helped with syntax problems in this method
+        // Construction of query gets all authors
+        var authorsQuery = (from author in _context.Authors select author)
+            .Include(a => a.Cheeps);
+            
+        var authors = await authorsQuery.ToListAsync();
+        
+        var query = from author in authors
             select new AuthorDTO()
             {
                 Id = author.Id,
@@ -45,15 +50,15 @@ public class AuthorRepository : IAuthorRepository
                     .Select(c => new CheepDTO
                     {
                         Id = c.CheepId,
+                        UserName = author.Name,
                         Text = c.Text,
                         CreatedAt = c.Date
                     })
                     .ToList()
             };
 
-        // Executing the query
-        var result = await query.ToListAsync();
-
+        var result =  query.ToList();
+        
         return result;
     }
 
@@ -100,13 +105,18 @@ public class AuthorRepository : IAuthorRepository
 
 
     }
-
+    
+    // Translate from CheepDTO to Cheeps by querying DB
     private async Task<Cheep> FromCheepDtoToCheep(CheepDTO oldCheep)
     {
         var query = from cheep in _context.Cheeps
             where cheep.CheepId == oldCheep.Id
                 select cheep;
         var originalCheep = await query.FirstOrDefaultAsync();
+        if (originalCheep == null)
+        {
+            throw new Exception("Unable to find the original cheep");
+        }
         return originalCheep;
     }
 }

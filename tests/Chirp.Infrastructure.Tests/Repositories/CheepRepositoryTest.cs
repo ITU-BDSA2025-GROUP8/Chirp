@@ -41,6 +41,7 @@ public class CheepRepositoryTest : IDisposable
 
         var newCheep = new CheepDTO
         {
+            Id = 1,
             AuthorId = "Test1",
             Text = "I chirped",
             CreatedAt = new DateTime(2025, 10, 8),

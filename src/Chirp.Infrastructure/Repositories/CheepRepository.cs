@@ -19,9 +19,7 @@ public class CheepRepository : ICheepRepository
     // Create a new cheep
     public async Task CreateCheep(CheepDTO newCheep)
     {
-        var author = await findAuthor(newCheep.AuthorId);
-        
-        
+        var author = await FindAuthor(newCheep.AuthorId);
         
         if (author == null)
         {
@@ -37,7 +35,7 @@ public class CheepRepository : ICheepRepository
         };
         
         // Adds and saves the cheep in the database
-        var queryResult = await _context.Cheeps.AddAsync(cheep);
+        await _context.Cheeps.AddAsync(cheep);
         await _context.SaveChangesAsync();
     }
 
@@ -49,7 +47,8 @@ public class CheepRepository : ICheepRepository
             orderby cheep.Date descending
             select new CheepDTO
             {
-                CreatedAt = cheep.Date,
+                Id = cheep.CheepId,
+                CreatedAt = cheep.Date, 
                 Text = cheep.Text,
                 AuthorId = cheep.Author.Name
             }).Skip(GetOffset(page)).Take(32);
@@ -68,6 +67,7 @@ public class CheepRepository : ICheepRepository
             orderby cheep.Date descending
             select new CheepDTO
             {
+                Id = cheep.CheepId,
                 CreatedAt = cheep.Date,
                 Text = cheep.Text,
                 AuthorId = cheep.Author.Name
@@ -105,7 +105,7 @@ public class CheepRepository : ICheepRepository
     private async void UpdateCheep(Cheep originalCheep, CheepDTO alteredCheep)
     {
         // Find the author object of the alteredCheep
-        var author = await findAuthor(alteredCheep.AuthorId);
+        var author = await FindAuthor(alteredCheep.AuthorId);
         
         if (author == null)
         {
@@ -120,17 +120,16 @@ public class CheepRepository : ICheepRepository
     }
     
     // Utility method: find the author object
-    private async Task<Author> findAuthor(string AuthorId)
+    private async Task<Author?> FindAuthor(string AuthorId)
     {
         // Suggestion from ChatGPT
         // Gets one Author object from the database
-        var author = await(
-            from a in _context.Authors
-            where a.Id == AuthorId
-            select a
-        ).FirstOrDefaultAsync(); // Runs the query and return the first author with that name or default value 
+        var query = from author in _context.Authors
+            where  author.Id == AuthorId
+            select author;
+        var foundAuthor = await query.FirstOrDefaultAsync();
 
-        return author;
+        return foundAuthor;
     }
     //method to get the offset of the cheeps based on what page we want to read from
     private static int GetOffset(int? page)
