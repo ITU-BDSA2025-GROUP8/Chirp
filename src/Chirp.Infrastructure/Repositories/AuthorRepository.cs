@@ -45,7 +45,7 @@ public class AuthorRepository : IAuthorRepository
             {
                 Id = author.Id,
                 Name = author.Name,
-                Email = author.Email,
+                Email = author.Email!,
                 Cheeps = author.Cheeps
                     .Select(c => new CheepDTO
                     {

@@ -17,7 +17,4 @@ public class Cheep
     [Required]
     public required Author Author { get; set; }
     
-    // String because Identity requires string
-    // Foreign key pointing to the author class
-    public string AuthorId { get; set; }
 }

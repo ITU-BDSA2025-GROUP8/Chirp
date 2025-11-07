@@ -70,8 +70,8 @@ public class DbInitializerTest : IDisposable
         var b2 = new Author() { Id = "9999", Name = "Example person", Email = "exampleperson@itu.dk", Cheeps = new List<Cheep>() };
         var authorsList = new List<Author>() { b1, b2 };
         
-        var d1 = new Cheep() { CheepId = 7341, AuthorId = b1.Id, Author = b1, Text = "I want to test if the database will not get the seeded data.", Date = DateTime.Parse("2025-08-01 13:13:13") };
-        var d2 = new Cheep() { CheepId = 9999, AuthorId = b2.Id, Author = b2, Text = "The database contain these cheeps instead.", Date = DateTime.Parse("2025-08-01 14:14:14") };
+        var d1 = new Cheep() { CheepId = 7341, Author = b1, Text = "I want to test if the database will not get the seeded data.", Date = DateTime.Parse("2025-08-01 13:13:13") };
+        var d2 = new Cheep() { CheepId = 9999, Author = b2, Text = "The database contain these cheeps instead.", Date = DateTime.Parse("2025-08-01 14:14:14") };
         
         var cheepsList = new List<Cheep>() { d1, d2 };
         b1.Cheeps = new List<Cheep>() { d1 };
