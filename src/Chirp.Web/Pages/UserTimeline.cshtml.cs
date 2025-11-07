@@ -30,7 +30,7 @@ public class UserTimelineModel : PageModel
     
     public async Task<IActionResult> OnPostAsync()
     {
-        //Create CheepDTO // todo: get the correct values, this is just dummy stuff
+        //Create CheepDTO
         var cheepDTO = new CheepDTO()
         {
             CreatedAt = DateTime.Now,
