@@ -9,7 +9,7 @@ public class ChirpDBContext : IdentityDbContext<Author>
 {
     public ChirpDBContext(DbContextOptions<ChirpDBContext> options) : base(options)
     {
-        //empty on un purpose
+        //empty on purpose
     }
     
     public DbSet<Cheep> Cheeps { get; set; }

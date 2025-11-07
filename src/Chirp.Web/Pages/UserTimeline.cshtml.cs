@@ -14,6 +14,7 @@ public class UserTimelineModel : PageModel
     public UserTimelineModel(ICheepService service)
     {
         _service = service;
+        Cheeps = new List<CheepViewModel>();
     }
 
     //Gets all cheeps from a specific author
