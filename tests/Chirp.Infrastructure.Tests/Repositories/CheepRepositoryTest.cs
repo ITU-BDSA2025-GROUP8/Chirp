@@ -34,7 +34,7 @@ public class CheepRepositoryTest : IDisposable
         using var context = CreateDbContext();
         context.Database.EnsureCreated();
         var repository = new CheepRepository(context);
-        var author = new Author { Name = "Test1", Email = "test1@itu.dk" };
+        var author = new Author { Name = "Test1", Id = "1", Email = "test1@itu.dk" };
 
         context.Authors.AddRange(author);
         context.SaveChanges();
@@ -42,7 +42,7 @@ public class CheepRepositoryTest : IDisposable
         var newCheep = new CheepDTO
         {
             Id = 1,
-            AuthorId = "Test1",
+            AuthorId = "1",
             Text = "I chirped",
             CreatedAt = new DateTime(2025, 10, 8),
         };
@@ -140,8 +140,8 @@ public class CheepRepositoryTest : IDisposable
         context.Database.EnsureCreated();
         var repository = new CheepRepository(context);
 
-        var author1 = new Author { Name = "Test1", Email = "test1@itu.dk" };
-        var author2 = new Author { Name = "Test2", Email = "test2@itu.dk" };
+        var author1 = new Author { Name = "Test1", Id = "1", Email = "test1@itu.dk" };
+        var author2 = new Author { Name = "Test2", Id = "2", Email = "test2@itu.dk" };
         context.Authors.AddRange(author1, author2);
 
         var cheep = new Cheep { Author = author1, Text = "old text", Date = new DateTime(2025, 10, 10) };
@@ -156,7 +156,7 @@ public class CheepRepositoryTest : IDisposable
             Id = cheepId,
             Text = "altered text",
             CreatedAt = new DateTime(2025, 10, 11),
-            AuthorId = "Test1"
+            AuthorId = "1"
         };
 
         await repository.UpdateCheep(dto);
