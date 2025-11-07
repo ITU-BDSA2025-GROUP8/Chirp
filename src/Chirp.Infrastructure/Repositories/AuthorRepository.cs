@@ -117,5 +117,52 @@ public class AuthorRepository : IAuthorRepository
             throw new Exception("Unable to find the original cheep");
         }
         return originalCheep;
+    } 
+    
+    //Query selecting author whose name matches the provided
+    public async Task<AuthorDTO?> FindByName(string name)
+    {
+        return await _context.Authors
+            .Where(a => a.Name == name)
+            .Select(a => new AuthorDTO
+            {
+                Id = a.Id, 
+                Name = a.Name,
+                Email = a.Email,
+                Cheeps = a.Cheeps
+                    .Select(c => new CheepDTO //projects the Author entity into an AuthorDTO including the cheeps
+                    {
+                        Id = c.CheepId,
+                        UserName = a.Name,
+                        Text = c.Text,
+                        CreatedAt = c.Date
+                    })
+                    .ToList()
+            })
+            .FirstOrDefaultAsync();//returns first matching
+    }
+    //Query that selects the author whose email matches the provided
+    public async Task<AuthorDTO?> FindByEmail(string email)
+    {
+        return await _context.Authors
+            .Where(a => a.Email == email)
+            .Select(a => new AuthorDTO
+            {
+                Id = a.Id,
+                Name = a.Name,
+                Email = a.Email,
+                //for each cheep, create new CheepDTO object
+                Cheeps = a.Cheeps
+                        //projects the Author entity into an AuthorDTO including the cheeps
+                    .Select(c => new CheepDTO
+                    {
+                        Id = c.CheepId,
+                        UserName = a.Name,
+                        Text = c.Text,
+                        CreatedAt = c.Date
+                    })
+                    .ToList()
+            })
+            .FirstOrDefaultAsync();//returns first matching
     }
 }
