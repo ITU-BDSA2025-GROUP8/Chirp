@@ -123,47 +123,61 @@ public class AuthorRepository : IAuthorRepository
     //Query selecting author whose name matches the provided
     public async Task<AuthorDTO?> FindByName(string name)
     {
-        return await _context.Authors
-            .Where(a => a.Name == name)//filters authors by name
-            .Select(a => new AuthorDTO
+        // Construction of query gets the matching author incl. cheeps
+        var authorsQuery = (from author in _context.Authors
+                where author.Name == name
+                select author)
+            .Include(a => a.Cheeps);
+
+        var authors = await authorsQuery.ToListAsync();
+        var query = from author in authors
+        select new AuthorDTO()
             {
-                Id = a.Id, 
-                Name = a.Name,
-                Email = a.Email,
-                Cheeps = a.Cheeps
-                    .Select(c => new CheepDTO //projects the Author entity into an AuthorDTO including the cheeps
+                Id = author.Id, 
+                Name = author.Name,
+                Email = author.Email,
+                Cheeps = author.Cheeps 
+                    .Select(c => new CheepDTO 
                     {
                         Id = c.CheepId,
-                        UserName = a.Name,
+                        UserName = author.Name,
                         Text = c.Text,
                         CreatedAt = c.Date
                     })
                     .ToList()
-            })
-            .FirstOrDefaultAsync();//returns first matching
+            };
+            var result = query.FirstOrDefault();
+            return result;
     }
     //Query that selects the author whose email matches the provided
-    public async Task<AuthorDTO?> FindByEmail(string email)
-    {
-        return await _context.Authors
-            .Where(a => a.Email == email)//filters authors by email
-            .Select(a => new AuthorDTO
-            {
-                Id = a.Id,
-                Name = a.Name,
-                Email = a.Email,
-                //for each cheep, create new CheepDTO object
-                Cheeps = a.Cheeps
-                        //projects the Author entity into an AuthorDTO including the cheeps
-                    .Select(c => new CheepDTO
-                    {
-                        Id = c.CheepId,
-                        UserName = a.Name,
-                        Text = c.Text,
-                        CreatedAt = c.Date
-                    })
-                    .ToList()
-            })
-            .FirstOrDefaultAsync();//returns first matching
+    public async Task<AuthorDTO?> FindByEmail(string email){
+        // Construction of query gets the matching author incl. cheeps
+        var authorsQuery = (from author in _context.Authors
+                where author.Email == email
+                select author)
+            .Include(a => a.Cheeps);
+        
+    var authors = await authorsQuery.ToListAsync();
+
+    var query = from author in authors
+        select new AuthorDTO()
+        {
+            Id = author.Id,
+            Name = author.Name,
+            Email = author.Email,
+            //for each cheep, create new CheepDTO object
+            Cheeps = author.Cheeps
+                //projects the Author entity into an AuthorDTO including the cheeps
+                .Select(c => new CheepDTO
+                {
+                    Id = c.CheepId,
+                    UserName = author.Name,
+                    Text = c.Text,
+                    CreatedAt = c.Date
+                })
+                .ToList()
+        };
+        var result = query.FirstOrDefault();
+        return result;
     }
 }
