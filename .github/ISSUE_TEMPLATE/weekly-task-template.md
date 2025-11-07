@@ -1,15 +1,15 @@
 ---
 name: Weekly task template
-about: Describe this issue template's purpose here.
+about: Template for weekly task specifed in README_PROJECT
 title: Week.task.subtask
 labels: ''
 assignees: ''
 
 ---
 
-##User story
+## User story
 
 
-##Acceptance criteria
+## Acceptance criteria
 - [ ] Criteria 1
 - [ ] Criteria 2
