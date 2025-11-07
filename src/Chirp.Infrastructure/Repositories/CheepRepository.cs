@@ -19,14 +19,14 @@ public class CheepRepository : ICheepRepository
     // Create a new cheep
     public async Task CreateCheep(CheepDTO newCheep)
     {
-        var author = await findAuthor(newCheep.UserName);
+        var author = await findAuthor(newCheep.AuthorId);
         
         
         
         if (author == null)
         {
             //Throws an exception since it should always have a valid author, registered in the database - Exception created by ChatGPT
-            throw new Exception($"Author with username '{newCheep.UserName}' not found."); 
+            throw new Exception($"Author with username '{newCheep.AuthorId}' not found."); 
         }
         // Creates new cheep
         Cheep cheep = new()
@@ -51,7 +51,7 @@ public class CheepRepository : ICheepRepository
             {
                 CreatedAt = cheep.Date,
                 Text = cheep.Text,
-                UserName = cheep.Author.Name
+                AuthorId = cheep.Author.Name
             }).Skip(GetOffset(page)).Take(32);
         
         // Executing the query
@@ -70,7 +70,7 @@ public class CheepRepository : ICheepRepository
             {
                 CreatedAt = cheep.Date,
                 Text = cheep.Text,
-                UserName = cheep.Author.Name
+                AuthorId = cheep.Author.Name
             }).Skip(GetOffset(page)).Take(32);
         
         // Execution of the query
@@ -105,11 +105,11 @@ public class CheepRepository : ICheepRepository
     private async void UpdateCheep(Cheep originalCheep, CheepDTO alteredCheep)
     {
         // Find the author object of the alteredCheep
-        var author = await findAuthor(alteredCheep.UserName);
+        var author = await findAuthor(alteredCheep.AuthorId);
         
         if (author == null)
         {
-            throw new Exception($"Author with username '{alteredCheep.UserName}' not found while trying to update cheep.");
+            throw new Exception($"Author with username '{alteredCheep.AuthorId}' not found while trying to update cheep.");
         }
         
         // Sets the new properties

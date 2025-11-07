@@ -36,7 +36,7 @@ public class UserTimelineModel : PageModel
             CreatedAt = DateTime.Now,
             Id = 1,
             Text = CheepText,
-            UserName = UserName
+            AuthorId = UserName
         };
        
         //Call the repository method for creating a cheep

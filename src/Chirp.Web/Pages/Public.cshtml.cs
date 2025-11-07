@@ -35,7 +35,7 @@ public class PublicModel : PageModel
        {
            CreatedAt = DateTime.Now,
            Text = CheepText,
-           UserName = UserName
+           AuthorId = UserName
        };
        
        //Call the repository method for creating a cheep
