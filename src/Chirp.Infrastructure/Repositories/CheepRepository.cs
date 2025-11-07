@@ -120,14 +120,13 @@ public class CheepRepository : ICheepRepository
     }
     
     // Utility method: find the author object
-    //todo: right now the author object is found by the name - this should be changed to the ID as this is the key of an author object in the data model
-    private async Task<Author> findAuthor(string AuthorName)
+    private async Task<Author> findAuthor(string AuthorId)
     {
         // Suggestion from ChatGPT
         // Gets one Author object from the database
         var author = await(
             from a in _context.Authors
-            where a.Name == AuthorName
+            where a.Id == AuthorId
             select a
         ).FirstOrDefaultAsync(); // Runs the query and return the first author with that name or default value 
 
