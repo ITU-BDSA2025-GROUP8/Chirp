@@ -99,6 +99,34 @@ public class CheepRepositoryTest : IDisposable
     }
 
     [Fact]
+    public async Task GetAllCheepsPaginationTest()
+    {
+        //Arrange
+        using var context = CreateDbContext();
+
+        context.Database.EnsureCreated();
+        var repository = new CheepRepository(context);
+
+        // Create 40 cheeps
+        var author = new Author { Name = "Test", Email = "test@itu.dk" };
+        context.Authors.AddRange(author);
+        for (int i = 0; i < 40; i++) 
+        {
+            context.Cheeps.AddRange(new Cheep { Author = author, Text = "wee", Date = new DateTime(2025, 10, 2) });
+        }
+        context.SaveChanges();
+        
+        // Act, assert
+        var firstPage = await repository.GetAllCheeps(1);
+        Assert.Equal(32, firstPage.Count());
+        var secondPage = await repository.GetAllCheeps(2);
+        Assert.Equal(8, secondPage.Count());
+        
+        // Clean up
+        Dispose();
+    }
+    
+    [Fact]
     public async Task ReadCheepsByTest()
     {
         //Arrange
@@ -132,6 +160,34 @@ public class CheepRepositoryTest : IDisposable
         Dispose();
     }
 
+    [Fact]
+    public async Task ReadCheepsByPaginationTest()
+    {
+        //Arrange
+        using var context = CreateDbContext();
+
+        context.Database.EnsureCreated();
+        var repository = new CheepRepository(context);
+
+        // Create 50 cheeps
+        var author = new Author { Name = "Test", Email = "test@itu.dk" };
+        context.Authors.AddRange(author);
+        for (int i = 0; i < 50; i++) 
+        {
+            context.Cheeps.AddRange(new Cheep { Author = author, Text = "wee", Date = new DateTime(2025, 10, 2) });
+        }
+        context.SaveChanges();
+        
+        // Act, assert
+        var firstPage = await repository.ReadCheepsBy(author.Name, 1);
+        Assert.Equal(32, firstPage.Count());
+        var secondPage = await repository.ReadCheepsBy(author.Name, 2);
+        Assert.Equal(18, secondPage.Count());
+        
+        // Clean up
+        Dispose();
+    }
+    
     [Fact]
     public async Task UpdateCheepTest()
     {
