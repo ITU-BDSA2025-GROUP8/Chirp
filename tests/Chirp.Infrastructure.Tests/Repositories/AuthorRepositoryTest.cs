@@ -124,4 +124,62 @@ public class AuthorRepositoryTest : IDisposable
         //Clean up
         Dispose();
     }
+
+    [Fact]
+    public async Task FindByName()
+    {
+        //Arrange
+        using var context = CreateDbContext();
+        context.Database.EnsureCreated(); 
+        var a1 = new Author { Id = "1", Name = "test1", Email = "test1@itu.dk", Cheeps = new List<Cheep>() };
+        var a2 = new Author { Id = "2", Name = "test2",   Email = "test2@itu.dk",   Cheeps = new List<Cheep>() };
+        context.Authors.AddRange(a1, a2);
+        
+        context.Cheeps.AddRange(
+            new Cheep { Author = a1, Text = "hello", Date = new DateTime(2025, 10, 10) },
+            new Cheep { Author = a1, Text = "world", Date = new DateTime(2025, 10, 11) },
+            new Cheep { Author = a2, Text = "cheep", Date = new DateTime(2025, 10, 12) }
+        );
+        context.SaveChanges();
+        
+        var repository = new AuthorRepository(context);
+        
+        //Act
+        var dto =  await repository.FindByName("test1");
+        
+        //Assert
+        Assert.NotNull(dto);
+        Assert.Equal("test1", dto.Name);
+        Assert.Equal("test1@itu.dk", dto.Email);
+        Assert.Equal(2, dto.Cheeps.Count);
+        
+    }
+
+    [Fact]
+    public async Task FindByEmail()
+    {
+        //Arrange
+        using var context = CreateDbContext();
+        context.Database.EnsureCreated(); 
+        var a1 = new Author { Id = "1", Name = "test1", Email = "test1@itu.dk", Cheeps = new List<Cheep>() };
+        var a2 = new Author { Id = "2", Name = "test2",   Email = "test2@itu.dk",   Cheeps = new List<Cheep>() };
+        context.Authors.AddRange(a1, a2);
+        
+        context.Cheeps.AddRange(
+            new Cheep { Author = a1, Text = "hello", Date = new DateTime(2025, 10, 10) },
+            new Cheep { Author = a1, Text = "world", Date = new DateTime(2025, 10, 11) },
+            new Cheep { Author = a2, Text = "cheep", Date = new DateTime(2025, 10, 12) }
+        );
+        context.SaveChanges();
+        var repository = new AuthorRepository(context);
+        
+        //Act
+        var dto =  await repository.FindByEmail("test1@itu.dk");
+        
+        //Assert
+        Assert.NotNull(dto);
+        Assert.Equal("test1", dto.Name);
+        Assert.Equal("test1@itu.dk", dto.Email);
+        Assert.Equal(2, dto.Cheeps.Count);
+    }
 }
