@@ -25,13 +25,8 @@ public class CheepRepository : ICheepRepository
         
         if (author == null)
         {
-            //todo: call method to create new author instead of throw exception
-            //for now throw exception - written by ChatGPT
-            //todo: Opdater det her. Det er bare midlertidigt. Lige pt. bliver der her ikke knyttet andet til author end navn og email.  
-            //throw new Exception($"Author with username '{newCheep.UserName}' not found."); //todo: udkommenteret for nu for at få program til at køre
-            author = new Author { Name = newCheep.UserName, Email = newCheep.UserName + "@itu.dk"};
-            await _context.Authors.AddAsync(author);
-            await _context.SaveChangesAsync();
+            //Throws an exception since it should always have a valid author, registered in the database - Exception created by ChatGPT
+            throw new Exception($"Author with username '{newCheep.UserName}' not found."); 
         }
         // Creates new cheep
         Cheep cheep = new()
