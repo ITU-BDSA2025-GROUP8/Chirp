@@ -161,6 +161,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             return Page();
         }
 
+        // Create an instance of author
         private Author CreateUser()
         {
             try
@@ -175,6 +176,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             }
         }
 
+        // Validate email
         private IUserEmailStore<Author> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
