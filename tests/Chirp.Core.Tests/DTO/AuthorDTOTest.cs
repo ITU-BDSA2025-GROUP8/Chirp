@@ -9,7 +9,7 @@ public class AuthorDTOTest
     {
         AuthorDTO authorDTO = new()
         {
-            Id = 1,
+            Id = "1",
             Name = "Test",
             Email = "test@itu.dk"
         };
@@ -17,7 +17,7 @@ public class AuthorDTOTest
         var cheeps = new List<CheepDTO> { new CheepDTO { Id = 1, UserName = "Test", Text = "Test1"} };
         authorDTO.Cheeps = cheeps;
         
-        Assert.Equal(1, authorDTO.Id);
+        Assert.Equal("1", authorDTO.Id);
         Assert.Equal("Test", authorDTO.Name);
         Assert.Equal("test@itu.dk", authorDTO.Email);
         Assert.Equal(cheeps, authorDTO.Cheeps);

@@ -21,8 +21,8 @@ public class AuthorRepository : IAuthorRepository
         Author author = new()
         {
             Name = newUser.Name,
-            EmailAddress = newUser.Email,
-            Cheeps = new List<Cheep>() 
+            Email = newUser.Email,
+            Cheeps = new List<Cheep>()
         };
 
         // Adds and saves the cheep in the database
@@ -43,9 +43,9 @@ public class AuthorRepository : IAuthorRepository
         var query = from author in authors
             select new AuthorDTO()
             {
-                Id = author.AuthorId,
+                Id = author.Id,
                 Name = author.Name,
-                Email = author.EmailAddress,
+                Email = author.Email,
                 Cheeps = author.Cheeps
                     .Select(c => new CheepDTO
                     {
@@ -67,7 +67,7 @@ public class AuthorRepository : IAuthorRepository
     {
         // Construction of the query that selects cheeps written by the same AuthorID
         var query = from author in _context.Authors
-            where author.AuthorId == updatedAuthor.Id 
+            where author.Id == updatedAuthor.Id 
             select author;
         
         var originalAuthor = await query.FirstOrDefaultAsync();
@@ -89,9 +89,9 @@ public class AuthorRepository : IAuthorRepository
     private void UpdateAuthor(Author originalAuthor, AuthorDTO updatedAuthor)
     {
         // Sets the new properties
-        originalAuthor.AuthorId = updatedAuthor.Id;
+        originalAuthor.Id = updatedAuthor.Id;
         originalAuthor.Name = updatedAuthor.Name;
-        originalAuthor.EmailAddress = updatedAuthor.Email;
+        originalAuthor.Email = updatedAuthor.Email;
 
         ICollection<Cheep> cheeps = new List<Cheep>();
 
