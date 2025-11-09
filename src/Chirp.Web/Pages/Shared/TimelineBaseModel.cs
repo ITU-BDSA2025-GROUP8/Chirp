@@ -1,5 +1,7 @@
 using Chirp.Core.DTO;
+using Chirp.Infrastructure.Entities;
 using Chirp.Web.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -13,12 +15,24 @@ public class TimelineBaseModel : PageModel
     public string? CheepText { get; set; }
     [BindProperty]
     public string? UserId { get; set; }
+    public string? DisplayName { get; set; }
+    protected readonly UserManager<Author> UserManager;
     
     //Inject the cheep service, sets a specific "model"
-    public TimelineBaseModel(ICheepService service)
+    public TimelineBaseModel(ICheepService service, UserManager<Author> userManager)
     {
         _service = service;
+        UserManager = userManager;
         Cheeps = new List<CheepViewModel>();
+    }
+
+    //Get current user information
+    //Obs: Used ChatGPT to help figure out how to get userManager info from public.cshtml (html) to this class (c#)
+    public virtual async Task OnGetAsync()
+    {
+        var currentUser = await UserManager.GetUserAsync(User);
+        DisplayName = currentUser?.Name ?? User.Identity.Name;
+        UserId = currentUser.Id; 
     }
     
     public async Task<IActionResult> OnPostAsync()
