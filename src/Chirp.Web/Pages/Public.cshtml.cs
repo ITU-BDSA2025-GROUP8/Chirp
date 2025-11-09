@@ -1,25 +1,16 @@
-﻿using Chirp.Core.DTO;
+﻿using Chirp.Web.Pages.Shared;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Chirp.Web.Services;
 
 namespace Chirp.Web.Pages;
 
 //Pages for cheeps from all authors
-public class PublicModel : PageModel
+public class PublicModel : TimelineBaseModel
 {
-    private readonly ICheepService _service;
-    public List<CheepViewModel>? Cheeps { get; set; }
-    [BindProperty]
-    public string? CheepText { get; set; }
-    [BindProperty]
-    public string? UserId { get; set; }
-
-    //Inject the cheep service, sets a specific "model"
-    public PublicModel(ICheepService service)
+    
+    //Inherits from parent class TimelineBaseModel, which injects the cheep service and sets a model
+    public PublicModel(ICheepService service) : base(service)
     {
-        _service = service;
-        Cheeps = new List<CheepViewModel>();
     }
 
     //Get all cheeps by all authors
@@ -27,21 +18,6 @@ public class PublicModel : PageModel
     {
         Cheeps = _service.GetCheeps(page);
         return Page();
-    }
-
-    public async Task<IActionResult> OnPostAsync()
-    {
-       //Create CheepDTO
-       var cheepDTO = new CheepDTO()
-       {
-           CreatedAt = DateTime.Now,
-           Text = CheepText,
-           AuthorId = UserId
-       };
-       
-       //Call the repository method for creating a cheep
-       await _service.CreateCheepFromDTO(cheepDTO);
-       return RedirectToPage();
     }
     
 }
