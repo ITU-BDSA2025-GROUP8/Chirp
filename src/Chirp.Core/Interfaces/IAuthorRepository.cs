@@ -10,4 +10,8 @@ public interface IAuthorRepository
     Task<List<AuthorDTO>> GetAllAuthors();
     // Update author
     Task UpdateAuthor(AuthorDTO updatedAuthor);
+    // Find author by name
+    Task<AuthorDTO?> FindByName(string name);
+    // Find author by email
+    Task<AuthorDTO?> FindByEmail(string email);
 }
