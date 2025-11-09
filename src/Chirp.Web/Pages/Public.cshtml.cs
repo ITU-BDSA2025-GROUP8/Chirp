@@ -1,6 +1,8 @@
-﻿using Chirp.Web.Pages.Shared;
+﻿using Chirp.Infrastructure.Entities;
+using Chirp.Web.Pages.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Chirp.Web.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace Chirp.Web.Pages;
 
@@ -9,13 +11,16 @@ public class PublicModel : TimelineBaseModel
 {
     
     //Inherits from parent class TimelineBaseModel, which injects the cheep service and sets a model
-    public PublicModel(ICheepService service) : base(service)
+    public PublicModel(ICheepService service, UserManager<Author> userManager) : base(service, userManager)
     {
     }
 
     //Get all cheeps by all authors
-    public ActionResult OnGet([FromQuery] int page)
+    public async Task<ActionResult> OnGetAsync([FromQuery] int page)
     {
+        //Call base method to get user info
+        await base.OnGetAsync();
+        
         Cheeps = _service.GetCheeps(page);
         return Page();
     }
