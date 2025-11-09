@@ -28,7 +28,7 @@ public class TimelineBaseModel : PageModel
 
     //Get current user information
     //Obs: Used ChatGPT to help figure out how to get userManager info from public.cshtml (html) to this class (c#)
-    public virtual async Task OnGetAsync()
+    public async Task GetUserInformation()
     {
         var currentUser = await UserManager.GetUserAsync(User);
         DisplayName = currentUser?.Name ?? User.Identity.Name;

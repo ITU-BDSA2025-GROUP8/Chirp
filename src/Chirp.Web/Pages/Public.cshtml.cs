@@ -19,7 +19,7 @@ public class PublicModel : TimelineBaseModel
     public async Task<ActionResult> OnGetAsync([FromQuery] int page)
     {
         //Call base method to get user info
-        await base.OnGetAsync();
+        await GetUserInformation();
         
         Cheeps = _service.GetCheeps(page);
         return Page();

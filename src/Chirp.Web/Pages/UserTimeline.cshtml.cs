@@ -21,7 +21,7 @@ public class UserTimelineModel : TimelineBaseModel
     public async Task<ActionResult> OnGet(string author, [FromQuery] int page)
     {
         //Call base method to get user info
-        await base.OnGetAsync();   
+        await GetUserInformation();   
         
         Cheeps = _service.GetCheepsFromAuthor(author, page);
         return Page();
