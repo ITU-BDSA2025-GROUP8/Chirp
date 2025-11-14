@@ -47,6 +47,12 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
+      - name: Create .env file
+        run: |
+          echo "ASPNETCORE_ENVIRONMENT=Production" >> src/Chirp.Web/.env
+          echo "AUTHENTICATION_GITHUB_CLIENTID=clientID" >> src/Chirp.Web/.env
+          echo "AUTHENTICATION_GITHUB_CLIENTSECRET=clientSecret" >> src/Chirp.Web/.env
+
       - name: Build Linux
         run: dotnet publish src/Chirp.Web/Chirp.Web.csproj -c Release -r linux-x64 --self-contained false /p:PublishSingleFile=true /p:UseAppHost=true -o out/linux
         
@@ -55,6 +61,12 @@ jobs:
 
       - name: Build macOS
         run: dotnet publish src/Chirp.Web/Chirp.Web.csproj -c Release -r osx-x64 --self-contained false /p:PublishSingleFile=true /p:UseAppHost=true -o out/macos
+
+      - name: Copy .env to outputs
+        run: |
+          cp src/Chirp.Web/.env out/linux/.env
+          cp src/Chirp.Web/.env out/win/.env
+          cp src/Chirp.Web/.env out/macos/.env
 
       - name: Package executables
         run: |

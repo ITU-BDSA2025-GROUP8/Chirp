@@ -1,63 +1,31 @@
-To run this program from either development or release you need to have dotnet 8 installed
+# Prerequisites
+You need to have dotnet 8 installed.
 
-# Running from repository code
+# Running in development environment
 
-## Run on Linux or Mac with temperary database
+Navigate to the `src/Chirp.Web` folder.
+<br>
+Run `dotnet run`
 
-In a ubunto or mac terminal run the following commands in the Chirp.Razor dirctory:
+## Register user with OAuth
 
-`sqlite3 /tmp/chirp.db < ./src/Chirp.Infrastructure/Data/schema.sql`
+If you wish to use the application's OAuth functionality, you need to create an enviroment variables file and paste in the secrets.
 
-`sqlite3 /tmp/chirp.db < ./src/Chirp.Infrastructure/Data/dump.sql`
+In `src/Chirp.Web` create a `.env` file with the following contents: <br>
+```
+AUTHENTICATION_GITHUB_CLIENTID="[Put client ID here]"
+AUTHENTICATION_GITHUB_CLIENTSECRET="[Put client secret here]"
+```
+Client ID and secrets are stored in the Azure for this web app, bdsa2024group8chirprazor2025, under settings/environment variables.
 
-This will make the database in the tmp directory. Then go to the directory that has the program.cs file, which is `src/Chirp.Web` and run:
-
-`dotnet run`
-
-and the program will run
-
-## Run on Windows using environment variables
-In windows terminal you first need to set an environment variable, that can be done using the command:
-
-`$env:CHIRPDBPATH = "./chirp.db" `
-
-Then go to the directory that has the program.cs file, which is `src/Chirp.Web` and run:
-
-`dotnet run`
-
-## Run on Linux or Mac using environment variables
-Set the environment variable with the comamand:
-
-`export CHIRPDBPATH=./chirp.db`
-
-Then go to the directory that has the program.cs file, which is `src/Chirp.Web` and run:
-
-`dotnet run`
-
+There should be a `env.sample` file in the same folder, you can use as a template.
 
 # Run from release
 
-## Windows
+Download the release for your operating system and run the `Chirp.Web` executable. <br>
+OAuth Github functionality is NOT supported in the released version. If you want to register via Github use the deployed version detailed below.
 
-To run from the release files you first need to download the folder for your OS, and open the directory in a terminal.
-Then you need to set the environment variable with the command:
+# Deployed version
 
-`$env:CHIRPDBPATH = "./chirp.db" `
-
-Then run:
-`.\Chirp.Web.exe`
-
-## Linux and Mac
-
-To run from the release files you first need to download the folder for your OS and open the directory in a terminal
-Then you need to set the environment variable with the command:
-
-`export CHIRPDBPATH=./chirp.db`
-
-Then make it an executable with the command:
-`chmod +x Chirp.Web`
-
-And then you can run it using
-
-`./Chirp.Web`
-
+Go to `https://bdsa2024group8chirprazor2025.azurewebsites.net/` <br>
+This version supports login using OAuth Github.
