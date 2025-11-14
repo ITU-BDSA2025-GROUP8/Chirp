@@ -1,26 +1,30 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Chirp.Infrastructure.Entities;
+using Chirp.Web.Pages.Shared;
+using Microsoft.AspNetCore.Mvc;
 using Chirp.Web.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace Chirp.Web.Pages;
 
 //Pages for cheeps from all authors
-public class PublicModel : PageModel
+public class PublicModel : TimelineBaseModel
 {
-    private readonly ICheepService _service;
-    public List<CheepViewModel>? Cheeps { get; set; }
-
-    //Inject the cheep service, sets a specific "model"
-    public PublicModel(ICheepService service)
+    
+    //Inherits from parent class TimelineBaseModel, which injects the cheep service and sets a model
+    public PublicModel(ICheepService service, UserManager<Author> userManager) : base(service, userManager)
     {
-        _service = service;
-        Cheeps = new List<CheepViewModel>();
     }
 
     //Get all cheeps by all authors
-    public ActionResult OnGet([FromQuery] int page)
+    public async Task<ActionResult> OnGetAsync([FromQuery] int page, [FromQuery] string? error)
     {
+        HandleError(error);
+        
+        //Call base method to get user info
+        await GetUserInformation();
+        
         Cheeps = _service.GetCheeps(page);
         return Page();
     }
+    
 }

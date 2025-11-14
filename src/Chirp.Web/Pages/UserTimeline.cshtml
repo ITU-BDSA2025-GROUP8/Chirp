@@ -1,5 +1,7 @@
 ﻿@page "/{author}"
+@using Chirp.Infrastructure.Entities
 @model Chirp.Web.Pages.UserTimelineModel
+@inject UserManager<Author> UserManager
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
@@ -8,6 +10,7 @@
 
 <div>
     <h2> @routeName's Timeline </h2>
+    <partial name="~/Pages/Shared/_CheepBoxPartial.cshtml" model="Model" />
 
     @if (Model.Cheeps!.Any())
     {

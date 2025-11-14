@@ -11,13 +11,13 @@ public class CheepDTOTest
         CheepDTO cheepDTO = new()
         {
             Id = 1,
-            UserName = "Tester",
+            AuthorId = "Tester",
             Text = "This is a test",
             CreatedAt = new DateTime(2025, 1, 1)
         };
         
         Assert.Equal(1, cheepDTO.Id);
-        Assert.Equal("Tester", cheepDTO.UserName);
+        Assert.Equal("Tester", cheepDTO.AuthorId);
         Assert.Equal("This is a test", cheepDTO.Text);
         Assert.Equal(new DateTime(2025, 1, 1), cheepDTO.CreatedAt);
     }

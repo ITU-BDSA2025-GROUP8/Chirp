@@ -34,7 +34,7 @@ public class CheepRepositoryTest : IDisposable
         using var context = CreateDbContext();
         context.Database.EnsureCreated();
         var repository = new CheepRepository(context);
-        var author = new Author { Name = "Test1", Email = "test1@itu.dk" };
+        var author = new Author { Name = "Test1", Id = "1", Email = "test1@itu.dk" };
 
         context.Authors.AddRange(author);
         context.SaveChanges();
@@ -42,7 +42,7 @@ public class CheepRepositoryTest : IDisposable
         var newCheep = new CheepDTO
         {
             Id = 1,
-            UserName = "Test1",
+            AuthorId = "1",
             Text = "I chirped",
             CreatedAt = new DateTime(2025, 10, 8),
         };
@@ -85,8 +85,8 @@ public class CheepRepositoryTest : IDisposable
 
         //Assert
         Assert.Equal(3, allCheeps.Count);
-        Assert.Contains(allCheeps, c => c.Text == "hi" && c.UserName == "Test1");
-        Assert.Contains(allCheeps, c => c.Text == "hello" && c.UserName == "Test2");
+        Assert.Contains(allCheeps, c => c.Text == "hi" && c.AuthorId == "Test1");
+        Assert.Contains(allCheeps, c => c.Text == "hello" && c.AuthorId == "Test2");
         //Assert.All(allCheeps, c => Assert.True(c.Id > 0)); // Id should exist todo: check if this is needed?
 
         //Assert cheeps are in correct order (newest first)
@@ -151,7 +151,7 @@ public class CheepRepositoryTest : IDisposable
 
         //Assert
         Assert.Equal(2, author1Cheeps.Count);
-        Assert.All(author1Cheeps, c => Assert.Equal("Test1", c.UserName));
+        Assert.All(author1Cheeps, c => Assert.Equal("Test1", c.AuthorId));
 
         //Assert cheeps are in correct order (newest first)
         Assert.True(author1Cheeps[0].CreatedAt > author1Cheeps[1].CreatedAt);
@@ -196,8 +196,8 @@ public class CheepRepositoryTest : IDisposable
         context.Database.EnsureCreated();
         var repository = new CheepRepository(context);
 
-        var author1 = new Author { Name = "Test1", Email = "test1@itu.dk" };
-        var author2 = new Author { Name = "Test2", Email = "test2@itu.dk" };
+        var author1 = new Author { Name = "Test1", Id = "1", Email = "test1@itu.dk" };
+        var author2 = new Author { Name = "Test2", Id = "2", Email = "test2@itu.dk" };
         context.Authors.AddRange(author1, author2);
 
         var cheep = new Cheep { Author = author1, Text = "old text", Date = new DateTime(2025, 10, 10) };
@@ -212,7 +212,7 @@ public class CheepRepositoryTest : IDisposable
             Id = cheepId,
             Text = "altered text",
             CreatedAt = new DateTime(2025, 10, 11),
-            UserName = "Test1"
+            AuthorId = "1"
         };
 
         await repository.UpdateCheep(dto);

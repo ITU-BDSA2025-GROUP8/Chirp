@@ -14,7 +14,7 @@ public class AuthorDTOTest
             Email = "test@itu.dk"
         };
 
-        var cheeps = new List<CheepDTO> { new CheepDTO { Id = 1, UserName = "Test", Text = "Test1"} };
+        var cheeps = new List<CheepDTO> { new CheepDTO { Id = 1, AuthorId = "Test", Text = "Test1"} };
         authorDTO.Cheeps = cheeps;
         
         Assert.Equal("1", authorDTO.Id);
