@@ -30,9 +30,12 @@ public class TimelineBaseModel : PageModel
     //Obs: Used ChatGPT to help figure out how to get userManager info from public.cshtml (html) to this class (c#)
     public async Task GetUserInformation()
     {
-        var currentUser = await UserManager.GetUserAsync(User);
-        DisplayName = currentUser?.Name ?? User.Identity.Name;
-        UserId = currentUser.Id; 
+        if (User.Identity!.IsAuthenticated)
+        {
+            var currentUser = await UserManager.GetUserAsync(User);
+            DisplayName = currentUser?.Name ?? User.Identity.Name;
+            UserId = currentUser.Id; 
+        }
     }
     
     public async Task<IActionResult> OnPostAsync()
