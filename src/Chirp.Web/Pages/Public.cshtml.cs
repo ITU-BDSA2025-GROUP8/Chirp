@@ -16,8 +16,10 @@ public class PublicModel : TimelineBaseModel
     }
 
     //Get all cheeps by all authors
-    public async Task<ActionResult> OnGetAsync([FromQuery] int page)
+    public async Task<ActionResult> OnGetAsync([FromQuery] int page, [FromQuery] string? error)
     {
+        HandleError(error);
+        
         //Call base method to get user info
         await GetUserInformation();
         

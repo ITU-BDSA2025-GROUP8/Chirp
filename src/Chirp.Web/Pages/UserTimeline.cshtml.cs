@@ -10,7 +10,7 @@ namespace Chirp.Web.Pages;
 public class UserTimelineModel : TimelineBaseModel
 {
     [BindProperty]
-    public string? UserName { get; set; } //todo: Do we need this?
+    public string? UserName { get; set; }
     
     //Inherits from parent class TimelineBaseModel, which injects the cheep service and sets a model
     public UserTimelineModel(ICheepService service, UserManager<Author> userManager) : base(service, userManager)
@@ -18,8 +18,10 @@ public class UserTimelineModel : TimelineBaseModel
     }
 
     //Gets all cheeps from a specific author
-    public async Task<ActionResult> OnGet(string author, [FromQuery] int page)
+    public async Task<ActionResult> OnGet(string author, [FromQuery] int page, [FromQuery] string? error)
     {
+          HandleError(error);
+        
         //Call base method to get user info
         await GetUserInformation();   
         
