@@ -4,6 +4,7 @@ using Chirp.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
 
 namespace Chirp.Web.Pages.Shared;
 
@@ -12,6 +13,8 @@ public class TimelineBaseModel : PageModel
     protected readonly ICheepService _service; //set to protected to be accessible in child classes //todo: Er der en grund til, at den hedder _service og ikke Service?
     public List<CheepViewModel>? Cheeps { get; set; }
     [BindProperty]
+    [Required]
+    [StringLength(160, ErrorMessage = "Your cheep is too long. Maximum length is 160 characters.")]
     public string? CheepText { get; set; }
     [BindProperty]
     public string? UserId { get; set; }
@@ -40,6 +43,10 @@ public class TimelineBaseModel : PageModel
     
     public async Task<IActionResult> OnPostAsync()
     {
+        if (!ModelState.IsValid)
+        {
+            return Page(); 
+        }
         //Create CheepDTO
         var cheepDTO = new CheepDTO()
         {

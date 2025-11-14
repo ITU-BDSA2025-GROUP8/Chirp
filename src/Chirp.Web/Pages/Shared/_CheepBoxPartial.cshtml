@@ -9,6 +9,7 @@
             <input type="hidden" asp-for="UserId" value="@Model.UserId"/>
             <input style="float: left" type="text" asp-for="CheepText">
             <input type="submit" value="Share">
+            <span asp-validation-for="CheepText"></span>
         </form>
     </div>
 }
