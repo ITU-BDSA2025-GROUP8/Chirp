@@ -42,6 +42,7 @@ public class TimelineBaseModel : PageModel
         }
     }
 
+    //Handle error messages
     public void HandleError(string? error)
     {
         if (error == null)
@@ -56,7 +57,7 @@ public class TimelineBaseModel : PageModel
         }
     }
     
-    
+    //Post method for creating a cheep (unless the ModelState is invalid, then it will show an error message)
     public async Task<IActionResult> OnPostAsync()
     {
         if (!ModelState.IsValid)
