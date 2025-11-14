@@ -219,6 +219,8 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             }
             return (IUserEmailStore<Author>)_userStore;
         }
+
+        //Makes user without email if register with OAuth succeded
         private async Task<IActionResult> CreateUserWithoutEmailAsync(ExternalLoginInfo info, string returnUrl)
         {
             var user = new Author
@@ -226,8 +228,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                 UserName = info.Principal.Identity.Name ?? info.ProviderKey,
                 Name = info.Principal.Identity.Name
             };
-
-            // Create user WITHOUT email
+            
             var result = await _userManager.CreateAsync(user);
             if (!result.Succeeded)
             {
