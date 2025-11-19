@@ -4,6 +4,7 @@ using Chirp.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
 
 namespace Chirp.Web.Pages.Shared;
 
@@ -12,6 +13,8 @@ public class TimelineBaseModel : PageModel
     protected readonly ICheepService _service; //set to protected to be accessible in child classes //todo: Er der en grund til, at den hedder _service og ikke Service?
     public List<CheepViewModel>? Cheeps { get; set; }
     [BindProperty]
+    [Required(ErrorMessage ="Your cheep can't be empty.")]
+    [StringLength(160, ErrorMessage = "Your cheep is too long. Maximum length is 160 characters.")]
     public string? CheepText { get; set; }
     [BindProperty]
     public string? UserId { get; set; }
@@ -20,6 +23,7 @@ public class TimelineBaseModel : PageModel
     public string StatusMessage { get; set; }
     
     protected readonly UserManager<Author> UserManager;
+    public string? ErrorMessage { get; set; }
     
     //Inject the cheep service, sets a specific "model"
     public TimelineBaseModel(ICheepService service, UserManager<Author> userManager)
@@ -40,9 +44,29 @@ public class TimelineBaseModel : PageModel
             UserId = currentUser.Id; 
         }
     }
+
+    //Handle error messages
+    public void HandleError(string? error)
+    {
+        if (error == null)
+        {
+            return;
+        }
+        
+        ErrorMessage = error;
+        if (ErrorMessage == "empty_cheep")
+        {
+            ErrorMessage = "Your cheep can't be empty.";
+        }
+    }
     
+    //Post method for creating a cheep (unless the ModelState is invalid, then it will show an error message)
     public async Task<IActionResult> OnPostAsync()
     {
+        if (!ModelState.IsValid)
+        {
+            return Redirect(Request.Path + "?error=empty_cheep"); 
+        }
         //Create CheepDTO
         var cheepDTO = new CheepDTO()
         {
