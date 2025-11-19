@@ -60,9 +60,16 @@ public class CheepRepository : ICheepRepository
         return result;
     }
 
+    
+    /*
+     * authorNames.Where(authorName => authorName.equals(cheep.Author.Name));
+     * 
+     */
+    
     public async Task<List<CheepDTO>> ReadCheepsBy(string authorName, int? page = null)
     {
-        // Construction of the query that selects cheeps written by the authorName //todo: should be changed to the author's ID
+        // Construction of the query that selects cheeps written by the authorName
+        // todo: should be changed to the author's ID
         var query = (from cheep in _context.Cheeps
             where cheep.Author.Name == authorName
             orderby cheep.Date descending
