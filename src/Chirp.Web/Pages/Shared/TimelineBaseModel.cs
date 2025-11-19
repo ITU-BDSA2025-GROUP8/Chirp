@@ -20,7 +20,7 @@ public class TimelineBaseModel : PageModel
     public string? UserId { get; set; }
     public string? DisplayName { get; set; }
     [TempData]
-    public string StatusMessage { get; set; }
+    public string? StatusMessage { get; set; }
     
     protected readonly UserManager<Author> UserManager;
     public string? ErrorMessage { get; set; }
@@ -40,8 +40,13 @@ public class TimelineBaseModel : PageModel
         if (User.Identity!.IsAuthenticated)
         {
             var currentUser = await UserManager.GetUserAsync(User);
-            DisplayName = currentUser?.Name ?? User.Identity.Name;
-            UserId = currentUser.Id; 
+            if (currentUser == null)
+            {
+                throw new NullReferenceException();
+            }
+
+            DisplayName = currentUser.Name;
+            UserId = currentUser.Id;
         }
     }
 
@@ -72,7 +77,7 @@ public class TimelineBaseModel : PageModel
         {
             CreatedAt = DateTime.Now,
             Text = CheepText,
-            AuthorId = UserId
+            AuthorId = UserId!
         };
        
         //Call the repository method for creating a cheep
