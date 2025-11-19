@@ -131,7 +131,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                         Email = info.Principal.FindFirstValue(ClaimTypes.Email)
                     };
                 }
-                return Page();
+                return await CreateUserWithoutEmailAsync(info, returnUrl);
             }
         }
 
@@ -194,7 +194,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
 
             ProviderDisplayName = info.ProviderDisplayName;
             ReturnUrl = returnUrl;
-            return Page();
+            return await CreateUserWithoutEmailAsync(info, returnUrl);
         }
 
         private Author CreateUser()
@@ -218,6 +218,30 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<Author>)_userStore;
+        }
+
+        //Makes user without email if register with OAuth succeded
+        private async Task<IActionResult> CreateUserWithoutEmailAsync(ExternalLoginInfo info, string returnUrl)
+        {
+            var user = new Author
+            {
+                UserName = info.Principal.Identity.Name ?? info.ProviderKey,
+                Name = info.Principal.Identity.Name
+            };
+            
+            var result = await _userManager.CreateAsync(user);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                    ModelState.AddModelError(string.Empty, error.Description);
+
+                return RedirectToPage("./Login");
+            }
+
+            await _userManager.AddLoginAsync(user, info);
+
+            await _signInManager.SignInAsync(user, isPersistent: false);
+            return LocalRedirect(returnUrl);
         }
     }
 }

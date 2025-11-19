@@ -29,6 +29,11 @@ builder.Services.AddDefaultIdentity<Author>(options =>
     }
 ).AddEntityFrameworkStores<ChirpDBContext>();
 
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.SignIn.RequireConfirmedEmail = false;
+});
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<ICheepService, CheepService>();
