@@ -15,7 +15,7 @@ public class TimelineBaseModel : PageModel
     [BindProperty]
     [Required(ErrorMessage ="Your cheep can't be empty.")]
     [StringLength(160, ErrorMessage = "Your cheep is too long. Maximum length is 160 characters.")]
-    public string? CheepText { get; set; }
+    public required string CheepText { get; set; }
     [BindProperty]
     public string? UserId { get; set; }
     public string? DisplayName { get; set; }
