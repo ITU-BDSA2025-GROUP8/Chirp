@@ -19,6 +19,9 @@ public class TimelineBaseModel : PageModel
     [BindProperty]
     public string? UserId { get; set; }
     public string? DisplayName { get; set; }
+    [TempData]
+    public string StatusMessage { get; set; }
+    
     protected readonly UserManager<Author> UserManager;
     public string? ErrorMessage { get; set; }
     
@@ -74,6 +77,9 @@ public class TimelineBaseModel : PageModel
        
         //Call the repository method for creating a cheep
         await _service.CreateCheepFromDTO(cheepDTO);
+        
+        StatusMessage = "Chirp was succesfully created!";
+        
         return RedirectToPage();
     }
 }
