@@ -1,0 +1,90 @@
+using Chirp.Core.DTO;
+using Chirp.Infrastructure.Entities;
+using Chirp.Web.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
+
+namespace Chirp.Web.Pages.Shared;
+
+public class TimelineBaseModel : PageModel
+{
+    protected readonly ICheepService _service; //set to protected to be accessible in child classes //todo: Er der en grund til, at den hedder _service og ikke Service?
+    public List<CheepViewModel>? Cheeps { get; set; }
+    [BindProperty]
+    [Required(ErrorMessage ="Your cheep can't be empty.")]
+    [StringLength(160, ErrorMessage = "Your cheep is too long. Maximum length is 160 characters.")]
+    public required string CheepText { get; set; }
+    [BindProperty]
+    public string? UserId { get; set; }
+    public string? DisplayName { get; set; }
+    [TempData]
+    public string? StatusMessage { get; set; }
+    
+    protected readonly UserManager<Author> UserManager;
+    public string? ErrorMessage { get; set; }
+    
+    //Inject the cheep service, sets a specific "model"
+    public TimelineBaseModel(ICheepService service, UserManager<Author> userManager)
+    {
+        _service = service;
+        UserManager = userManager;
+        Cheeps = new List<CheepViewModel>();
+    }
+
+    //Get current user information
+    //Obs: Used ChatGPT to help figure out how to get userManager info from public.cshtml (html) to this class (c#)
+    public async Task GetUserInformation()
+    {
+        if (User.Identity!.IsAuthenticated)
+        {
+            var currentUser = await UserManager.GetUserAsync(User);
+            if (currentUser == null)
+            {
+                throw new NullReferenceException();
+            }
+
+            DisplayName = currentUser.Name;
+            UserId = currentUser.Id;
+        }
+    }
+
+    //Handle error messages
+    public void HandleError(string? error)
+    {
+        if (error == null)
+        {
+            return;
+        }
+        
+        ErrorMessage = error;
+        if (ErrorMessage == "empty_cheep")
+        {
+            ErrorMessage = "Your cheep can't be empty.";
+        }
+    }
+    
+    //Post method for creating a cheep (unless the ModelState is invalid, then it will show an error message)
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!ModelState.IsValid)
+        {
+            return Redirect(Request.Path + "?error=empty_cheep"); 
+        }
+        //Create CheepDTO
+        var cheepDTO = new CheepDTO()
+        {
+            CreatedAt = DateTime.Now,
+            Text = CheepText,
+            AuthorId = UserId!
+        };
+       
+        //Call the repository method for creating a cheep
+        await _service.CreateCheepFromDTO(cheepDTO);
+        
+        StatusMessage = "Chirp was succesfully created!";
+        
+        return RedirectToPage();
+    }
+}
