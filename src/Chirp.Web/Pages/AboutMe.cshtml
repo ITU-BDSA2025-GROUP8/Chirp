@@ -14,17 +14,17 @@
 <style>
     @* The following code for layout is based upon the tutorial from W3Schools: https://www.w3schools.com/html/html_comments.asp --> *@
     table {
-        font-family: arial, sans-serif;
+        font-family: 'Trebuchet MS', sans-serif;
         border-collapse: collapse;
-        width: 100%;
+        width: 80%;
     }
     td, th {
-        border: 1px solid #dddddd;
+        border: 1px solid #f5eeee;
         text-align: left;
         padding: 8px;
     }
     tr:nth-child(even) {
-        background-color: #dddddd;
+        background-color: #f5eeee;
     }
 </style>
 </head>
@@ -38,7 +38,22 @@
         </tr>
         <tr>
             <td>Name</td>
-            <td>@UserManager.GetUserName(User)</td>
+            <td>@Model.DisplayName</td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>@Model.Email</td>
+        </tr>
+        <tr>
+            <td>Following</td>
+            <td> @if (@Model.Following.Any())
+                 {
+                     @Model.Following
+                 }
+                 else
+                 {
+                     <p style="padding: 0; margin: 0">You are not following anyone.</p>  
+                 }</td>
         </tr>
     </table>
 </div>
