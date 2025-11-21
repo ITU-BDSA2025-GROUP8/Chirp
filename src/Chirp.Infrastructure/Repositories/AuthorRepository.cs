@@ -189,6 +189,11 @@ public class AuthorRepository : IAuthorRepository
             select author;
         
         var originalAuthor = await query.FirstOrDefaultAsync();
+
+        if (originalAuthor!.Following.Contains(followAuthorUsername))
+        {
+            return;
+        }
         
         originalAuthor!.Following.Add(followAuthorUsername);
         await _context.SaveChangesAsync();
