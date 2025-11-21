@@ -50,7 +50,7 @@ public class AuthorRepository : IAuthorRepository
                     .Select(c => new CheepDTO
                     {
                         Id = c.CheepId,
-                        UserName = author.Name,
+                        AuthorId = author.Id,
                         Text = c.Text,
                         CreatedAt = c.Date
                     })
@@ -140,7 +140,7 @@ public class AuthorRepository : IAuthorRepository
                     .Select(c => new CheepDTO 
                     {
                         Id = c.CheepId,
-                        UserName = author.Name,
+                        AuthorId = author.Id,
                         Text = c.Text,
                         CreatedAt = c.Date
                     })
@@ -171,7 +171,7 @@ public class AuthorRepository : IAuthorRepository
                 .Select(c => new CheepDTO
                 {
                     Id = c.CheepId,
-                    UserName = author.Name,
+                    AuthorId = author.Id,
                     Text = c.Text,
                     CreatedAt = c.Date
                 })

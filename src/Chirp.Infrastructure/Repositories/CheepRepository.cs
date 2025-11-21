@@ -19,13 +19,12 @@ public class CheepRepository : ICheepRepository
     // Create a new cheep
     public async Task CreateCheep(CheepDTO newCheep)
     {
-        var author = await FindAuthor(newCheep.UserName);
+        var author = await FindAuthor(newCheep.AuthorId);
         
         if (author == null)
         {
-            //todo: call method to create new author instead of throw exception
-            //for now throw exception - written by ChatGPT
-            throw new Exception($"Author with username '{newCheep.UserName}' not found.");
+            //Throws an exception since it should always have a valid author, registered in the database - Exception created by ChatGPT
+            throw new Exception($"Author with username '{newCheep.AuthorId}' not found."); 
         }
         // Creates new cheep
         Cheep cheep = new()
@@ -51,7 +50,7 @@ public class CheepRepository : ICheepRepository
                 Id = cheep.CheepId,
                 CreatedAt = cheep.Date, 
                 Text = cheep.Text,
-                UserName = cheep.Author.Name
+                AuthorId = cheep.Author.Name
             }).Skip(GetOffset(page)).Take(32);
         
         // Executing the query
@@ -78,7 +77,7 @@ public class CheepRepository : ICheepRepository
                 Id = cheep.CheepId,
                 CreatedAt = cheep.Date,
                 Text = cheep.Text,
-                UserName = cheep.Author.Name
+                AuthorId = cheep.Author.Name
             }).Skip(GetOffset(page)).Take(32);
         
         // Execution of the query
@@ -113,11 +112,11 @@ public class CheepRepository : ICheepRepository
     private async void UpdateCheep(Cheep originalCheep, CheepDTO alteredCheep)
     {
         // Find the author object of the alteredCheep
-        var author = await FindAuthor(alteredCheep.UserName);
+        var author = await FindAuthor(alteredCheep.AuthorId);
         
         if (author == null)
         {
-            throw new Exception($"Author with username '{alteredCheep.UserName}' not found while trying to update cheep.");
+            throw new Exception($"Author with username '{alteredCheep.AuthorId}' not found while trying to update cheep.");
         }
         
         // Sets the new properties
@@ -128,13 +127,12 @@ public class CheepRepository : ICheepRepository
     }
     
     // Utility method: find the author object
-    //todo: right now the author object is found by the name - this should be changed to the ID as this is the key of an author object in the data model
-    private async Task<Author?> FindAuthor(string authorName)
+    private async Task<Author?> FindAuthor(string AuthorId)
     {
         // Suggestion from ChatGPT
         // Gets one Author object from the database
         var query = from author in _context.Authors
-            where  author.Name == authorName
+            where  author.Id == AuthorId
             select author;
         var foundAuthor = await query.FirstOrDefaultAsync();
 
