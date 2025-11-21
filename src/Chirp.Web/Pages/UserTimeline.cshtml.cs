@@ -25,7 +25,7 @@ public class UserTimelineModel : TimelineBaseModel
         //Call base method to get user info
         await GetUserInformation();   
         
-        Cheeps = _service.GetCheepsFromAuthor(author, page);
+        Cheeps = Service.GetCheepsFromAuthor(author, page);
         return Page();
     }
 }
