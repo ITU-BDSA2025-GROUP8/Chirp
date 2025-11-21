@@ -8,6 +8,39 @@
     Layout = "Shared/_Layout";
 }
 
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    @* The following code for layout is based upon the tutorial from W3Schools: https://www.w3schools.com/html/html_comments.asp --> *@
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+</style>
+</head>
+<body>
 <div>
     <h1>About Me</h1>
+    <table>
+        <tr>
+            <th>Feature</th> 
+            <th>Information</th>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>@UserManager.GetUserName(User)</td>
+        </tr>
+    </table>
 </div>
+</body>
+</html>
