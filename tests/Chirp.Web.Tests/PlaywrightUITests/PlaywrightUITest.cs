@@ -1,6 +1,10 @@
 namespace Chirp.Web.Tests.PlaywrightUITests;
 
-public class PlaywrightUITest
+using Microsoft.Playwright.NUnit;
+using NUnit.Framework;
+
+[Parallelizable(ParallelScope.Self)]
+[TestFixture]
+public class PlaywrightUITest : PageTest
 {
     
-}
