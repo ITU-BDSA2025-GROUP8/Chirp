@@ -23,7 +23,7 @@ public class PublicModel : TimelineBaseModel
         //Call base method to get user info
         await GetUserInformation();
         
-        Cheeps = _service.GetCheeps(page);
+        Cheeps = Service.GetCheeps(page);
         return Page();
     }
     
