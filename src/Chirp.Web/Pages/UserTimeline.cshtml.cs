@@ -30,12 +30,31 @@ public class UserTimelineModel : TimelineBaseModel
     //Gets all cheeps from a specific author
     public async Task<ActionResult> OnGet(string author, [FromQuery] int page, [FromQuery] string? error)
     {
-          HandleError(error);
+        HandleError(error);
         
         //Call base method to get user info
-        await GetUserInformation();   
+        await GetUserInformation();
         
-        Cheeps = _cheepService.GetCheepsFromAuthor(author, page);
+        var currentUser = await UserManager.GetUserAsync(User);
+        if (currentUser != null)
+        {
+            if (currentUser!.Name == author)
+            {
+                IList<string> following = currentUser.Following;
+                following.Add(author);
+                Cheeps = _cheepService.GetCheepsFromAuthors(following, page);
+                following.Remove(author);
+            }
+            else
+            {
+                Cheeps = _cheepService.GetCheepsFromAuthor(author, page);
+            }
+        }            
+        else
+        {
+            Cheeps = _cheepService.GetCheepsFromAuthor(author, page);
+        }
+
         return Page();
     }
 }
