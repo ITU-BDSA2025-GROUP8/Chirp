@@ -41,7 +41,7 @@
     </div>
     <div class=footer style="display: flex; justify-content: space-between">
         Chirp &mdash; An ASP.NET Application
-        <p id="tglStrMd" style="margin: 0; padding: 0" onclick="toggleStrokeMode()">Activate Stroke Mode!</p>
+        <p id="tglStrMd" onmouseover="" style="cursor:pointer; margin: 0; padding: 0" onclick="toggleStrokeMode()">Activate Stroke Mode!</p>
     </div>
 </div>
 
@@ -51,12 +51,14 @@
 <script>
     let delay = 50;
     let strokeModeInterval = null;
+    let defaultBackgroundColor = document.body.style.backgroundColor;
     
     function randHexColor() {
         return "#" + Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0");
     }
     
     function toggleStrokeMode() {
+        
         const button = document.getElementById("tglStrMd");
         if (strokeModeInterval === null) {
             strokeModeInterval = setInterval(() => {
@@ -66,6 +68,7 @@
         } else {
             clearInterval(strokeModeInterval);
             strokeModeInterval = null;
+            document.body.style.backgroundColor = defaultBackgroundColor;
             button.textContent = "Activate Stroke Mode!";
         }
     }
