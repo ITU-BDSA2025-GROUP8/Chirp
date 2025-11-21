@@ -32,9 +32,5 @@
       <ProjectReference Include="..\..\src\Chirp.Web\Chirp.Web.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="PlaywrightUITests\" />
-    </ItemGroup>
-
 
 </Project>
