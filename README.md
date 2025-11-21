@@ -27,5 +27,5 @@ OAuth Github functionality is NOT supported in the released version. If you want
 
 # Deployed version
 
-Go to `https://bdsa2024group8chirprazor2025.azurewebsites.net/` <br>
+Go to https://bdsa2024group8chirprazor2025.azurewebsites.net/ <br>
 This version supports login using OAuth Github.
