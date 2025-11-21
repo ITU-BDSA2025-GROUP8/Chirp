@@ -27,10 +27,10 @@ public class PlaywrightUITest : PageTest
         await Expect(cheepBox).Not.ToBeVisibleAsync();
         //log in
         await Page.GotoAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net/");
-        await Page.GetByRole(AriaRole.Link, new() { Name = "Log in" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "login" }).ClickAsync();
         await Page.GetByPlaceholder("name@example.com").FillAsync("robert@test.dk");
         await Page.GetByPlaceholder("password").FillAsync("Robert@test.dk1");
-        await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();        
         //go back to homepage after login
         await Page.GotoAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net/");
         //CheepBox should be visible
@@ -48,7 +48,7 @@ public class PlaywrightUITest : PageTest
         await Expect(cheepBox).Not.ToBeVisibleAsync();
         //log in
         await Page.GotoAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net/");
-        await Page.GetByRole(AriaRole.Link, new() { Name = "Log in" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "login" }).ClickAsync();
         await Page.GetByPlaceholder("name@example.com").FillAsync("robert@test.dk");
         await Page.GetByPlaceholder("password").FillAsync("Robert@test.dk1");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
