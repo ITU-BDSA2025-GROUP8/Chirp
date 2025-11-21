@@ -38,7 +38,8 @@
                         {
                             <a href="/Follow?target=@cheep.Author&undo=true&returnUrl=/">Unfollow</a>
                             <!-- Todo: Replace return url so that it can redirect back regardless of endpoint -->
-                        }
+                        }                        
+                        else if (currentUser.Name == cheep.Author){}
                         else
                         {
                             <a href="/Follow?target=@cheep.Author&undo=false&returnUrl=/">Follow</a>
