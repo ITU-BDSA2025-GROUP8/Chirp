@@ -6,6 +6,6 @@ public class AboutMe : PageModel
 {
     public void OnGet()
     {
-        
+        Console.WriteLine("About Me");
     }
 }

@@ -1,19 +1,13 @@
-@page
+@page "/AboutMe"
 @model Chirp.Web.Pages.AboutMe
+@using Chirp.Infrastructure.Entities
+@inject UserManager<Author> UserManager
 
 @{
-    Layout = null;
+    ViewData["Title"] = "Chirp!";
+    Layout = "Shared/_Layout";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <title></title>
-</head>
-<body>
 <div>
-    
+    <h1>About Me</h1>
 </div>
-</body>
-</html>
