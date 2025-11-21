@@ -180,4 +180,31 @@ public class AuthorRepository : IAuthorRepository
         var result = query.FirstOrDefault();
         return result;
     }
+    
+    // Insert new user to follow
+    public async Task FollowUser(AuthorDTO self, string followAuthorUsername)
+    {
+        var query = from author in _context.Authors
+            where author.Id == self.Id 
+            select author;
+        
+        var originalAuthor = await query.FirstOrDefaultAsync();
+        
+        originalAuthor!.Following.Add(followAuthorUsername);
+        await _context.SaveChangesAsync();
+    }
+    
+    // Remove user from followed users
+    public async Task UnFollowUser(AuthorDTO self, string followAuthorUsername)
+    {
+        var query = from author in _context.Authors
+            where author.Id == self.Id 
+            select author;
+        
+        var originalAuthor = await query.FirstOrDefaultAsync();
+        
+        originalAuthor!.Following.Remove(followAuthorUsername);
+        await _context.SaveChangesAsync();
+    }
+    
 }

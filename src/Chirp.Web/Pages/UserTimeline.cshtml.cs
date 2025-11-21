@@ -23,7 +23,7 @@ public class UserTimelineModel : TimelineBaseModel
     public string? UserName { get; set; }
     
     //Inherits from parent class TimelineBaseModel, which injects the cheep service and sets a model
-    public UserTimelineModel(ICheepService service, UserManager<Author> userManager) : base(service, userManager)
+    public UserTimelineModel(ICheepService cheepService,IAuthorService authorService, UserManager<Author> userManager) : base(cheepService,authorService, userManager)
     {
     }
 
@@ -35,7 +35,7 @@ public class UserTimelineModel : TimelineBaseModel
         //Call base method to get user info
         await GetUserInformation();   
         
-        Cheeps = _service.GetCheepsFromAuthor(author, page);
+        Cheeps = _cheepService.GetCheepsFromAuthor(author, page);
         return Page();
     }
 }

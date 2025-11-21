@@ -13,6 +13,9 @@
 
     @if (Model.Cheeps!.Any())
     {
+        {
+
+        }
         <ul id="messagelist" class="cheeps">
             @foreach (var cheep in Model.Cheeps!)
             {
@@ -23,7 +26,24 @@
                         </strong>
                         <!-- Check if the user follows the given Author, can be done with User.Following.Contains(cheep.Author) -->
                         <!-- If following write "Unfollow" else "Follow -->
-                        <a href="">Follow</a>
+                        
+                        <!-- 
+                        If the user's following list contains this Author's name, show Unfollow link
+                        Else show follow link.
+                        -->
+                        @{
+                         var currentUser = await UserManager.GetUserAsync(User);
+                        }
+                        @if (currentUser!.Following.Contains(cheep.Author))
+                        {
+                            <a href="/Follow?target=@cheep.Author&undo=true&returnUrl=/">Unfollow</a>
+                            <!-- Todo: Replace return url so that it can redirect back regardless of endpoint -->
+                        }
+                        else
+                        {
+                            <a href="/Follow?target=@cheep.Author&undo=false&returnUrl=/">Follow</a>
+                            <!-- Todo: Replace return url so that it can redirect back regardless of endpoint -->
+                        }
                         @cheep.Message
                         <small>&mdash; @cheep.Timestamp</small>
                     </p>
