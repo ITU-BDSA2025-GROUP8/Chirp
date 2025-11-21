@@ -39,11 +39,36 @@
     <div class=body>
             @RenderBody()
     </div>
-    <div class=footer>
+    <div class=footer style="display: flex; justify-content: space-between">
         Chirp &mdash; An ASP.NET Application
+        <p id="tglStrMd" style="margin: 0; padding: 0" onclick="toggleStrokeMode()">Activate Stroke Mode!</p>
     </div>
 </div>
 
 </body>
 @await RenderSectionAsync("Scripts", required: false)
+
+<script>
+    let delay = 50;
+    let strokeModeInterval = null;
+    
+    function randHexColor() {
+        return "#" + Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0");
+    }
+    
+    function toggleStrokeMode() {
+        const button = document.getElementById("tglStrMd");
+        if (strokeModeInterval === null) {
+            strokeModeInterval = setInterval(() => {
+                document.body.style.backgroundColor = randHexColor();
+            }, delay)
+            button.textContent = "Stop this madness!";
+        } else {
+            clearInterval(strokeModeInterval);
+            strokeModeInterval = null;
+            button.textContent = "Activate Stroke Mode!";
+        }
+    }
+</script>
+
 </html>
