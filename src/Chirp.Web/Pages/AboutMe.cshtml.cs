@@ -5,9 +5,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Web.Pages;
 
+//todo: rename Feature and Information in table in cshtml file
+
 public class AboutMe : PageModel
 {
-    //todo: Binding stuff
     private readonly ICheepService Service;
     private readonly UserManager<Author> UserManager;
     public required string DisplayName { get; set; }
@@ -37,6 +38,7 @@ public class AboutMe : PageModel
 
             DisplayName = currentUser.Name;
             Email = currentUser.Email;
+            Cheeps = Service.GetCheepsFromAuthor(DisplayName, 1); //todo: for now it is just default set to page 1
             
         }
         else
