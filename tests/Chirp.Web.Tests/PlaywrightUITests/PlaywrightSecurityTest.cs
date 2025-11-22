@@ -1,6 +1,7 @@
 ﻿using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace Chirp.Web.Tests.PlaywrightUITests;
 
@@ -8,13 +9,21 @@ namespace Chirp.Web.Tests.PlaywrightUITests;
 public class PlaywrightSecurityTest: PageTest
 {
     [Test] 
-    public async Task CheepboxCanSustainXSSAtacks() 
+    public async Task CheepboxCanSustainXSSandSQLAttacks() 
     {
-        //todo: the test fails as it should be run when a user is logged in, so there is a cheep-box in the page
+        //Login as user registered with SQL injection as username
+        await Page.GotoAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net/");
+        await Page.GetByRole(AriaRole.Link, new() { Name = "login" }).ClickAsync();
+        await Page.GetByPlaceholder("name@example.com").FillAsync("robert@test.dk");
+        await Page.GetByPlaceholder("password").FillAsync("Robert@test.dk1");
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "public timeline" }).ClickAsync();
+        await Expect(Page.GetByText("Public Timeline What's on")).ToBeVisibleAsync();
+        
+        //Test with XSS attack
         await Page.Locator("#CheepText").ClickAsync();
         await Page.Locator("#CheepText").FillAsync("Hello, I am feeling good!<script>alert('If you see this in a popup, you are in trouble!');</script>"); //input text is directly from slides from lecture 10
         await Page.GetByRole(AriaRole.Button, new() { Name = "Share" }).ClickAsync();
-        await Expect(Page.GetByText("TestyTester Hello, I am").First).ToBeVisibleAsync();
-        await Expect(Page.Locator("#messagelist")).ToContainTextAsync("TestyTester Hello, I am feeling good!<script>alert('If you see this in a popup, you are in trouble!');</script> — 21. november 2025");
+        await Expect(Page.GetByText("Robert'); DROP TABLE Cheeps;-- Hello, I am  feeling good!<script>alert('If you see this in a popup, you are in trouble!');</script>").First).ToBeVisibleAsync();
     }
 }
