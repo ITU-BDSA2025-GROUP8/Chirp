@@ -14,9 +14,12 @@ public class PublicModel : TimelineBaseModel
     public PublicModel(ICheepService service, UserManager<Author> userManager) : base(service, userManager)
     {
     }
+    
+    // Used for page links
+    public int PageNumber { get; set; }
 
     //Get all cheeps by all authors
-    public async Task<ActionResult> OnGetAsync([FromQuery] int page, [FromQuery] string? error)
+    public async Task<ActionResult> OnGetAsync([FromQuery] int page = 1, [FromQuery] string? error = null)
     {
         HandleError(error);
         
@@ -24,6 +27,10 @@ public class PublicModel : TimelineBaseModel
         await GetUserInformation();
         
         Cheeps = Service.GetCheeps(page);
+
+        // Used for page links
+        PageNumber = page;
+        
         return Page();
     }
     

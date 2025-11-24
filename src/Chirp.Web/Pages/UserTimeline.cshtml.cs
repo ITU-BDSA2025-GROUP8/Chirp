@@ -16,6 +16,9 @@ public class UserTimelineModel : TimelineBaseModel
     public UserTimelineModel(ICheepService service, UserManager<Author> userManager) : base(service, userManager)
     {
     }
+    
+    // Used for page links
+    public int PageNumber { get; set; }
 
     //Gets all cheeps from a specific author
     public async Task<ActionResult> OnGet(string author, [FromQuery] int page, [FromQuery] string? error)
@@ -24,6 +27,9 @@ public class UserTimelineModel : TimelineBaseModel
         
         //Call base method to get user info
         await GetUserInformation();   
+        
+        // Used for page links
+        PageNumber = page;
         
         Cheeps = Service.GetCheepsFromAuthor(author, page);
         return Page();
