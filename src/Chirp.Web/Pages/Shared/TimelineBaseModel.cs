@@ -10,7 +10,7 @@ namespace Chirp.Web.Pages.Shared;
 
 public class TimelineBaseModel : PageModel
 {
-    protected readonly ICheepService _service; //set to protected to be accessible in child classes //todo: Er der en grund til, at den hedder _service og ikke Service?
+    protected readonly ICheepService Service; //set to protected to be accessible in child classes
     public List<CheepViewModel>? Cheeps { get; set; }
     [BindProperty]
     [Required(ErrorMessage ="Your cheep can't be empty.")]
@@ -28,7 +28,7 @@ public class TimelineBaseModel : PageModel
     //Inject the cheep service, sets a specific "model"
     public TimelineBaseModel(ICheepService service, UserManager<Author> userManager)
     {
-        _service = service;
+        Service = service;
         UserManager = userManager;
         Cheeps = new List<CheepViewModel>();
     }
@@ -81,7 +81,7 @@ public class TimelineBaseModel : PageModel
         };
        
         //Call the repository method for creating a cheep
-        await _service.CreateCheepFromDTO(cheepDTO);
+        await Service.CreateCheepFromDTO(cheepDTO);
         
         StatusMessage = "Chirp was succesfully created!";
         
