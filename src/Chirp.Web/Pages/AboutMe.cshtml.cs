@@ -2,6 +2,7 @@ using Chirp.Infrastructure.Entities;
 using Chirp.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.IO.Compression;
 
 namespace Chirp.Web.Pages;
 
@@ -58,5 +59,9 @@ public class AboutMe : PageModel
          * If user is not authenticated/logged in:
          * - Redirect to login page
          */
+    }
+
+    public void DownloadZip()
+    {
     }
 }
