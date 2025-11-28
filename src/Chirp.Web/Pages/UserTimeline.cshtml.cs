@@ -36,24 +36,29 @@ public class UserTimelineModel : TimelineBaseModel
             {
                 IList<string> following = currentUser.Following;
                 following.Add(author);
-                Cheeps = _cheepService.GetCheepsFromAuthors(following, page);
+                Cheeps = _cheepService.GetCheepsFromAuthors(following, out bool hasNext, page);
+                // Used to show/hide next-page button
+                HasMorePages = hasNext;
                 following.Remove(author);
             }
             else
             {
                 Cheeps = _cheepService.GetCheepsFromAuthor(author, out bool hasNext, page);
+                // Used to show/hide next-page button
+                HasMorePages = hasNext;
             }
         }            
         else
         {
             Cheeps = _cheepService.GetCheepsFromAuthor(author, out bool hasNext, page);
+            // Used to show/hide next-page button
+            HasMorePages = hasNext;
         }
 
         // Used for page links
         PageNumber = page;
         
-        // Used to show/hide next-page button
-        HasMorePages = hasNext;
+        
         
         return Page();
     }
