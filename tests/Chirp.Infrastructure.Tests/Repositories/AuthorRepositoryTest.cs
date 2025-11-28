@@ -152,7 +152,9 @@ public class AuthorRepositoryTest : IDisposable
         Assert.Equal("test1", dto.Name);
         Assert.Equal("test1@itu.dk", dto.Email);
         Assert.Equal(2, dto.Cheeps.Count);
-        
+
+        //Clean up
+        Dispose();
     }
 
     [Fact]
@@ -181,6 +183,9 @@ public class AuthorRepositoryTest : IDisposable
         Assert.Equal("test1", dto.Name);
         Assert.Equal("test1@itu.dk", dto.Email);
         Assert.Equal(2, dto.Cheeps.Count);
+
+        //Clean up
+        Dispose();
     }
 
     [Fact]
@@ -199,6 +204,9 @@ public class AuthorRepositoryTest : IDisposable
                 { Cheeps = new List<CheepDTO>(), Email = a1.Email, Following = a1.Following, Id = a1.Id, Name = a1.Name },
             a2.Name);
         Assert.True(a1.Following.Contains(a2.Name));
+
+        //Clean up
+        Dispose();
     }
 
     [Fact]
@@ -223,6 +231,9 @@ public class AuthorRepositoryTest : IDisposable
             },
             a2.Name);
         Assert.False(a1.Following.Contains(a2.Name));
+
+        //Clean up
+        Dispose();
     }
 
     [Fact]
