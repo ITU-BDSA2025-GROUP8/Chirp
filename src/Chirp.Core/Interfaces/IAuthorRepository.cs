@@ -14,4 +14,7 @@ public interface IAuthorRepository
     Task<AuthorDTO?> FindByName(string name);
     // Find author by email
     Task<AuthorDTO?> FindByEmail(string email);
+    Task FollowUser(AuthorDTO self,string followAuthorUsername);
+    
+    Task UnFollowUser(AuthorDTO self,string followAuthorUsername);
 }

@@ -11,7 +11,7 @@ public class PublicModel : TimelineBaseModel
 {
     
     //Inherits from parent class TimelineBaseModel, which injects the cheep service and sets a model
-    public PublicModel(ICheepService service, UserManager<Author> userManager) : base(service, userManager)
+    public PublicModel(ICheepService cheepService, IAuthorService authorService, UserManager<Author> userManager) : base(cheepService, authorService, userManager)
     {
     }
     
@@ -27,7 +27,7 @@ public class PublicModel : TimelineBaseModel
         //Call base method to get user info
         await GetUserInformation();
         
-        Cheeps = Service.GetCheeps(out bool hasNext, page);
+        Cheeps = _cheepService.GetCheeps(out bool hasNext, page);
         
         // Used to show/hide next-page button
         HasMorePages = hasNext;
