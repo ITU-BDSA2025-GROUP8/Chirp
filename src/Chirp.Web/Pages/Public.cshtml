@@ -21,13 +21,6 @@
                         <strong>
                             <a href="/@cheep.Author">@cheep.Author</a>
                         </strong>
-                        <!-- Check if the user follows the given Author, can be done with User.Following.Contains(cheep.Author) -->
-                        <!-- If following write "Unfollow" else "Follow -->
-                        
-                        <!-- 
-                        If the user's following list contains this Author's name, show Unfollow link
-                        Else show follow link.
-                        -->
                         @if (User.Identity!.IsAuthenticated)
                         {
                             var currentUser = await UserManager.GetUserAsync(User);
