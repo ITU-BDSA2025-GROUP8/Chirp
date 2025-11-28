@@ -10,7 +10,7 @@ namespace Chirp.Web.Pages.Shared;
 
 public class TimelineBaseModel : PageModel
 {
-    protected readonly ICheepService _cheepService; //set to protected to be accessible in child classes //todo: Er der en grund til, at den hedder _service og ikke Service?
+    protected readonly ICheepService _cheepService; //set to protected to be accessible in child classes
     protected readonly IAuthorService _authorService;
     public List<CheepViewModel>? Cheeps { get; set; }
     [BindProperty]

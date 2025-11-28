@@ -14,16 +14,27 @@ public class PublicModel : TimelineBaseModel
     public PublicModel(ICheepService cheepService, IAuthorService authorService, UserManager<Author> userManager) : base(cheepService, authorService, userManager)
     {
     }
+    
+    // Used for page links
+    public int PageNumber { get; set; }
+    public bool HasMorePages { get; set; }
 
     //Get all cheeps by all authors
-    public async Task<ActionResult> OnGetAsync([FromQuery] int page, [FromQuery] string? error)
+    public async Task<ActionResult> OnGetAsync([FromQuery] int page = 1, [FromQuery] string? error = null)
     {
         HandleError(error);
         
         //Call base method to get user info
         await GetUserInformation();
         
-        Cheeps = _cheepService.GetCheeps(page);
+        Cheeps = _cheepService.GetCheeps(out bool hasNext, page);
+        
+        // Used to show/hide next-page button
+        HasMorePages = hasNext;
+
+        // Used for page links
+        PageNumber = page;
+        
         return Page();
     }
     
