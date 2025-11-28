@@ -19,13 +19,14 @@ public class FollowModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(string target, bool undo, string? returnUrl)
     {
-        var current = _userManager.GetUserName(User);
+        var current = await _userManager.GetUserAsync(HttpContext.User);
+        
         if (current == null) return Redirect(returnUrl ?? "/");
 
         if (undo)
-            await _authorService.Unfollow(current, target);
+            await _authorService.Unfollow(current.Name, target);
         else
-            await _authorService.Follow(current, target);
+            await _authorService.Follow(current.Name, target);
 
         return Redirect(returnUrl ?? "/");
     }
