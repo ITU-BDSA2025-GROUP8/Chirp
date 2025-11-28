@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
@@ -11,4 +12,7 @@ public class Author : IdentityUser
     [Required]
     public required string Name { get; set; }
     public ICollection<Cheep> Cheeps { get; set; }  = new List<Cheep>();
+
+    [DefaultValue(false)] 
+    public bool IsDeleted { get; set; } = false;
 }

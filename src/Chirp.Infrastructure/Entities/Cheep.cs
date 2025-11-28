@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Chirp.Infrastructure.Entities;
 
@@ -16,5 +17,8 @@ public class Cheep
 
     [Required]
     public required Author Author { get; set; }
+    
+    [DefaultValue(false)]
+    public bool IsDeleted { get; set; }
     
 }
