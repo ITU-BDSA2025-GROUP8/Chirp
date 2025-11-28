@@ -60,5 +60,12 @@ public class CheepService : ICheepService
     {
         await _cheepRepository.CreateCheep(cheep);
     }
+    
+    // Delete cheeps 
+    public async Task DeleteCheeps(List<CheepDTO> cheeps)
+    {
+        
+        await _cheepRepository.DeleteCheeps(cheeps);
+    }
 
 }

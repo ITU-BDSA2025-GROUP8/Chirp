@@ -35,4 +35,9 @@ public class AuthorService : IAuthorService
         AuthorDTO? self = await GetAuthorByName(thisUsername);
         await _authorRepository.UnFollowUser(self!, otherUsername);
     }
+
+    public async Task Delete(AuthorDTO author)
+    {
+        await _authorRepository.DeleteAuthor(author);
+    }
 }    
