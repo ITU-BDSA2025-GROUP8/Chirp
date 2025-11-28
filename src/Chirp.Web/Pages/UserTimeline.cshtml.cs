@@ -22,7 +22,7 @@ public class UserTimelineModel : TimelineBaseModel
     public bool HasMorePages { get; set; }
 
     //Gets all cheeps from a specific author
-    public async Task<ActionResult> OnGet(string author, [FromQuery] int page, [FromQuery] string? error)
+    public async Task<ActionResult> OnGet(string author, [FromQuery] string? error, [FromQuery] int page = 1)
     {
         HandleError(error);
         
