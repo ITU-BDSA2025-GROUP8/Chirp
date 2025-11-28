@@ -23,10 +23,6 @@
                         <strong>
                             <a href="/@cheep.Author">@cheep.Author</a>
                         </strong>
-                        <!-- 
-                        If the user's following list contains this Author's name, show Unfollow link
-                        Else show follow link.
-                        -->
                         @if (User.Identity!.IsAuthenticated)
                         {
                             var currentUser = await UserManager.GetUserAsync(User);
