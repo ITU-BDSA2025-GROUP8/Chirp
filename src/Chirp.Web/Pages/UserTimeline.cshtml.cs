@@ -13,7 +13,7 @@ public class UserTimelineModel : TimelineBaseModel
     public string? UserName { get; set; }
     
     //Inherits from parent class TimelineBaseModel, which injects the cheep service and sets a model
-    public UserTimelineModel(ICheepService service, UserManager<Author> userManager) : base(service, userManager)
+    public UserTimelineModel(ICheepService cheepService,IAuthorService authorService, UserManager<Author> userManager) : base(cheepService,authorService, userManager)
     {
     }
     
@@ -27,15 +27,38 @@ public class UserTimelineModel : TimelineBaseModel
         HandleError(error);
         
         //Call base method to get user info
-        await GetUserInformation();   
+        await GetUserInformation();
         
+        var currentUser = await UserManager.GetUserAsync(User);
+        if (currentUser != null)
+        {
+            if (currentUser!.Name == author)
+            {
+                IList<string> following = currentUser.Following;
+                following.Add(author);
+                Cheeps = _cheepService.GetCheepsFromAuthors(following, out bool hasNext, page);
+                // Used to show/hide next-page button
+                HasMorePages = hasNext;
+                following.Remove(author);
+            }
+            else
+            {
+                Cheeps = _cheepService.GetCheepsFromAuthor(author, out bool hasNext, page);
+                // Used to show/hide next-page button
+                HasMorePages = hasNext;
+            }
+        }            
+        else
+        {
+            Cheeps = _cheepService.GetCheepsFromAuthor(author, out bool hasNext, page);
+            // Used to show/hide next-page button
+            HasMorePages = hasNext;
+        }
+
         // Used for page links
         PageNumber = page;
         
-        Cheeps = Service.GetCheepsFromAuthor(author, out bool hasNext, page);
         
-        // Used to show/hide next-page button
-        HasMorePages = hasNext;
         
         return Page();
     }

@@ -12,6 +12,8 @@ public interface ICheepService
     public List<CheepViewModel> GetCheeps(out bool hasNext, int? page);
     public List<CheepViewModel> GetCheepsFromAuthor(string author, out bool hasNext, int? page);
     public Task CreateCheepFromDTO(CheepDTO cheep);
+    public List<CheepViewModel> GetCheepsFromAuthors(IList<string> authors, out bool hasNext, int? page = null);
+
 }
 
 public class CheepService : ICheepService
@@ -41,6 +43,16 @@ public class CheepService : ICheepService
         hasNext = cheeps.Count() == 32;
         
         return cheeps.Select(cheep => new CheepViewModel(Author: cheep.AuthorId, Message: cheep.Text, Timestamp: cheep.CreatedAt.ToLongDateString())).ToList();
+    }
+    
+    // Fetches cheeps by specified authors form repository
+    public List<CheepViewModel> GetCheepsFromAuthors(IList<string> authors, out bool hasNext, int? page = null)
+    {
+        var cheeps = _cheepRepository.ReadCheepsBySelfAndOthers(authors,page).Result;
+        
+        hasNext = cheeps.Count() == 32;
+        
+        return cheeps.Select(cheep => new CheepViewModel(Author: cheep.AuthorId, Message:cheep.Text, Timestamp:cheep.CreatedAt.ToLongDateString())).ToList();
     }
     
     // Creates new cheep
