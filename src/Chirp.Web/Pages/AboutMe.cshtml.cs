@@ -6,8 +6,6 @@ using System.IO.Compression;
 
 namespace Chirp.Web.Pages;
 
-//todo: rename Feature and Information in table in cshtml file
-
 public class AboutMe : PageModel
 {
     private readonly ICheepService Service;
@@ -16,7 +14,6 @@ public class AboutMe : PageModel
     public required string? Email { get; set; }
     public List<CheepViewModel>? Cheeps { get; set; }
     public List<Author> Following { get; set; }
-    //todo: check up on other possible properties
 
     public AboutMe(ICheepService service, UserManager<Author> userManager)
     {
@@ -39,7 +36,7 @@ public class AboutMe : PageModel
 
             DisplayName = currentUser.Name;
             Email = currentUser.Email;
-            Cheeps = Service.GetCheepsFromAuthor(DisplayName, 1); //todo: for now it is just default set to page 1
+            Cheeps = Service.GetCheepsFromAuthor(DisplayName, out bool hasNext, 1); //todo: for now it is just default set to page 1. Either check that it works or let is show all cheeps
             
         }
         else
