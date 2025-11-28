@@ -19,11 +19,12 @@ public class UserTimelineModel : TimelineBaseModel
     
     // Used for page links
     public int PageNumber { get; set; }
+    public bool HasMorePages { get; set; }
 
     //Gets all cheeps from a specific author
     public async Task<ActionResult> OnGet(string author, [FromQuery] int page, [FromQuery] string? error)
     {
-          HandleError(error);
+        HandleError(error);
         
         //Call base method to get user info
         await GetUserInformation();   
@@ -31,7 +32,11 @@ public class UserTimelineModel : TimelineBaseModel
         // Used for page links
         PageNumber = page;
         
-        Cheeps = Service.GetCheepsFromAuthor(author, page);
+        Cheeps = Service.GetCheepsFromAuthor(author, out bool hasNext, page);
+        
+        // Used to show/hide next-page button
+        HasMorePages = hasNext;
+        
         return Page();
     }
 }

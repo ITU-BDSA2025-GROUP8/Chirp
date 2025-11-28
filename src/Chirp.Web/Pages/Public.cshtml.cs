@@ -17,6 +17,7 @@ public class PublicModel : TimelineBaseModel
     
     // Used for page links
     public int PageNumber { get; set; }
+    public bool HasMorePages { get; set; }
 
     //Get all cheeps by all authors
     public async Task<ActionResult> OnGetAsync([FromQuery] int page = 1, [FromQuery] string? error = null)
@@ -26,7 +27,10 @@ public class PublicModel : TimelineBaseModel
         //Call base method to get user info
         await GetUserInformation();
         
-        Cheeps = Service.GetCheeps(page);
+        Cheeps = Service.GetCheeps(out bool hasNext, page);
+        
+        // Used to show/hide next-page button
+        HasMorePages = hasNext;
 
         // Used for page links
         PageNumber = page;
