@@ -36,5 +36,6 @@ public class AuthorTest
         Assert.Equal("Test", author.Name);
         Assert.Equal("test@itu.dk", author.Email);
         Assert.Equal(cheeps, author.Cheeps);
+        Assert.False(author.IsDeleted);
     }
 }

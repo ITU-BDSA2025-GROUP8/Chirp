@@ -33,6 +33,7 @@ public class CheepTest
         Assert.Equal(author, cheep.Author);
         Assert.Equal("This is a test", cheep.Text);
         Assert.Equal(new DateTime(2025, 1, 1), cheep.Date);
+        Assert.False(cheep.IsDeleted);
     }
 
     [Theory]
