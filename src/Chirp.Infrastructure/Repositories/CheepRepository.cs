@@ -58,12 +58,32 @@ public class CheepRepository : ICheepRepository
         
         return result;
     }
-
+    
     public async Task<List<CheepDTO>> ReadCheepsBy(string authorName, int? page = null)
     {
-        // Construction of the query that selects cheeps written by the authorName //todo: should be changed to the author's ID
+        // Construction of the query that selects cheeps written by the authorName
         var query = (from cheep in _context.Cheeps
             where cheep.Author.Name == authorName
+            orderby cheep.Date descending
+            select new CheepDTO
+            {
+                Id = cheep.CheepId,
+                CreatedAt = cheep.Date,
+                Text = cheep.Text,
+                AuthorId = cheep.Author.Name
+            }).Skip(GetOffset(page)).Take(32);
+        
+        // Execution of the query
+        var result = await query.ToListAsync();
+        
+        return result;
+    }
+    
+    public async Task<List<CheepDTO>> ReadCheepsBySelfAndOthers(IList<string> authorNames, int? page = null)
+    {
+        // Construction of the query that selects cheeps written by the authorName
+        var query = (from cheep in _context.Cheeps
+            where authorNames.Contains(cheep.Author.Name)
             orderby cheep.Date descending
             select new CheepDTO
             {

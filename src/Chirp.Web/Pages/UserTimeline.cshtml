@@ -11,7 +11,8 @@
 <div>
     <h2> @routeName's Timeline </h2>
     <partial name="~/Pages/Shared/_CheepBoxPartial.cshtml" model="Model" />
-
+    
+    
     @if (Model.Cheeps!.Any())
     {
         <ul id="messagelist" class="cheeps">
@@ -22,12 +23,36 @@
                         <strong>
                             <a href="/@cheep.Author">@cheep.Author</a>
                         </strong>
+                        @if (User.Identity!.IsAuthenticated)
+                        {
+                            var currentUser = await UserManager.GetUserAsync(User);
+                            if(currentUser!.Following.Contains(cheep.Author))
+                            {
+                                <a href="/Follow?target=@cheep.Author&undo=true&returnUrl=@($"{HttpContext.Request.Path}{HttpContext.Request.QueryString}")">Unfollow</a>
+                            }
+                            else if (currentUser.Name == cheep.Author) {}
+                            else
+                            {
+                                <a href="/Follow?target=@cheep.Author&undo=false&returnUrl=@($"{HttpContext.Request.Path}{HttpContext.Request.QueryString}")"> Follow </a>
+                            }
+                        }
                         @cheep.Message
                         <small>&mdash; @cheep.Timestamp</small>
                     </p>
                 </li>
             }
         </ul>
+        <div class="pagination" style="display: flex; justify-content: center">
+            @if (Model.PageNumber > 1)
+            {
+                <a style="padding-right: 1%" href="?page=@(Model.PageNumber - 1)">previous</a>
+            }
+            @Model.PageNumber
+            @if (Model.HasMorePages)
+            {
+                <a style="padding-left: 1%" href="?page=@(Model.PageNumber + 1)">next</a>
+            }
+        </div>
     }
     else
     {
