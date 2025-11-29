@@ -15,6 +15,6 @@ public interface ICheepRepository
     // Update an existing cheep
     Task UpdateCheep(CheepDTO alteredCheep);
     // Delete cheeps
-    Task DeleteCheeps(List<CheepDTO> cheeps);
+    Task DeleteCheeps(String authorName);
     
 }
