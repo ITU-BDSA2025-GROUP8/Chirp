@@ -249,8 +249,7 @@ public class CheepRepositoryTest : IDisposable
         context.SaveChanges();
 
         //Act
-        var author1Cheeps = await repository.ReadCheepsBy("Test1");
-        await repository.DeleteCheeps(author1Cheeps);
+        await repository.DeleteCheeps("Test1");
         
         //Assert
         var listOfTest1Cheeps = await repository.ReadCheepsBy("Test1");

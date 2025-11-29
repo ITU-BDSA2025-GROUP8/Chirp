@@ -163,22 +163,17 @@ public class CheepRepository : ICheepRepository
     }
     
     // Query to mark cheeps deleted
-    public async Task DeleteCheeps(List<CheepDTO> cheeps)
+    public async Task DeleteCheeps(string authorName)
     {
-        foreach (CheepDTO deletedCheep in cheeps)
+        var cheepsQuery = (from cheep in _context.Cheeps
+            where cheep.Author.Name == authorName
+            select cheep);
+        
+        var cheeps = await cheepsQuery.ToListAsync();
+        
+        foreach (Cheep deletedCheep in cheeps)
         {
-            // Selects the original cheep from the database
-            var query = from cheep in _context.Cheeps
-                where cheep.CheepId == deletedCheep.Id
-                select cheep;
-
-            var originalCheep = await query.FirstOrDefaultAsync();
-            if (originalCheep == null)
-            {
-                throw new Exception("Unable to find the original cheep");
-            }
-            
-            originalCheep.IsDeleted = true;
+            deletedCheep.IsDeleted = true;
             
             await _context.SaveChangesAsync();
         }
