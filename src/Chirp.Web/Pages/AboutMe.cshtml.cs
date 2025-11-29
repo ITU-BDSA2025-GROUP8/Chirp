@@ -3,22 +3,29 @@ using Chirp.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.IO.Compression;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Chirp.Web.Pages;
 
 public class AboutMe : PageModel
 {
-    private readonly ICheepService Service;
-    private readonly UserManager<Author> UserManager;
+    private readonly ICheepService _cheepService;
+    private readonly IAuthorService _authorService;
+    private readonly UserManager<Author> _userManager;
+    private readonly SignInManager<Author> _signInManager;
     public required string DisplayName { get; set; }
     public required string? Email { get; set; }
     public List<CheepViewModel>? Cheeps { get; set; }
     public List<Author> Following { get; set; }
 
-    public AboutMe(ICheepService service, UserManager<Author> userManager)
+    public AboutMe(ICheepService cheepService, IAuthorService authorService, UserManager<Author> userManager, SignInManager<Author> signInManager)
     {
-        Service = service;
-        UserManager = userManager;
+        _cheepService = cheepService;
+        _authorService = authorService;
+        _userManager = userManager;
+        _signInManager = signInManager;
         Cheeps = new List<CheepViewModel>();
         Following = new List<Author>();
     }
@@ -28,7 +35,7 @@ public class AboutMe : PageModel
     {
         if (User.Identity!.IsAuthenticated) //if the user is logged in, it will show the information about them that is stored in the application 
         {
-            var currentUser = await UserManager.GetUserAsync(User);
+            var currentUser = await _userManager.GetUserAsync(User);
             if (currentUser == null)
             {
                 throw new NullReferenceException();
@@ -36,7 +43,7 @@ public class AboutMe : PageModel
 
             DisplayName = currentUser.Name;
             Email = currentUser.Email;
-            Cheeps = Service.GetCheepsFromAuthor(DisplayName, out bool hasNext, 1); //todo: for now it is just default set to page 1. Either check that it works or let is show all cheeps
+            Cheeps = _cheepService.GetCheepsFromAuthor(DisplayName, out bool hasNext, 1); //todo: for now it is just default set to page 1. Either check that it works or let is show all cheeps
             
         }
         else
@@ -60,5 +67,23 @@ public class AboutMe : PageModel
 
     public void DownloadZip()
     {
+    }
+
+    public async Task<IActionResult> OnPost()
+    {
+        // Delete User and their cheeps
+        var author = await _userManager.GetUserAsync(HttpContext.User);
+        await _cheepService.DeleteCheeps(author!.Name);
+        await _authorService.DeleteAuthor(author.Name);
+        
+        // Sign out identity
+        await _signInManager.SignOutAsync();
+
+        // Sign out OAuth
+        await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme); // "Identity.Application"
+        await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme); // "Identity.External"
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme); // default cookie
+
+        return LocalRedirect("/");
     }
 }
