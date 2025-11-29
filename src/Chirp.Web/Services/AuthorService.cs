@@ -9,6 +9,7 @@ public interface IAuthorService
     public Task<AuthorDTO?> GetAuthorByName(string authorUsername);
     public Task Follow(string thisUsername, string otherUsername);
     public Task Unfollow(string thisUsername, string otherUsername);
+    public Task DeleteAuthor(string thisUsername);
 }
 
 public class AuthorService : IAuthorService
@@ -36,8 +37,9 @@ public class AuthorService : IAuthorService
         await _authorRepository.UnFollowUser(self!, otherUsername);
     }
 
-    public async Task Delete(AuthorDTO author)
+    public async Task DeleteAuthor(string thisUsername)
     {
-        await _authorRepository.DeleteAuthor(author);
+        AuthorDTO? self = await GetAuthorByName(thisUsername);
+        await _authorRepository.DeleteAuthor(self!);
     }
 }    
