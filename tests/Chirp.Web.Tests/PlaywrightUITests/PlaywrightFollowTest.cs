@@ -9,8 +9,11 @@ public class PlaywrightFollowTest : PageTest
 {
     //url
     private const string HomePage = "https://bdsa2024group8chirprazor2025.azurewebsites.net/";
+
     const string author = "Jacqualine Gilcoine";
+
     //loginHelper
+    //logs in Robert and ensures return to public timeline
     private async Task LoginHelperTestUser()
     {
         //log in
@@ -23,18 +26,22 @@ public class PlaywrightFollowTest : PageTest
         await Page.GotoAsync(HomePage);
     }
 
+    //folloe link for specific author
     private ILocator FollowLinkForAuthor(string authorName)
     {
-        // Find the cheep paragraph that contains the author's name
+        // Find the locator that contains the author's name
         var cheep = Page.Locator("p").Filter(new() { HasText = authorName });
 
-        // Inside that cheep, grab the "Follow" link
+        //For that cheep, return the follow link
         return cheep.GetByRole(AriaRole.Link, new() { Name = "Follow" });
     }
 
+    //unfollow link for specific author
     private ILocator UnfollowLinkForAuthor(string authorName)
     {
+        //find locator containing the author´s name
         var cheep = Page.Locator("p").Filter(new() { HasText = authorName });
+        //For that cheep. return the unfollow link
         return cheep.GetByRole(AriaRole.Link, new() { Name = "Unfollow" });
     }
 
@@ -45,50 +52,48 @@ public class PlaywrightFollowTest : PageTest
         var followLink = FollowLinkForAuthor(author);
         // Just check we have at least one follow link for her
         var count = await followLink.CountAsync();
-        Assert.That(count, Is.GreaterThan(0), "Expected at least one follow link for Jacqualine.");
+        Assert.That(count, Is.GreaterThan(0), "Expected follow link for Jacqualine.");
     }
 
     [Test]
-    public async Task FollowButtonDisappearsOnceFollowed()
+    public async Task FollowChangesToUnfollow()
     {
-            await LoginHelperTestUser();
+        await LoginHelperTestUser();
 
-            //stort by not following Jacqualine
-             var unfollowLink = UnfollowLinkForAuthor(author);
-             if (await unfollowLink.CountAsync() > 0)
-             {
-                await unfollowLink.First.ClickAsync(); // reset to follow
-             }
-
-            //make sure we can follow her
-            var followLinks = FollowLinkForAuthor(author);
-            Assert.That(await followLinks.CountAsync(), Is.GreaterThan(0));
-            await followLinks.First.ClickAsync(); //follow
-
-            //check that it is possible to unfollow now
-            var newUnfollowLinks = UnfollowLinkForAuthor(author);
-            Assert.That(await newUnfollowLinks.CountAsync(), Is.GreaterThan(0));
+        //stort by not following Jacqualine
+        var unfollowLink = UnfollowLinkForAuthor(author);
+        if (await unfollowLink.CountAsync() > 0)
+        {
+            await unfollowLink.First.ClickAsync(); // reset to follow
         }
+
+        //Click follow
+        var followLink = FollowLinkForAuthor(author);
+        Assert.That(await followLink.CountAsync(), Is.GreaterThan(0));
+        await followLink.First.ClickAsync(); //follow
+
+        //expect unfollow
+        var newUnfollowLinks = UnfollowLinkForAuthor(author);
+        Assert.That(await newUnfollowLinks.CountAsync(), Is.GreaterThan(0));
+    }
 
     [Test]
     public async Task UnfollowChangesBackToFollow()
     {
         await LoginHelperTestUser();
 
-         //stort by following Jacqualine
-          var followLink = FollowLinkForAuthor(author);
-          if (await followLink.CountAsync() > 0)
-          {
-             await followLink.First.ClickAsync(); // reset to unfollow
-          }
+        //stort by following Jacqualine
+        var followlink = FollowLinkForAuthor(author);
+        if (await followlink.CountAsync() > 0)
+        {
+            await followlink.First.ClickAsync();
+        }
+        //Click unfollow
+        var unfollowLink = UnfollowLinkForAuthor(author);
+        await unfollowLink.First.ClickAsync();
 
-         //make sure we can unfollow her
-         var unfollowLinks = UnfollowLinkForAuthor(author);
-         Assert.That(await unfollowLinks.CountAsync(), Is.GreaterThan(0));
-         await unfollowLinks.First.ClickAsync(); //unfollow
-
-         //check that it is possible to follow now
-         var newFollowLinks = FollowLinkForAuthor(author);
-         Assert.That(await newFollowLinks.CountAsync(), Is.GreaterThan(0));
+        //Expect follow
+        var newFollowLinks = FollowLinkForAuthor(author);
+        Assert.That(await newFollowLinks.CountAsync(), Is.GreaterThan(0));
     }
 }
