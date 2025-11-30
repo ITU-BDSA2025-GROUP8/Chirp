@@ -10,7 +10,7 @@ public class PlaywrightFollowTest : PageTest
     //url
     private const string HomePage = "https://bdsa2024group8chirprazor2025.azurewebsites.net/";
 
-    const string author = "Jacqualine Gilcoine";
+    const string Author = "Jacqualine Gilcoine";
 
     //loginHelper
     //logs in Robert and ensures return to public timeline
@@ -26,7 +26,7 @@ public class PlaywrightFollowTest : PageTest
         await Page.GotoAsync(HomePage);
     }
 
-    //folloe link for specific author
+    //follow link for specific author
     private ILocator FollowLinkForAuthor(string authorName)
     {
         // Find the locator that contains the author's name
@@ -49,7 +49,7 @@ public class PlaywrightFollowTest : PageTest
     public async Task FollowButtonAppearsOnPublicTimeline()
     {
         await LoginHelperTestUser();
-        var followLink = FollowLinkForAuthor(author);
+        var followLink = FollowLinkForAuthor(Author);
         // Just check we have at least one follow link for her
         var count = await followLink.CountAsync();
         Assert.That(count, Is.GreaterThan(0), "Expected follow link for Jacqualine.");
@@ -61,19 +61,19 @@ public class PlaywrightFollowTest : PageTest
         await LoginHelperTestUser();
 
         //stort by not following Jacqualine
-        var unfollowLink = UnfollowLinkForAuthor(author);
+        var unfollowLink = UnfollowLinkForAuthor(Author);
         if (await unfollowLink.CountAsync() > 0)
         {
             await unfollowLink.First.ClickAsync(); // reset to follow
         }
 
         //Click follow
-        var followLink = FollowLinkForAuthor(author);
+        var followLink = FollowLinkForAuthor(Author);
         Assert.That(await followLink.CountAsync(), Is.GreaterThan(0));
         await followLink.First.ClickAsync(); //follow
 
         //expect unfollow
-        var newUnfollowLinks = UnfollowLinkForAuthor(author);
+        var newUnfollowLinks = UnfollowLinkForAuthor(Author);
         Assert.That(await newUnfollowLinks.CountAsync(), Is.GreaterThan(0));
     }
 
@@ -83,17 +83,17 @@ public class PlaywrightFollowTest : PageTest
         await LoginHelperTestUser();
 
         //stort by following Jacqualine
-        var followlink = FollowLinkForAuthor(author);
-        if (await followlink.CountAsync() > 0)
+        var followLink = FollowLinkForAuthor(Author);
+        if (await followLink.CountAsync() > 0)
         {
-            await followlink.First.ClickAsync();
+            await followLink.First.ClickAsync();
         }
         //Click unfollow
-        var unfollowLink = UnfollowLinkForAuthor(author);
+        var unfollowLink = UnfollowLinkForAuthor(Author);
         await unfollowLink.First.ClickAsync();
 
         //Expect follow
-        var newFollowLinks = FollowLinkForAuthor(author);
+        var newFollowLinks = FollowLinkForAuthor(Author);
         Assert.That(await newFollowLinks.CountAsync(), Is.GreaterThan(0));
     }
 }
