@@ -45,6 +45,34 @@ public class PlaywrightFollowTest : PageTest
         return cheep.GetByRole(AriaRole.Link, new() { Name = "Unfollow" });
     }
 
+        private async Task GoToPageWhereAuthorIsVisible(string authorName)
+    {
+        // Start from the public timeline
+        await Page.GotoAsync(HomePage);
+
+        while (true)
+        {
+            // Is the author visible on this page
+            var cheepsByAuthor = Page.Locator("p").Filter(new() { HasText = authorName });
+            if (await cheepsByAuthor.CountAsync() > 0)
+            {
+                return; //found author, stay on this page
+            }
+
+            // If there is a "next" link, go to next page
+            var nextLink = Page.GetByRole(AriaRole.Link, new() { Name = "next" });
+
+            if (await nextLink.IsVisibleAsync())
+            {
+                await nextLink.ClickAsync();
+            }
+            else
+            {
+                Assert.Fail($"Could not find any cheeps by {authorName} on the public timeline.");
+            }
+        }
+    }
+    
     [Test]
     public async Task FollowButtonAppearsOnPublicTimeline()
     {
@@ -81,6 +109,7 @@ public class PlaywrightFollowTest : PageTest
     public async Task UnfollowChangesBackToFollow()
     {
         await LoginHelperTestUser();
+        await GoToPageWhereAuthorIsVisible(Author);
 
         //stort by following Jacqualine
         var followLink = FollowLinkForAuthor(Author);
