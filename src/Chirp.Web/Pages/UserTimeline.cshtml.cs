@@ -34,12 +34,15 @@ public class UserTimelineModel : TimelineBaseModel
         {
             if (currentUser!.Name == author)
             {
-                IList<string> following = currentUser.Following;
-                following.Add(author);
-                Cheeps = _cheepService.GetCheepsFromAuthors(following, out bool hasNext, page);
+                var authorIds = new List<string>();
+                
+                authorIds.Add(currentUser.Id);
+                
+                authorIds.AddRange(currentUser.Following.Select(f => f.FollowedId));
+                
+                Cheeps = _cheepService.GetCheepsFromAuthors(authorIds, out bool hasNext, page);
                 // Used to show/hide next-page button
                 HasMorePages = hasNext;
-                following.Remove(author);
             }
             else
             {

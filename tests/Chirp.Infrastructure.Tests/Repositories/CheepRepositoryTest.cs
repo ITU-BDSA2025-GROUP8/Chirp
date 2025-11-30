@@ -43,6 +43,7 @@ public class CheepRepositoryTest : IDisposable
         {
             Id = 1,
             AuthorId = "1",
+            AuthorName = "Test1",
             Text = "I chirped",
             CreatedAt = new DateTime(2025, 10, 8),
         };
@@ -212,7 +213,8 @@ public class CheepRepositoryTest : IDisposable
             Id = cheepId,
             Text = "altered text",
             CreatedAt = new DateTime(2025, 10, 11),
-            AuthorId = "1"
+            AuthorId = "1",
+            AuthorName = "Test1"
         };
 
         await repository.UpdateCheep(dto);

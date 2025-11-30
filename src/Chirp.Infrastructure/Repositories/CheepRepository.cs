@@ -48,9 +48,10 @@ public class CheepRepository : ICheepRepository
             select new CheepDTO
             {
                 Id = cheep.CheepId,
-                CreatedAt = cheep.Date, 
+                CreatedAt = cheep.Date,
                 Text = cheep.Text,
-                AuthorId = cheep.Author.Name
+                AuthorId = cheep.Author.Id,
+                AuthorName = cheep.Author.Name
             }).Skip(GetOffset(page)).Take(32);
         
         // Executing the query
@@ -70,7 +71,8 @@ public class CheepRepository : ICheepRepository
                 Id = cheep.CheepId,
                 CreatedAt = cheep.Date,
                 Text = cheep.Text,
-                AuthorId = cheep.Author.Name
+                AuthorId = cheep.Author.Id,
+                AuthorName = cheep.Author.Name
             }).Skip(GetOffset(page)).Take(32);
         
         // Execution of the query
@@ -79,18 +81,19 @@ public class CheepRepository : ICheepRepository
         return result;
     }
     
-    public async Task<List<CheepDTO>> ReadCheepsBySelfAndOthers(IList<string> authorNames, int? page = null)
+    public async Task<List<CheepDTO>> ReadCheepsBySelfAndOthers(IList<string> authorIds, int? page = null)
     {
         // Construction of the query that selects cheeps written by the authorName
         var query = (from cheep in _context.Cheeps
-            where authorNames.Contains(cheep.Author.Name)
+            where authorIds.Contains(cheep.Author.Id)
             orderby cheep.Date descending
             select new CheepDTO
             {
                 Id = cheep.CheepId,
                 CreatedAt = cheep.Date,
                 Text = cheep.Text,
-                AuthorId = cheep.Author.Name
+                AuthorId = cheep.Author.Id,
+                AuthorName = cheep.Author.Name
             }).Skip(GetOffset(page)).Take(32);
         
         // Execution of the query

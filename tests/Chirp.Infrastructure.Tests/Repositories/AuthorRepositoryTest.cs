@@ -188,17 +188,17 @@ public class AuthorRepositoryTest : IDisposable
     {
         using var context = CreateDbContext();
         context.Database.EnsureCreated();
-        var a1 = new Author { Id = "1", Name = "test1", Email = "test1@itu.dk", Cheeps = new List<Cheep>(),Following = new List<string>()};
-        var a2 = new Author { Id = "2", Name = "test2",   Email = "test2@itu.dk",   Cheeps = new List<Cheep>(),Following = new List<string>() };
+        var a1 = new Author { Id = "1", Name = "test1", Email = "test1@itu.dk", Cheeps = new List<Cheep>(),Following = new List<Follow>()};
+        var a2 = new Author { Id = "2", Name = "test2",   Email = "test2@itu.dk",   Cheeps = new List<Cheep>(),Following = new List<Follow>() };
         context.Authors.AddRange(a1, a2);
         context.SaveChanges();
         var repository = new AuthorRepository(context);
 
         await repository.FollowUser(
             new AuthorDTO()
-                { Cheeps = new List<CheepDTO>(), Email = a1.Email, Following = a1.Following, Id = a1.Id, Name = a1.Name },
+                { Cheeps = new List<CheepDTO>(), Email = a1.Email, Following = new List<FollowDTO>(), Id = a1.Id, Name = a1.Name },
             a2.Name);
-        Assert.True(a1.Following.Contains(a2.Name));
+        Assert.True(a1.Following.Any(f => f.FollowedId == a2.Id));
     }
 
     [Fact]
@@ -206,22 +206,22 @@ public class AuthorRepositoryTest : IDisposable
     {
         using var context = CreateDbContext();
         context.Database.EnsureCreated();
-        var a1 = new Author { Id = "1", Name = "test1", Email = "test1@itu.dk", Cheeps = new List<Cheep>(),Following = new List<string>()};
-        var a2 = new Author { Id = "2", Name = "test2",   Email = "test2@itu.dk",   Cheeps = new List<Cheep>(),Following = new List<string>() };
+        var a1 = new Author { Id = "1", Name = "test1", Email = "test1@itu.dk", Cheeps = new List<Cheep>(),Following = new List<Follow>()};
+        var a2 = new Author { Id = "2", Name = "test2",   Email = "test2@itu.dk",   Cheeps = new List<Cheep>(),Following = new List<Follow>() };
         context.Authors.AddRange(a1, a2);
         context.SaveChanges();
         var repository = new AuthorRepository(context);
 
         await repository.FollowUser(
             new AuthorDTO()
-                { Cheeps = new List<CheepDTO>(), Email = a1.Email, Following = a1.Following, Id = a1.Id, Name = a1.Name },
+                { Cheeps = new List<CheepDTO>(), Email = a1.Email, Following = new List<FollowDTO>(), Id = a1.Id, Name = a1.Name },
             a2.Name);
 
         await repository.UnFollowUser(new AuthorDTO()
             {
-                Cheeps = new List<CheepDTO>(), Email = a1.Email, Following = a1.Following, Id = a1.Id, Name = a1.Name
+                Cheeps = new List<CheepDTO>(), Email = a1.Email, Following = new List<FollowDTO>(), Id = a1.Id, Name = a1.Name
             },
             a2.Name);
-        Assert.False(a1.Following.Contains(a2.Name));
+        Assert.False(a1.Following.Any(f=>f.FollowedId == a2.Id));
     }
 }

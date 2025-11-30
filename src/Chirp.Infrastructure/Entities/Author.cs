@@ -11,5 +11,5 @@ public class Author : IdentityUser
     [Required]
     public required string Name { get; set; }
     public ICollection<Cheep> Cheeps { get; set; } = new List<Cheep>();
-    public IList<string> Following { get; set; } = new List<string>();
+    public ICollection<Follow> Following { get; set; } = new List<Follow>();
 }

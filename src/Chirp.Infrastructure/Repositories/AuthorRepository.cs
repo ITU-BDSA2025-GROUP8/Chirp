@@ -51,6 +51,7 @@ public class AuthorRepository : IAuthorRepository
                     {
                         Id = c.CheepId,
                         AuthorId = author.Id,
+                        AuthorName = author.Name,
                         Text = c.Text,
                         CreatedAt = c.Date
                     })
@@ -141,6 +142,7 @@ public class AuthorRepository : IAuthorRepository
                     {
                         Id = c.CheepId,
                         AuthorId = author.Id,
+                        AuthorName = author.Name,
                         Text = c.Text,
                         CreatedAt = c.Date
                     })
@@ -172,6 +174,7 @@ public class AuthorRepository : IAuthorRepository
                 {
                     Id = c.CheepId,
                     AuthorId = author.Id,
+                    AuthorName = author.Name,
                     Text = c.Text,
                     CreatedAt = c.Date
                 })
@@ -189,13 +192,22 @@ public class AuthorRepository : IAuthorRepository
             select author;
         
         var originalAuthor = await query.FirstOrDefaultAsync();
-
-        if (originalAuthor!.Following.Contains(followAuthorUsername))
+        
+        var followAuthor = await FindByName(followAuthorUsername);
+        
+        foreach (var follow in originalAuthor!.Following)
         {
-            return;
+            if (follow.FollowedId.Equals(followAuthor!.Id))
+            {
+                return;
+            }
         }
         
-        originalAuthor!.Following.Add(followAuthorUsername);
+        originalAuthor!.Following.Add(new Follow
+        {
+            FollowedId = followAuthor!.Id,
+            FollowerId = originalAuthor!.Id
+        });
         await _context.SaveChangesAsync();
     }
     
@@ -208,7 +220,14 @@ public class AuthorRepository : IAuthorRepository
         
         var originalAuthor = await query.FirstOrDefaultAsync();
         
-        originalAuthor!.Following.Remove(followAuthorUsername);
+        var followAuthor = await FindByName(followAuthorUsername);
+        
+        var entry = originalAuthor!.Following.FirstOrDefault(f => f.FollowedId == followAuthor!.Id);
+
+        if (entry != null)
+        {
+            originalAuthor.Following.Remove(entry);
+        }
         await _context.SaveChangesAsync();
     }
     
