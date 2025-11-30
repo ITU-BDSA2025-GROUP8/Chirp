@@ -74,9 +74,9 @@ public class CheepRepositoryTest : IDisposable
         context.Authors.AddRange(author1, author2);
         //making cheeps
         context.Cheeps.AddRange(
-            new Cheep { Author = author1, Text = "hi", Date = new DateTime(2025, 10, 2) },
-            new Cheep { Author = author2, Text = "hello", Date = new DateTime(2025, 10, 3) },
-            new Cheep { Author = author1, Text = "hey", Date = new DateTime(2025, 10, 1) }
+            new Cheep { Author = author1, Text = "hi", Date = new DateTime(2025, 10, 2),LikedBy = [] },
+            new Cheep { Author = author2, Text = "hello", Date = new DateTime(2025, 10, 3),LikedBy = [] },
+            new Cheep { Author = author1, Text = "hey", Date = new DateTime(2025, 10, 1),LikedBy = [] }
         );
         context.SaveChanges();
 
@@ -112,7 +112,7 @@ public class CheepRepositoryTest : IDisposable
         context.Authors.AddRange(author);
         for (int i = 0; i < 40; i++) 
         {
-            context.Cheeps.AddRange(new Cheep { Author = author, Text = "wee", Date = new DateTime(2025, 10, 2) });
+            context.Cheeps.AddRange(new Cheep { Author = author, Text = "wee", Date = new DateTime(2025, 10, 2),LikedBy = [] });
         }
         context.SaveChanges();
         
@@ -140,9 +140,9 @@ public class CheepRepositoryTest : IDisposable
 
         //note: setup for these 3 test cheeps was suggested by ChatGPT
         context.Cheeps.AddRange(
-            new Cheep { Author = author1, Text = "a1", Date = new DateTime(2025, 10, 10) },
-            new Cheep { Author = author1, Text = "a2", Date = new DateTime(2025, 10, 11) },
-            new Cheep { Author = author2, Text = "b1", Date = new DateTime(2025, 10, 12) }
+            new Cheep { Author = author1, Text = "a1", Date = new DateTime(2025, 10, 10),LikedBy = [] },
+            new Cheep { Author = author1, Text = "a2", Date = new DateTime(2025, 10, 11),LikedBy = [] },
+            new Cheep { Author = author2, Text = "b1", Date = new DateTime(2025, 10, 12),LikedBy = [] }
         );
         context.SaveChanges();
 
@@ -174,7 +174,7 @@ public class CheepRepositoryTest : IDisposable
         context.Authors.AddRange(author);
         for (int i = 0; i < 50; i++) 
         {
-            context.Cheeps.AddRange(new Cheep { Author = author, Text = "wee", Date = new DateTime(2025, 10, 2) });
+            context.Cheeps.AddRange(new Cheep { Author = author, Text = "wee", Date = new DateTime(2025, 10, 2),LikedBy = [] });
         }
         context.SaveChanges();
         
@@ -200,7 +200,7 @@ public class CheepRepositoryTest : IDisposable
         var author2 = new Author { Name = "Test2", Id = "2", Email = "test2@itu.dk" };
         context.Authors.AddRange(author1, author2);
 
-        var cheep = new Cheep { Author = author1, Text = "old text", Date = new DateTime(2025, 10, 10) };
+        var cheep = new Cheep { Author = author1, Text = "old text", Date = new DateTime(2025, 10, 10),LikedBy = [] };
         context.Cheeps.Add(cheep);
         context.SaveChanges();
 

@@ -32,6 +32,7 @@ public class CheepRepository : ICheepRepository
             Author = author,
             Text = newCheep.Text, 
             Date = newCheep.CreatedAt,
+            LikedBy = []
         };
         
         // Adds and saves the cheep in the database
@@ -50,7 +51,8 @@ public class CheepRepository : ICheepRepository
                 Id = cheep.CheepId,
                 CreatedAt = cheep.Date, 
                 Text = cheep.Text,
-                AuthorId = cheep.Author.Name
+                AuthorId = cheep.Author.Name,
+                LikedBy = cheep.LikedBy
             }).Skip(GetOffset(page)).Take(32);
         
         // Executing the query
@@ -70,7 +72,8 @@ public class CheepRepository : ICheepRepository
                 Id = cheep.CheepId,
                 CreatedAt = cheep.Date,
                 Text = cheep.Text,
-                AuthorId = cheep.Author.Name
+                AuthorId = cheep.Author.Name,
+                LikedBy = cheep.LikedBy
             }).Skip(GetOffset(page)).Take(32);
         
         // Execution of the query
@@ -90,7 +93,8 @@ public class CheepRepository : ICheepRepository
                 Id = cheep.CheepId,
                 CreatedAt = cheep.Date,
                 Text = cheep.Text,
-                AuthorId = cheep.Author.Name
+                AuthorId = cheep.Author.Name,
+                LikedBy = cheep.LikedBy
             }).Skip(GetOffset(page)).Take(32);
         
         // Execution of the query
@@ -137,6 +141,7 @@ public class CheepRepository : ICheepRepository
         originalCheep.Text = alteredCheep.Text;
         originalCheep.Date = alteredCheep.CreatedAt;
         originalCheep.CheepId = alteredCheep.Id;
+        originalCheep.LikedBy = alteredCheep.LikedBy;
     }
     
     // Utility method: find the author object

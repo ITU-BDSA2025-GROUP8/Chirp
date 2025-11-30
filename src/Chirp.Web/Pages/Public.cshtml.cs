@@ -1,4 +1,5 @@
-﻿using Chirp.Infrastructure.Entities;
+﻿using Chirp.Core.DTO;
+using Chirp.Infrastructure.Entities;
 using Chirp.Web.Pages.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Chirp.Web.Services;
@@ -36,6 +37,13 @@ public class PublicModel : TimelineBaseModel
         PageNumber = page;
         
         return Page();
+    }
+
+    public async Task<ActionResult> OnPostLikeAsync(CheepDTO cheep)
+    {
+        var currentUser = await UserManager.GetUserAsync(User);
+       await _cheepService.LikeCheep(cheep, currentUser!.Name);
+       return RedirectToPage("/");
     }
     
 }
