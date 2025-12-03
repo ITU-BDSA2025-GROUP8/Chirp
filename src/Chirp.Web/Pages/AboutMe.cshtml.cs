@@ -3,6 +3,7 @@ using Chirp.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.IO.Compression;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Chirp.Web.Pages;
 
@@ -24,7 +25,7 @@ public class AboutMe : PageModel
     }
     
     // Handle GET requests
-    public async Task OnGet()
+    public async Task<IActionResult> OnGet()
     {
         if (User.Identity!.IsAuthenticated) //if the user is logged in, it will show the information about them that is stored in the application 
         {
@@ -43,11 +44,12 @@ public class AboutMe : PageModel
         else
         {
             // Redirect to the login page if not authenticated
-            Response.Redirect($"{Request.Path}?error=not_authenticated"); //todo: temporary, should Redirect to login page with an error
-            return;
+            return RedirectToPage("/Account/Login", new { area = "Identity" });
         }
-        
-        
+
+        return Page();
+
+
         //todo: tests - remove when done
         /*
          * If user is authenticated/logged in:
