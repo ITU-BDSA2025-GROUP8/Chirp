@@ -14,7 +14,4 @@ public interface ICheepRepository
     Task<List<CheepDTO>> ReadCheepsBySelfAndOthers(IList<string> authorNames, int? page = null);
     // Update an existing cheep
     Task UpdateCheep(CheepDTO alteredCheep);
-    // Delete cheeps
-    Task DeleteCheeps(String authorName);
-    
 }

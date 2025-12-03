@@ -13,7 +13,6 @@ public interface ICheepService
     public List<CheepViewModel> GetCheepsFromAuthor(string author, out bool hasNext, int? page);
     public Task CreateCheepFromDTO(CheepDTO cheep);
     public List<CheepViewModel> GetCheepsFromAuthors(IList<string> authors, out bool hasNext, int? page = null);
-    public Task DeleteCheeps(string author); 
 
 }
 
@@ -60,13 +59,6 @@ public class CheepService : ICheepService
     public async Task CreateCheepFromDTO(CheepDTO cheep)
     {
         await _cheepRepository.CreateCheep(cheep);
-    }
-    
-    // Delete cheeps 
-    public async Task DeleteCheeps(string author)
-    {
-        
-        await _cheepRepository.DeleteCheeps(author);
     }
 
 }

@@ -157,25 +157,9 @@ public class CheepRepository : ICheepRepository
         int offset = 0; //default offset is 0
         if (page != null && page > 1)
         {
-            offset = (page.Value-1) * 32;
+            offset = (page.Value - 1) * 32;
         }
+
         return offset;
-    }
-    
-    // Query to mark cheeps deleted
-    public async Task DeleteCheeps(string authorName)
-    {
-        var cheepsQuery = (from cheep in _context.Cheeps
-            where cheep.Author.Name == authorName
-            select cheep);
-        
-        var cheeps = await cheepsQuery.ToListAsync();
-        
-        foreach (Cheep deletedCheep in cheeps)
-        {
-            deletedCheep.IsDeleted = true;
-            
-            await _context.SaveChangesAsync();
-        }
     }
 }

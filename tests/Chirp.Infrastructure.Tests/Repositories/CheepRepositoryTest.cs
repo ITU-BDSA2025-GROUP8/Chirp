@@ -217,46 +217,12 @@ public class CheepRepositoryTest : IDisposable
 
         await repository.UpdateCheep(dto);
 
-        //assert a change has happened
+        // assert a change has happened
         Assert.True(context.Cheeps.Any(c => c.Text == "altered text"));
         //assert new time exists
         Assert.True(context.Cheeps.Any(c => c.Date == new DateTime(2025, 10, 11)));
         //assert old text is gone
         Assert.False(context.Cheeps.Any(c => c.Text == "old text"));
-
-        // Clean up
-        Dispose();
-    }
-    
-    [Fact]
-    public async Task DeleteCheepTest()
-    {
-        //Arrange 
-        using var context = CreateDbContext();
-        context.Database.EnsureCreated();
-        var repository = new CheepRepository(context);
-
-        var author1 = new Author { Name = "Test1", Email = "test1@itu.dk" };
-        var author2 = new Author { Name = "Test2", Email = "test2@itu.dk" };
-        context.Authors.AddRange(author1, author2);
-
-        //note: setup for these 3 test cheeps was suggested by ChatGPT
-        context.Cheeps.AddRange(
-            new Cheep { Author = author1, Text = "a1", Date = new DateTime(2025, 10, 10) },
-            new Cheep { Author = author1, Text = "a2", Date = new DateTime(2025, 10, 11) },
-            new Cheep { Author = author2, Text = "b1", Date = new DateTime(2025, 10, 12) }
-        );
-        context.SaveChanges();
-
-        //Act
-        await repository.DeleteCheeps("Test1");
-        
-        //Assert
-        var listOfTest1Cheeps = await repository.ReadCheepsBy("Test1");
-        Assert.Empty(listOfTest1Cheeps);
-        
-        var author2Cheeps = await repository.ReadCheepsBy("Test2");
-        Assert.Single(author2Cheeps);
 
         // Clean up
         Dispose();

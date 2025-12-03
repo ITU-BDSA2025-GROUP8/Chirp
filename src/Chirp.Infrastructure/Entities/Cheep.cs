@@ -17,8 +17,4 @@ public class Cheep
 
     [Required]
     public required Author Author { get; set; }
-    
-    [DefaultValue(false)]
-    public bool IsDeleted { get; set; }
-    
 }

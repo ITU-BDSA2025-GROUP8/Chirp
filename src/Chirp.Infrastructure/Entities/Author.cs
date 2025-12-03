@@ -13,7 +13,4 @@ public class Author : IdentityUser
     public required string Name { get; set; }
     public ICollection<Cheep> Cheeps { get; set; } = new List<Cheep>();
     public IList<string> Following { get; set; } = new List<string>();
-    
-    [DefaultValue(false)] 
-    public bool IsDeleted { get; set; } = false;
 }

@@ -73,7 +73,6 @@ public class AboutMe : PageModel
     {
         // Delete User and their cheeps
         var author = await _userManager.GetUserAsync(HttpContext.User);
-        await _cheepService.DeleteCheeps(author!.Name);
         await _authorService.DeleteAuthor(author.Name);
         
         // Sign out identity
