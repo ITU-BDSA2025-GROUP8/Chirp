@@ -13,14 +13,14 @@ public class AboutMe : PageModel
     public required string DisplayName { get; set; }
     public required string? Email { get; set; }
     public List<CheepViewModel>? Cheeps { get; set; }
-    public List<Author> Following { get; set; }
+    public IList<string> Following { get; set; }
 
     public AboutMe(ICheepService service, UserManager<Author> userManager)
     {
         Service = service;
         UserManager = userManager;
         Cheeps = new List<CheepViewModel>();
-        Following = new List<Author>();
+        Following = new List<String>();
     }
     
     // Handle GET requests
@@ -37,6 +37,7 @@ public class AboutMe : PageModel
             DisplayName = currentUser.Name;
             Email = currentUser.Email;
             Cheeps = Service.GetCheepsFromAuthor(DisplayName, out bool hasNext, 1); //todo: for now it is just default set to page 1. Either check that it works or let is show all cheeps
+            Following = currentUser.Following;
             
         }
         else

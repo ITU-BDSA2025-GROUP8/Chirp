@@ -49,7 +49,10 @@
             <td>Following</td>
             <td> @if (@Model.Following.Any())
                  {
-                     @Model.Following
+                     @foreach (var author in Model.Following!)
+                     {
+                         <p>@author</p>
+                     }
                  }
                  else
                  {
