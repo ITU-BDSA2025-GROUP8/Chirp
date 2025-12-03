@@ -48,20 +48,5 @@ public class AboutMe : PageModel
         }
 
         return Page();
-
-
-        //todo: tests - remove when done
-        /*
-         * If user is authenticated/logged in:
-         * - Show user's name and email
-         * - Show user's cheeps
-         * - Show user's following'
-         * If user is not authenticated/logged in:
-         * - Redirect to login page
-         */
-    }
-
-    public void DownloadZip()
-    {
     }
 }
