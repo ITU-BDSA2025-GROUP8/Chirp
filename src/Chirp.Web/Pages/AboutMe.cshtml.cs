@@ -36,7 +36,7 @@ public class AboutMe : PageModel
 
             DisplayName = currentUser.Name;
             Email = currentUser.Email;
-            Cheeps = Service.GetCheepsFromAuthor(DisplayName, out bool hasNext, 1); //todo: for now it is just default set to page 1. Either check that it works or let is show all cheeps
+            Cheeps = Service.GetCheepsFromAuthorOnOnePage(DisplayName);
             Following = currentUser.Following;
             
         }
