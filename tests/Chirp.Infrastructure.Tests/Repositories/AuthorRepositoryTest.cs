@@ -259,8 +259,6 @@ public class AuthorRepositoryTest : IDisposable
             Email = "test@itu.dk",
             Cheeps = new List<CheepDTO>()
         };
-        
-        //await repository.CreateAuthor(authorDTOTest);
 
         // Assert
         var authorsBefore = await repository.GetAllAuthors();
