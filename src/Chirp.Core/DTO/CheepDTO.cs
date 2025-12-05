@@ -11,5 +11,5 @@ public class CheepDTO
     public string AuthorName { get; set; } = string.Empty;
     public required string Text { get; set; }
     public DateTime CreatedAt { get; set; }
-    public List<string>? LikedBy { get; set; }
+    public List<string> LikedBy { get; set; } = new List<string>();
 }

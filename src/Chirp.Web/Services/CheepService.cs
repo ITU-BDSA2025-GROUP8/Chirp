@@ -70,7 +70,6 @@ public class CheepService : ICheepService
 
     public async Task LikeCheep(int cheepId,string likedBy)
     {
-        _logger.LogInformation("testing {test}", cheepId);
         var cheep = await _cheepRepository.GetCheep(cheepId);
         cheep.LikedBy.Add(likedBy);
         await _cheepRepository.UpdateCheep(cheep);
