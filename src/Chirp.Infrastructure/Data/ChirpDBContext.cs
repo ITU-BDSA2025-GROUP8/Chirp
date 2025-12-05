@@ -15,13 +15,4 @@ public class ChirpDBContext : IdentityDbContext<Author>
     
     public DbSet<Cheep> Cheeps { get; set; }
     public DbSet<Author> Authors { get; set; }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
-        // Query filter to ensure EF Core never loads cheeps for which IsDeleted is true
-        modelBuilder.Entity<Cheep>().HasQueryFilter(c => !c.IsDeleted);
-        // Query filter to ensure EF Core never loads authors for which IsDeleted is true
-        modelBuilder.Entity<Author>().HasQueryFilter(a => !a.IsDeleted);
-    }
 }
