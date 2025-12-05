@@ -12,15 +12,18 @@ await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeL
 public class PlaywrightPageButtonTest : PageTest
 {
     [Test]
-    public async Task NextPreviousButtonsChangesPagesOnPublicTimeline()
+    public async Task NextPreviousButtonsChangesPages()
     {
         var context = await Browser.NewContextAsync();
         var page = await context.NewPageAsync();
         
         // Check previous button is invisible on page 1
         await page.GotoAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net/");
-        var previous = page.GetByRole(AriaRole.Link, new() { Name = "previous" });
-        await Expect(previous).Not.ToBeVisibleAsync();
+        var previous1 = page.GetByRole(AriaRole.Link, new() { Name = "previous" });
+        await Expect(previous1).Not.ToBeVisibleAsync();
+        // Check next button is visible
+        var next1 = page.GetByRole(AriaRole.Link, new() { Name = "next" });
+        await Expect(next1).ToBeVisibleAsync();
         
         // Check url option is correct after pressing next
         await page.GetByRole(AriaRole.Link, new() { Name = "next" }).ClickAsync();
@@ -34,8 +37,11 @@ public class PlaywrightPageButtonTest : PageTest
         
         // Check next button is invisible on page 21
         await page.GotoAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net/?page=21");
-        var next = page.GetByRole(AriaRole.Link, new() { Name = "next" });
-        await Expect(next).Not.ToBeVisibleAsync();
+        var next2 = page.GetByRole(AriaRole.Link, new() { Name = "next" });
+        await Expect(next2).Not.ToBeVisibleAsync();
+        // Check previous button is visible
+        var previous2 = page.GetByRole(AriaRole.Link, new() { Name = "previous" });
+        await Expect(previous2).ToBeVisibleAsync();
         
         // Check url option is correct after pressing previous
         await page.GetByRole(AriaRole.Link, new() { Name = "previous" }).ClickAsync();
@@ -46,12 +52,6 @@ public class PlaywrightPageButtonTest : PageTest
         
         await page.GetByRole(AriaRole.Link, new() { Name = "previous" }).ClickAsync();
         await Expect(page).ToHaveURLAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net/?page=18");
-    }
-
-    [Test]
-    public async Task NextPreviousButtonsChangesPagesOnPrivateTimeline()
-    {
-        
     }
 }
 
