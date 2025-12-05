@@ -85,8 +85,8 @@ public class CheepRepositoryTest : IDisposable
 
         //Assert
         Assert.Equal(3, allCheeps.Count);
-        Assert.Contains(allCheeps, c => c.Text == "hi" && c.AuthorId == "Test1");
-        Assert.Contains(allCheeps, c => c.Text == "hello" && c.AuthorId == "Test2");
+        Assert.Contains(allCheeps, c => c.Text == "hi" && c.AuthorName == "Test1");
+        Assert.Contains(allCheeps, c => c.Text == "hello" && c.AuthorName == "Test2");
         //Assert.All(allCheeps, c => Assert.True(c.Id > 0)); // Id should exist todo: check if this is needed?
 
         //Assert cheeps are in correct order (newest first)
@@ -151,7 +151,7 @@ public class CheepRepositoryTest : IDisposable
 
         //Assert
         Assert.Equal(2, author1Cheeps.Count);
-        Assert.All(author1Cheeps, c => Assert.Equal("Test1", c.AuthorId));
+        Assert.All(author1Cheeps, c => Assert.Equal("Test1", c.AuthorName));
 
         //Assert cheeps are in correct order (newest first)
         Assert.True(author1Cheeps[0].CreatedAt > author1Cheeps[1].CreatedAt);
@@ -226,5 +226,27 @@ public class CheepRepositoryTest : IDisposable
 
         // Clean up
         Dispose();
+    }
+
+    [Fact]
+    public async Task GetCheepsTest()
+    {
+        using var context = CreateDbContext();
+        context.Database.EnsureCreated();
+        var repository = new CheepRepository(context);
+        var author = new Author { Id = "1", Name = "test", Email = "test@test"};
+        context.Authors.AddRange(author);
+
+        int cheepId = 1;
+        var cheep = new Cheep {CheepId = cheepId, Author = author, Text = "old text", Date = new DateTime(2025, 10, 10),LikedBy = []};
+        context.Cheeps.Add(cheep);
+        context.SaveChanges();
+        
+        var savedCheep = await repository.GetCheep(cheepId);
+        
+        Assert.True(cheep.Text == "old text");
+        Assert.True(cheep.Author.Email == "test@test");
+        Assert.True(cheep.Date == new DateTime(2025, 10, 10));
+        Assert.True(cheep.CheepId == cheepId);
     }
 }
