@@ -189,6 +189,49 @@ public class CheepRepositoryTest : IDisposable
     }
     
     [Fact]
+    public async Task ReadCheepsBySelfAndOthersTest()
+    {
+        //Arrange
+        using var context = CreateDbContext();
+        context.Database.EnsureCreated();
+        var repository = new CheepRepository(context);
+
+        var author1 = new Author { Name = "Test1", Email = "test1@itu.dk" };
+        var author2 = new Author { Name = "Test2", Email = "test2@itu.dk" };
+        context.Authors.AddRange(author1, author2);
+
+        //note: setup for these 3 test cheeps was suggested by ChatGPT
+        context.Cheeps.AddRange(
+            new Cheep { Author = author1, Text = "a1", Date = new DateTime(2025, 10, 10) },
+            new Cheep { Author = author1, Text = "a2", Date = new DateTime(2025, 10, 11) },
+            new Cheep { Author = author2, Text = "b1", Date = new DateTime(2025, 10, 12) }
+        );
+        context.SaveChanges();
+
+        var authors = new List<string>();
+        authors.Add(author1.Name);
+        authors.Add(author2.Name);
+        
+        // Act
+        var cheeps = await repository.ReadCheepsBySelfAndOthers(authors);
+        
+        // Assert
+        Assert.Equal(3, cheeps.Count);
+        
+        Assert.Contains(cheeps, c => c.Text == "a1" && c.AuthorId == "Test1");
+        Assert.Contains(cheeps, c => c.Text == "a2" && c.AuthorId == "Test1");
+        Assert.Contains(cheeps, c => c.Text == "b1" && c.AuthorId == "Test2");
+
+        //Assert cheeps are in correct order (newest first)
+        Assert.True(cheeps[0].CreatedAt > cheeps[1].CreatedAt);
+        Assert.True(cheeps[1].CreatedAt > cheeps[2].CreatedAt);
+        Assert.True(cheeps[0].CreatedAt > cheeps[2].CreatedAt);
+
+        // Clean up
+        Dispose();
+    }
+    
+    [Fact]
     public async Task UpdateCheepTest()
     {
         //Arrange
