@@ -15,6 +15,7 @@
     
     @if (Model.Cheeps!.Any())
     {
+        bool authenticated= User.Identity!.IsAuthenticated;
         <ul id="messagelist" class="cheeps">
             @foreach (var cheep in Model.Cheeps!)
             {
@@ -23,7 +24,7 @@
                         <strong>
                             <a href="/@cheep.AuthorName">@cheep.AuthorName</a>
                         </strong>
-                        @if (User.Identity!.IsAuthenticated)
+                        @if (authenticated)
                         {
                             var currentUser = await UserManager.GetUserAsync(User);
                             if(currentUser!.Following.Contains(cheep.AuthorName))
@@ -38,6 +39,26 @@
                         }
                         @cheep.Text
                         <small>&mdash; @cheep.CreatedAt</small>
+                        @if (authenticated)
+                        {
+                            var currentUser = await UserManager.GetUserAsync(User);
+                            @if (cheep.LikedBy!.Contains(currentUser!.Name))
+                            {
+                                <form method="post" asp-page-handler="UnLike">
+                                    <input type="hidden" name="cheep" value="@cheep.Id"/>
+                                    <input type="hidden" name="returnUrl" value="@HttpContext.Request.Path@HttpContext.Request.QueryString"/>
+                                    <button type="submit">UnLike</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <form method="post" asp-page-handler="Like">
+                                    <input type="hidden" name="cheep" value="@cheep.Id"/>
+                                    <input type="hidden" name="returnUrl" value="@HttpContext.Request.Path@HttpContext.Request.QueryString"/>
+                                    <button type="submit">Like</button>
+                                </form>
+                            }
+                        }
                     </p>
                 </li>
             }
