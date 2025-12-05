@@ -13,7 +13,8 @@ public interface ICheepService
     public List<CheepDTO> GetCheepsFromAuthor(string author, out bool hasNext, int? page);
     public Task CreateCheepFromDTO(CheepDTO cheep);
     public List<CheepDTO> GetCheepsFromAuthors(IList<string> authors, out bool hasNext, int? page = null);
-    public Task LikeCheep(CheepDTO cheep,string likedBy);
+    public Task LikeCheep(int cheep,string likedBy);
+    public Task UnLikeCheep(int cheep, string likedBy);
 
 }
 
@@ -67,10 +68,18 @@ public class CheepService : ICheepService
         await _cheepRepository.CreateCheep(cheep);
     }
 
-    public async Task LikeCheep(CheepDTO cheep,string likedBy)
+    public async Task LikeCheep(int cheepId,string likedBy)
     {
-        _logger.LogInformation("{test}", cheep.LikedBy);
+        _logger.LogInformation("testing {test}", cheepId);
+        var cheep = await _cheepRepository.GetCheep(cheepId);
         cheep.LikedBy.Add(likedBy);
+        await _cheepRepository.UpdateCheep(cheep);
+    }
+
+    public async Task UnLikeCheep(int cheepId, string likedBy)
+    {
+        var cheep = await _cheepRepository.GetCheep(cheepId);
+        cheep.LikedBy.Remove(likedBy);
         await _cheepRepository.UpdateCheep(cheep);
     }
 

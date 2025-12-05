@@ -39,17 +39,19 @@
                         @if (authenticated)
                         {
                             var currentUser = await UserManager.GetUserAsync(User);
-                            @if (cheep.LikedBy.Contains(currentUser!.Name))
+                            @if (cheep.LikedBy!.Contains(currentUser!.Name))
                             {
                                 <form method="post" asp-page-handler="UnLike">
-                                    <input type="hidden" name="target" value="@cheep"/>
+                                    <input type="hidden" name="cheep" value="@cheep.Id"/>
+                                    <input type="hidden" name="returnUrl" value="@HttpContext.Request.Path@HttpContext.Request.QueryString"/>
                                     <button type="submit">UnLike</button>
                                 </form>
                             }
                             else
                             {
                                 <form method="post" asp-page-handler="Like">
-                                    <input type="hidden" name="target" value="@cheep"/>
+                                    <input type="hidden" name="cheep" value="@cheep.Id"/>
+                                    <input type="hidden" name="returnUrl" value="@HttpContext.Request.Path@HttpContext.Request.QueryString"/>
                                     <button type="submit">Like</button>
                                 </form>
                             }
