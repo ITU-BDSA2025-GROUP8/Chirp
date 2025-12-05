@@ -62,6 +62,7 @@ public class CheepRepository : ICheepRepository
         return result;
     }
 
+    //Get singe cheep from Id
     public async Task<CheepDTO> GetCheep(int id)
     {
         var query = (from cheep in _context.Cheeps

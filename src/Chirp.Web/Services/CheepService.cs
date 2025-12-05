@@ -36,8 +36,7 @@ public class CheepService : ICheepService
 
         hasNext = cheeps.Count() == 32;
         
-        return cheeps;
-        //return cheeps.Select(cheep => new CheepViewModel(Author: cheep.AuthorId, Message: cheep.Text, Timestamp: cheep.CreatedAt.ToLongDateString(),LikedBy:cheep.LikedBy)).ToList();
+        return cheeps; 
     }
 
     // Fetches cheeps by specified author form repository
@@ -46,8 +45,6 @@ public class CheepService : ICheepService
         var cheeps = _cheepRepository.ReadCheepsBy(author,page).Result;
 
         hasNext = cheeps.Count() == 32;
-        
-        //return cheeps.Select(cheep => new CheepViewModel(Author: cheep.AuthorId, Message: cheep.Text, Timestamp: cheep.CreatedAt.ToLongDateString(),LikedBy:cheep.LikedBy)).ToList();
         return cheeps;
     }
     
@@ -57,8 +54,6 @@ public class CheepService : ICheepService
         var cheeps = _cheepRepository.ReadCheepsBySelfAndOthers(authors,page).Result;
         
         hasNext = cheeps.Count() == 32;
-        
-        //return cheeps.Select(cheep => new CheepViewModel(Author: cheep.AuthorId, Message:cheep.Text, Timestamp:cheep.CreatedAt.ToLongDateString(),LikedBy:cheep.LikedBy)).ToList();
         return cheeps;
     }
     
