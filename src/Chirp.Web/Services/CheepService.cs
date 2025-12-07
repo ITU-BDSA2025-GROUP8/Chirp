@@ -23,10 +23,9 @@ public class CheepService : ICheepService
     private readonly ICheepRepository _cheepRepository;
     private readonly ILogger<CheepService> _logger;
 
-    public CheepService(ICheepRepository cheepRepository, ILogger<CheepService> logger)
+    public CheepService(ICheepRepository cheepRepository)
     {
-        _cheepRepository = cheepRepository;
-        _logger = logger;
+        _cheepRepository = cheepRepository;       
     }
     
     // Fetches all cheeps by form repository
@@ -63,6 +62,7 @@ public class CheepService : ICheepService
         await _cheepRepository.CreateCheep(cheep);
     }
 
+    // Likes a specific Cheep by its id
     public async Task LikeCheep(int cheepId,string likedBy)
     {
         var cheep = await _cheepRepository.GetCheep(cheepId);
@@ -70,6 +70,7 @@ public class CheepService : ICheepService
         await _cheepRepository.UpdateCheep(cheep);
     }
 
+    // Unlikes a specific cheep by its id
     public async Task UnLikeCheep(int cheepId, string likedBy)
     {
         var cheep = await _cheepRepository.GetCheep(cheepId);
