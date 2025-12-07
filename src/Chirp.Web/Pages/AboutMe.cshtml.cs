@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.IO.Compression;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
@@ -18,7 +19,7 @@ public class AboutMe : PageModel
     public required string DisplayName { get; set; }
     public required string? Email { get; set; }
     public List<CheepViewModel>? Cheeps { get; set; }
-    public List<Author> Following { get; set; }
+    public IList<string> Following { get; set; }
 
     public AboutMe(ICheepService cheepService, IAuthorService authorService, UserManager<Author> userManager, SignInManager<Author> signInManager)
     {
@@ -27,11 +28,11 @@ public class AboutMe : PageModel
         _userManager = userManager;
         _signInManager = signInManager;
         Cheeps = new List<CheepViewModel>();
-        Following = new List<Author>();
+        Following = new List<String>();
     }
     
     // Handle GET requests
-    public async Task OnGet()
+    public async Task<IActionResult> OnGet()
     {
         if (User.Identity!.IsAuthenticated) //if the user is logged in, it will show the information about them that is stored in the application 
         {
@@ -43,30 +44,17 @@ public class AboutMe : PageModel
 
             DisplayName = currentUser.Name;
             Email = currentUser.Email;
-            Cheeps = _cheepService.GetCheepsFromAuthor(DisplayName, out bool hasNext, 1); //todo: for now it is just default set to page 1. Either check that it works or let is show all cheeps
+            Cheeps = _cheepService.GetCheepsFromAuthorOnOnePage(DisplayName);
+            Following = currentUser.Following;
             
         }
         else
         {
             // Redirect to the login page if not authenticated
-            Response.Redirect($"{Request.Path}?error=not_authenticated"); //todo: temporary, should Redirect to login page with an error
-            return;
+            return RedirectToPage("/Account/Login", new { area = "Identity" });
         }
-        
-        
-        //todo: tests - remove when done
-        /*
-         * If user is authenticated/logged in:
-         * - Show user's name and email
-         * - Show user's cheeps
-         * - Show user's following'
-         * If user is not authenticated/logged in:
-         * - Redirect to login page
-         */
-    }
 
-    public void DownloadZip()
-    {
+        return Page();
     }
 
     public async Task<IActionResult> OnPost()

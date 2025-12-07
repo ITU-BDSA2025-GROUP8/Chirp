@@ -49,7 +49,7 @@
             <td>Following</td>
             <td> @if (@Model.Following.Any())
                  {
-                     @Model.Following
+                     @(string.Join(", ", Model.Following))
                  }
                  else
                  {
