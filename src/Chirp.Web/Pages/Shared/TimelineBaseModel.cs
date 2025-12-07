@@ -32,6 +32,7 @@ public class TimelineBaseModel : PageModel
         _cheepService = cheepService;
         _authorService = authorService;
         UserManager = userManager;
+        //Changed form CheepViewModel to CheepDTO to better support like functionality 
         Cheeps = new List<CheepDTO>();
     }
 
