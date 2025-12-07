@@ -21,7 +21,6 @@ public interface ICheepService
 public class CheepService : ICheepService
 {
     private readonly ICheepRepository _cheepRepository;
-    private readonly ILogger<CheepService> _logger;
 
     public CheepService(ICheepRepository cheepRepository)
     {
