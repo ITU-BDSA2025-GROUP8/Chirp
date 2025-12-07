@@ -2,8 +2,6 @@ using Chirp.Infrastructure.Entities;
 using Chirp.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.IO.Compression;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -61,7 +59,7 @@ public class AboutMe : PageModel
     {
         // Delete User and their cheeps
         var author = await _userManager.GetUserAsync(HttpContext.User);
-        await _authorService.DeleteAuthor(author.Name);
+        await _authorService.DeleteAuthor(author!.Name);
         
         // Sign out identity
         await _signInManager.SignOutAsync();
