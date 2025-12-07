@@ -11,9 +11,9 @@ public class PlaywrightForgetMeTest : PageTest
     [Test]
     public async Task ForgetMeTest()
     {
-        await Page.GotoAsync("http://localhost:5273");
+        await Page.GotoAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net");
         //Register
-        await Page.GotoAsync("http://localhost:5273");
+        await Page.GotoAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net");
         await Page.GetByRole(AriaRole.Link, new() { Name = "register" }).ClickAsync();
         await Page.GetByPlaceholder("Username").FillAsync("TestOfForgetMe");
         await Page.GetByPlaceholder("name@example.com").FillAsync("TestOfForgetMe@test.dk");
@@ -41,7 +41,7 @@ public class PlaywrightForgetMeTest : PageTest
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
         
         //Can register with same credentials
-        await Page.GotoAsync("http://localhost:5273");
+        await Page.GotoAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net");
         await Page.GetByRole(AriaRole.Link, new() { Name = "register" }).ClickAsync();
         await Page.GetByPlaceholder("Username").FillAsync("TestOfForgetMe");
         await Page.GetByPlaceholder("name@example.com").FillAsync("TestOfForgetMe@test.dk");
