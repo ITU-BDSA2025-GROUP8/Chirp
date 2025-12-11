@@ -36,9 +36,6 @@ namespace Chirp.Infrastructure.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Following")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -104,9 +101,6 @@ namespace Chirp.Infrastructure.Migrations
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Text")
                         .IsRequired()
