@@ -19,23 +19,23 @@
                 <li>
                     <p>
                         <strong>
-                            <a href="/@cheep.Author">@cheep.Author</a>
+                            <a href="/@cheep.AuthorName">@cheep.AuthorName</a>
                         </strong>
                         @if (User.Identity!.IsAuthenticated)
                         {
                             var currentUser = await UserManager.GetUserAsync(User);
-                            if(currentUser!.Following.Contains(cheep.Author))
+                            if(currentUser!.Following.Contains(cheep.AuthorName))
                             {
-                                <a href="/Follow?target=@cheep.Author&undo=true&returnUrl=@($"{HttpContext.Request.Path}{HttpContext.Request.QueryString}")">Unfollow</a>
+                                <a href="/Follow?target=@cheep.AuthorName&undo=true&returnUrl=@($"{HttpContext.Request.Path}{HttpContext.Request.QueryString}")">Unfollow</a>
                             }
-                            else if (currentUser.Name == cheep.Author) {}
+                            else if (currentUser.Name == cheep.AuthorName) {}
                             else
                             {
-                                <a href="/Follow?target=@cheep.Author&undo=false&returnUrl=@($"{HttpContext.Request.Path}{HttpContext.Request.QueryString}")">Follow</a>
+                                <a href="/Follow?target=@cheep.AuthorName&undo=false&returnUrl=@($"{HttpContext.Request.Path}{HttpContext.Request.QueryString}")">Follow</a>
                             }
                         }
-                        @cheep.Message
-                        <small>&mdash; @cheep.Timestamp</small>
+                        @cheep.Text
+                        <small>&mdash; @cheep.CreatedAt</small>
                     </p>
                 </li>
             }

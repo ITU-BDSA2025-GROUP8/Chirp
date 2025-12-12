@@ -1,3 +1,4 @@
+using Chirp.Core.DTO;
 using Chirp.Infrastructure.Entities;
 using Chirp.Web.Services;
 using Microsoft.AspNetCore.Identity;
@@ -16,7 +17,7 @@ public class AboutMe : PageModel
     private readonly SignInManager<Author> _signInManager;
     public required string DisplayName { get; set; }
     public required string? Email { get; set; }
-    public List<CheepViewModel>? Cheeps { get; set; }
+    public List<CheepDTO>? Cheeps { get; set; }
     public IList<string> Following { get; set; }
 
     public AboutMe(ICheepService cheepService, IAuthorService authorService, UserManager<Author> userManager, SignInManager<Author> signInManager)
@@ -25,7 +26,7 @@ public class AboutMe : PageModel
         _authorService = authorService;
         _userManager = userManager;
         _signInManager = signInManager;
-        Cheeps = new List<CheepViewModel>();
+        Cheeps = new List<CheepDTO>();
         Following = new List<String>();
     }
     
