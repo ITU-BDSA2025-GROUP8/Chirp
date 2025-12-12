@@ -9,11 +9,11 @@ public record CheepViewModel(string Author, string Message, string Timestamp);
 
 public interface ICheepService
 {
-    public List<CheepViewModel> GetCheeps(out bool hasNext, int? page);
-    public List<CheepViewModel> GetCheepsFromAuthor(string author, out bool hasNext, int? page);
-    public List<CheepViewModel> GetCheepsFromAuthorOnOnePage(string author);
+    public List<CheepDTO> GetCheeps(out bool hasNext, int? page);
+    public List<CheepDTO> GetCheepsFromAuthor(string author, out bool hasNext, int? page);
+    public List<CheepDTO> GetCheepsFromAuthorOnOnePage(string author);
     public Task CreateCheepFromDTO(CheepDTO cheep);
-    public List<CheepViewModel> GetCheepsFromAuthors(IList<string> authors, out bool hasNext, int? page = null);
+    public List<CheepDTO> GetCheepsFromAuthors(IList<string> authors, out bool hasNext, int? page = null);
 
 }
 
@@ -27,41 +27,41 @@ public class CheepService : ICheepService
     }
     
     // Fetches all cheeps by form repository
-    public List<CheepViewModel> GetCheeps(out bool hasNext, int? page = null)
+    public List<CheepDTO> GetCheeps(out bool hasNext, int? page = null)
     {
         var cheeps = _cheepRepository.GetAllCheeps(page).Result;
 
         hasNext = cheeps.Count() == 32;
         
-        return cheeps.Select(cheep => new CheepViewModel(Author: cheep.AuthorId, Message: cheep.Text, Timestamp: cheep.CreatedAt.ToLongDateString())).ToList();
+        return cheeps;
     }
 
     // Fetches cheeps by specified author form repository
-    public List<CheepViewModel> GetCheepsFromAuthor(string author, out bool hasNext, int? page = null)
+    public List<CheepDTO> GetCheepsFromAuthor(string author, out bool hasNext, int? page = null)
     {
         var cheeps = _cheepRepository.ReadCheepsBy(author,page).Result;
 
         hasNext = cheeps.Count() == 32;
-        
-        return cheeps.Select(cheep => new CheepViewModel(Author: cheep.AuthorId, Message: cheep.Text, Timestamp: cheep.CreatedAt.ToLongDateString())).ToList();
+
+        return cheeps;
     }
     
     // Festches cheeps by specified author from repository on one page
-    public List<CheepViewModel> GetCheepsFromAuthorOnOnePage(string author)
+    public List<CheepDTO> GetCheepsFromAuthorOnOnePage(string author)
     {
         var cheeps = _cheepRepository.ReadCheepsByOnOnePage(author).Result;
-        
-        return cheeps.Select(cheep => new CheepViewModel(Author: cheep.AuthorId, Message: cheep.Text, Timestamp: cheep.CreatedAt.ToLongDateString())).ToList();
+
+        return cheeps;
     }
     
     // Fetches cheeps by specified authors form repository
-    public List<CheepViewModel> GetCheepsFromAuthors(IList<string> authors, out bool hasNext, int? page = null)
+    public List<CheepDTO> GetCheepsFromAuthors(IList<string> authors, out bool hasNext, int? page = null)
     {
         var cheeps = _cheepRepository.ReadCheepsBySelfAndOthers(authors,page).Result;
         
         hasNext = cheeps.Count() == 32;
-        
-        return cheeps.Select(cheep => new CheepViewModel(Author: cheep.AuthorId, Message:cheep.Text, Timestamp:cheep.CreatedAt.ToLongDateString())).ToList();
+
+        return cheeps;
     }
     
     // Creates new cheep
