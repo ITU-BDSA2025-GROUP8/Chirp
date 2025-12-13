@@ -80,24 +80,6 @@ public class CheepRepository : ICheepRepository
         return result!;
     }
     
-    //Get single cheep from Id
-    public async Task<CheepDTO> GetCheep(int id)
-    {
-        var query = (from cheep in _context.Cheeps
-            where cheep.CheepId == id
-            select new CheepDTO
-            {
-                Id = cheep.CheepId,
-                CreatedAt = cheep.Date,
-                Text = cheep.Text,
-                AuthorId = cheep.Author.Id,
-                AuthorName = cheep.Author.Name,
-                LikedBy = cheep.LikedBy
-            });
-        var result = await query.FirstOrDefaultAsync();
-        return result!;
-    }
-    
     public async Task<List<CheepDTO>> ReadCheepsBy(string authorName, int? page = null)
     {
         // Construction of the query that selects cheeps written by the authorName
