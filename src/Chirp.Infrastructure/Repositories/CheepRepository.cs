@@ -102,6 +102,27 @@ public class CheepRepository : ICheepRepository
         return result;
     }
     
+    //Shows all cheeps written by a single author on one page
+    public async Task<List<CheepDTO>> ReadCheepsByOnOnePage(string authorName)
+    {
+        // Construction of the query that selects cheeps written by the authorName
+        var query = (from cheep in _context.Cheeps
+            where cheep.Author.Name == authorName
+            orderby cheep.Date descending
+            select new CheepDTO
+            {
+                Id = cheep.CheepId,
+                CreatedAt = cheep.Date,
+                Text = cheep.Text,
+                AuthorId = cheep.Author.Name
+            });
+        
+        // Execution of the query
+        var result = await query.ToListAsync();
+        
+        return result;
+    }
+    
     public async Task<List<CheepDTO>> ReadCheepsBySelfAndOthers(IList<string> authorNames, int? page = null)
     {
         // Construction of the query that selects cheeps written by the authorName
@@ -183,8 +204,9 @@ public class CheepRepository : ICheepRepository
         int offset = 0; //default offset is 0
         if (page != null && page > 1)
         {
-            offset = (page.Value-1) * 32;
+            offset = (page.Value - 1) * 32;
         }
+
         return offset;
     }
 }

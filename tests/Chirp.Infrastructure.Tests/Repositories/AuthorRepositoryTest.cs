@@ -152,7 +152,9 @@ public class AuthorRepositoryTest : IDisposable
         Assert.Equal("test1", dto.Name);
         Assert.Equal("test1@itu.dk", dto.Email);
         Assert.Equal(2, dto.Cheeps.Count);
-        
+
+        //Clean up
+        Dispose();
     }
 
     [Fact]
@@ -181,6 +183,9 @@ public class AuthorRepositoryTest : IDisposable
         Assert.Equal("test1", dto.Name);
         Assert.Equal("test1@itu.dk", dto.Email);
         Assert.Equal(2, dto.Cheeps.Count);
+
+        //Clean up
+        Dispose();
     }
 
     [Fact]
@@ -199,6 +204,9 @@ public class AuthorRepositoryTest : IDisposable
                 { Cheeps = new List<CheepDTO>(), Email = a1.Email, Following = a1.Following, Id = a1.Id, Name = a1.Name },
             a2.Name);
         Assert.True(a1.Following.Contains(a2.Name));
+
+        //Clean up
+        Dispose();
     }
 
     [Fact]
@@ -223,5 +231,48 @@ public class AuthorRepositoryTest : IDisposable
             },
             a2.Name);
         Assert.False(a1.Following.Contains(a2.Name));
+
+        //Clean up
+        Dispose();
+    }
+
+    [Fact]
+    public async Task DeleteAuthorTest()
+    {
+        using var context = CreateDbContext();
+        context.Database.EnsureCreated();
+        var repository = new AuthorRepository(context);
+        var a1 = new Author
+        {
+            Id = "1", Name = "test1", Email = "test1@itu.dk", Cheeps = new List<Cheep>(), Following = new List<string>()
+        };
+        var a2 = new Author
+        {
+            Id = "2", Name = "test2", Email = "test2@itu.dk", Cheeps = new List<Cheep>(), Following = new List<string>()
+        };
+        context.Authors.AddRange(a1, a2);
+        context.SaveChanges();
+        var authorDTOTest = new AuthorDTO()
+        {
+            Id = "1",
+            Name = "John Doe",
+            Email = "test@itu.dk",
+            Cheeps = new List<CheepDTO>()
+        };
+
+        // Assert
+        var authorsBefore = await repository.GetAllAuthors();
+        var numberOfAuthorsBefore = authorsBefore.Count();
+        Assert.Equal(2, numberOfAuthorsBefore);
+
+        await repository.DeleteAuthor(authorDTOTest);
+
+        var authorsAfter = await repository.GetAllAuthors();
+        var numberOfAuthorsAfter = authorsAfter.Count();
+        Assert.Equal(1, numberOfAuthorsAfter);
+
+        //Clean up
+        Dispose();
+
     }
 }

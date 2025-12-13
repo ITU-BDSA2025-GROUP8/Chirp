@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Chirp.Web.Pages.Shared;
 
@@ -45,7 +46,10 @@ public class TimelineBaseModel : PageModel
             var currentUser = await UserManager.GetUserAsync(User);
             if (currentUser == null)
             {
-                throw new NullReferenceException();
+                // The user is authenticated but not found in the database, sign them out
+                await HttpContext.SignOutAsync();
+                Response.Redirect("/Account/Login");
+                return;
             }
 
             DisplayName = currentUser.Name;

@@ -11,6 +11,7 @@ public interface ICheepService
 {
     public List<CheepDTO> GetCheeps(out bool hasNext, int? page);
     public List<CheepDTO> GetCheepsFromAuthor(string author, out bool hasNext, int? page);
+    public List<CheepDTO> GetCheepsFromAuthorOnOnePage(string author);
     public Task CreateCheepFromDTO(CheepDTO cheep);
     public List<CheepDTO> GetCheepsFromAuthors(IList<string> authors, out bool hasNext, int? page = null);
     public Task LikeCheep(int cheep,string likedBy);
@@ -43,6 +44,14 @@ public class CheepService : ICheepService
         var cheeps = _cheepRepository.ReadCheepsBy(author,page).Result;
 
         hasNext = cheeps.Count() == 32;
+        return cheeps;
+    }
+    
+    // Festches cheeps by specified author from repository on one page
+    public List<CheepDTO> GetCheepsFromAuthorOnOnePage(string author)
+    {
+        var cheeps = _cheepRepository.ReadCheepsByOnOnePage(author).Result;
+
         return cheeps;
     }
     
