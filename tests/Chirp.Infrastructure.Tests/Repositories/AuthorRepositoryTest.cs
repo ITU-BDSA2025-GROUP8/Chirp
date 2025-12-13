@@ -136,9 +136,9 @@ public class AuthorRepositoryTest : IDisposable
         context.Authors.AddRange(a1, a2);
         
         context.Cheeps.AddRange(
-            new Cheep { Author = a1, Text = "hello", Date = new DateTime(2025, 10, 10) },
-            new Cheep { Author = a1, Text = "world", Date = new DateTime(2025, 10, 11) },
-            new Cheep { Author = a2, Text = "cheep", Date = new DateTime(2025, 10, 12) }
+            new Cheep { Author = a1, Text = "hello", Date = new DateTime(2025, 10, 10),LikedBy = new List<string>() },
+            new Cheep { Author = a1, Text = "world", Date = new DateTime(2025, 10, 11),LikedBy = new List<string>() },
+            new Cheep { Author = a2, Text = "cheep", Date = new DateTime(2025, 10, 12),LikedBy = new List<string>() }
         );
         context.SaveChanges();
         
@@ -168,9 +168,9 @@ public class AuthorRepositoryTest : IDisposable
         context.Authors.AddRange(a1, a2);
         
         context.Cheeps.AddRange(
-            new Cheep { Author = a1, Text = "hello", Date = new DateTime(2025, 10, 10) },
-            new Cheep { Author = a1, Text = "world", Date = new DateTime(2025, 10, 11) },
-            new Cheep { Author = a2, Text = "cheep", Date = new DateTime(2025, 10, 12) }
+            new Cheep { Author = a1, Text = "hello", Date = new DateTime(2025, 10, 10),LikedBy = new List<string>() },
+            new Cheep { Author = a1, Text = "world", Date = new DateTime(2025, 10, 11),LikedBy = new List<string>() },
+            new Cheep { Author = a2, Text = "cheep", Date = new DateTime(2025, 10, 12),LikedBy = new List<string>() }
         );
         context.SaveChanges();
         var repository = new AuthorRepository(context);

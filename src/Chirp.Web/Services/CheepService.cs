@@ -35,7 +35,7 @@ public class CheepService : ICheepService
 
         hasNext = cheeps.Count() == 32;
         
-        return cheeps;
+        return cheeps; 
     }
 
     // Fetches cheeps by specified author form repository
