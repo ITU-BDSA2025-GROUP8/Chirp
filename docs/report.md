@@ -45,7 +45,10 @@ Now you can run Chirp using the the command:
 
 `dotnet run`
 
-hvad terminal skriver når det bliver kørt
+After running the command the terminal should have output something that looks like this:  
+<img src="images/terminalOutput.png" alt="drawing" width="50%"/>
+
+Then click on the url, for the picture it is http://localhost:5273 to see the program runnning 
 
 Because of how OAuth works, you will not be able use that functionallity locally which can also be seen in the terminal where it writtes:
 
