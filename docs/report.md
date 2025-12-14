@@ -46,13 +46,13 @@ Now you can run Chirp using the the command:
 `dotnet run`
 
 After running the command the terminal should have output something that looks like this:  
-<img src="images/terminalOutput.png" alt="drawing" width="50%"/>
+<img src="images/terminalOutputV2.png" alt="terminal output" width="50%"/>
 
 Then click on the url, for the picture it is http://localhost:5273 to see the program runnning 
 
 Because of how OAuth works, you will not be able use that functionallity locally which can also be seen in the terminal where it writtes:
 
-> Could not find Github Client ID and Github Client Secret. OAuth with Github will not be available
+> Could not find Github Client ID and or Github Client Secret. OAuth with Github will not be available
 
 If you want to try the OAuth functionallity, use the deployed version which can be found here: https://bdsa2024group8chirprazor2025.azurewebsites.net/
 ## How to run test suite locally
