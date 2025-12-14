@@ -52,7 +52,7 @@ Then click on the url, for the picture it is http://localhost:5273 to see the pr
 
 Because of how OAuth works, you will not be able use that functionallity locally which can also be seen in the terminal where it writtes:
 
-> Could not find Github Client ID and Github Client Secret. OAuth with Github will not be avalible
+> Could not find Github Client ID and Github Client Secret. OAuth with Github will not be available
 
 If you want to try the OAuth functionallity, use the deployed version which can be found here: https://bdsa2024group8chirprazor2025.azurewebsites.net/
 ## How to run test suite locally
