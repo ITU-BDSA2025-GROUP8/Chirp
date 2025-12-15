@@ -1,4 +1,5 @@
 using Chirp.Core.DTO;
+using Chirp.Core.Interfaces;
 using Chirp.Infrastructure.Entities;
 using Chirp.Web.Services;
 using Microsoft.AspNetCore.Identity;

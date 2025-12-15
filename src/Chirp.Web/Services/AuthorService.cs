@@ -4,14 +4,6 @@ using Chirp.Infrastructure.Entities;
 
 namespace Chirp.Web.Services;
 
-public interface IAuthorService
-{
-    public Task<AuthorDTO?> GetAuthorByName(string authorUsername);
-    public Task Follow(string thisUsername, string otherUsername);
-    public Task Unfollow(string thisUsername, string otherUsername);
-    public Task DeleteAuthor(string thisUsername);
-}
-
 public class AuthorService : IAuthorService
 {
     private readonly IAuthorRepository _authorRepository;
