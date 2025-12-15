@@ -33,11 +33,11 @@ Here comes a description of our domain model.
 ## Team work
 
 ## How to make _Chirp!_ work locally
-The Chirp application is made using dotnet 8 so you need to have that installed before you can run it. If you dont have it installed it can be done here: https://dotnet.microsoft.com/en-us/download/dotnet/8.0
+The Chirp! application runs on .NET 8 so you need to have that installed before you can run it. It can be downloaded here: https://dotnet.microsoft.com/en-us/download/dotnet/8.0
 
-To run Chirp locally you first need to clone the repository. There are different ways to do this depending on you operation system and own preferences using git, but here is a general guide on how to do it: https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository?tool=webui 
+To run Chirp locally you first need to clone the repository. There are different ways to do this depending on your operation system and own preferences using git. Here is a general guide on how to do it: https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository?tool=webui 
 
-After you have cloned the repository and have opened it in either a code editor or terminal you will be in the solution folder. Before you can run the program you first need to change to the directory that has the program.cs file. This can be done with the following command:
+After you have cloned the repository, open it in either a code editor or terminal and locate the solution folder. Before you can run the program you first need to navigate to the directory that has the program.cs file, which can be done with the following command:
 
 `cd .\src\Chirp.Web\`
 
@@ -45,16 +45,17 @@ Now you can run Chirp using the the command:
 
 `dotnet run`
 
-After running the command the terminal should have output something that looks like this:  
+If execution was succesful you should receive a terminal output that looks like so:
+<br>
 <img src="images/terminalOutputV2.png" alt="terminal output" width="50%"/>
 
-Then click on the url, for the picture it is http://localhost:5273 to see the program runnning 
+Then open the url. The default is http://localhost:5273.
 
-Because of how OAuth works, you will not be able use that functionallity locally which can also be seen in the terminal where it writtes:
+Because of how OAuth works, you will not be able register or login with GitHub locally, as stated in the terminal:
 
 > Could not find Github Client ID and or Github Client Secret. OAuth with Github will not be available
 
-If you want to try the OAuth functionallity, use the deployed version which can be found here: https://bdsa2024group8chirprazor2025.azurewebsites.net/
+If you want to try the OAuth functionallity, use the deployed version found here: https://bdsa2024group8chirprazor2025.azurewebsites.net/
 ## How to run test suite locally
 
 # Ethics
