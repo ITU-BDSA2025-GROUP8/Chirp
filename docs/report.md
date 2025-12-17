@@ -20,6 +20,10 @@ Here comes a description of our domain model.
 
 ## Architecture — In the small
 ![Illustration of code base](docs/diagrams/onion_architecture.png)
+<br><br>
+TODO: SERVICES WILL BE MOVED TO INFRASTRUCTURE.
+ENTITIES IN INFRASTRUCTURE BECAUSE EF CORE - BRIEFLY EXPLAIN WHY
+<br><br>
 The code base is structured according to the onion achitecture template,
 with a couple of notable exceptions.
 <br><br>
