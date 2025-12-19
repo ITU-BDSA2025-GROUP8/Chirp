@@ -19,23 +19,23 @@ Here comes a description of our domain model.
 ![Illustration of the _Chirp!_ data model as UML class diagram.](docs/images/domain_model.png)
 
 ## Architecture — In the small
-![Illustration of code base](docs/diagrams/onion_architecture.png)
-<br><br>
-TODO: SERVICES WILL BE MOVED TO INFRASTRUCTURE.
-ENTITIES IN INFRASTRUCTURE BECAUSE EF CORE - BRIEFLY EXPLAIN WHY
-<br><br>
 The code base is structured according to the onion achitecture template,
-with a couple of notable exceptions.
-<br><br>
-`Chirp.Core` contains the interfaces and data transfer objects (DTOs).
-<br>
-`Chirp.Infrastructure` contains the domain entities, repositories and the Data package,
+with one notable exception. Usually, the domain entities are situated within core of the application
+and this also was the case for this app, before EF Core Identity was implemented.
+With this task came some decesions about how to handle the author/user semantics.
+Ultimately, it was decided that EF Core users and cheep authors would be combined
+to avoid complications between different types of user accounts.
+As a result, the domain entities were moved to `Chirp.Infrastructure`
+to accomodate EF Core Identity.
+Besides this discrepancy, the Chirp! application adheres to the standard onion architecture template.
+Below is an overview of the codebase structure.
+![Illustration of code base](docs/diagrams/onion_architecture.png)
+- `Chirp.Core` contains the interfaces and data transfer objects (DTOs).
+- `Chirp.Infrastructure` contains the domain entities, repositories and the Data package,
 which is responsible for the DB context and initializing.
-<br>
-`Chirp.Web` contains the Program.cs file and all razor pages and their respective page handlers.
+- `Chirp.Web` contains the Program.cs file, all razor pages and their respective page handlers.
 The Cheep and Author services are also located here.
-<br><br>
-The test suite directory mirrors that of the source code. I.e. the tests for
+- The test suite directory mirrors that of the source code. I.e. the tests for
 `src/Chirp.Infrastructure/Repositories/CheepRepository.cs`
 are found in
 `tests/Chirp.Infrastructure.Tests/Repositories/CheepRepositoryTest.cs`.
