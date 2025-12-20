@@ -48,6 +48,9 @@ UI and end-to-end tests generated using playwright are located in `Chirp.Web.Tes
 
 ## User activities
 
+![Illustration of code base](images/user_activities.png)
+*Illustration of a typical scenario of a Chirp! user.*
+
 ## Sequence of functionality/calls trough _Chirp!_
 
 # Process
