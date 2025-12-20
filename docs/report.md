@@ -35,7 +35,7 @@ Below is an overview of the codebase structure.
 which is responsible for the DB context and initializing.
 - `Chirp.Web` contains the Program.cs file, all razor pages and their respective page handlers.
 The Cheep and Author services are also located here.
-- The test suite directory mirrors that of the source code. I.e. the tests for
+- The test suite resides in a seperate directory that mirrors the structure of the source code. I.e. the tests for
 `src/Chirp.Infrastructure/Repositories/CheepRepository.cs`
 are found in
 `tests/Chirp.Infrastructure.Tests/Repositories/CheepRepositoryTest.cs`.
