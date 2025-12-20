@@ -1,9 +1,7 @@
-
 using Chirp.Core.DTO;
 using Chirp.Core.Interfaces;
-using Chirp.Infrastructure.Entities;
 
-namespace Chirp.Web.Services;
+namespace Chirp.Infrastructure.Services;
 
 public record CheepViewModel(string Author, string Message, string Timestamp,List<string> LikedBy);
 
