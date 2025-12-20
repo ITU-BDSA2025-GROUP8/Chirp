@@ -29,7 +29,10 @@ As a result, the domain entities were moved to `Chirp.Infrastructure`
 to accomodate EF Core Identity.
 Besides this discrepancy, the Chirp! application adheres to the standard onion architecture template.
 Below is an overview of the codebase structure.
-![Illustration of code base](docs/diagrams/onion_architecture.png)
+
+![Illustration of code base](images/onion_architecture.png)
+*Illustration of the Chirp! app codebase structure - based on onion architecture.*
+
 - `Chirp.Core` contains the interfaces and data transfer objects (DTOs).
 - `Chirp.Infrastructure` contains the domain entities, repositories and the Data package,
 which is responsible for the DB context and initializing.
