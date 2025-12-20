@@ -1,3 +1,6 @@
+using Chirp.Infrastructure.Entities;
+using Microsoft.AspNetCore.Identity;
+
 namespace Chirp.Web.Tests.PlaywrightUITests;
 
 using Microsoft.Playwright.NUnit;
@@ -6,34 +9,51 @@ using NUnit.Framework;
 
 [TestFixture]
 
+//todo: remember to check database
+
 public class PlaywrightAboutMeTest : PageTest
 {
+    private string? _username;
+    private string? _email;
+    private const string Password = "WeAreTesting1";
+    private const string HomePage = "https://bdsa2024group8chirprazor2025.azurewebsites.net/";
+    private readonly UserManager<Author> _userManager;
+    
+    public PlaywrightAboutMeTest(UserManager<Author> userManager)
+    {
+        _userManager = userManager;
+    }
+    
+    
+
+    [SetUp]
+    public async Task RegisterUser()
+    {
+        //Create unique username and email
+        var unique = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        _username = $"tester{unique}";
+        _email = $"tester{unique}@itu.dk";
+        
+        await Page.GotoAsync(HomePage);
+        
+        //Register a new user
+        await Page.GetByRole(AriaRole.Link, new() { Name = "register" }).ClickAsync();
+        await Page.GetByPlaceholder("username").FillAsync(_username);
+        await Page.GetByPlaceholder("name@example.com").FillAsync(_email);
+        await Page.GetByLabel("Password", new() { Exact = true }).FillAsync(Password);
+        await Page.GetByLabel("Confirm Password").FillAsync(Password);
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Register" }).ClickAsync();
+        
+        //Go to about me page
+        await Page.GetByRole(AriaRole.Link, new() { Name = "About me" }).ClickAsync();
+    }
 
     [Test]
     public async Task ShowAboutMePageCorrectly()
     {
-        var username = "Tester";
-        var email = "Tester@itu.dk";
-        var password = "WeAreTesting1";
-        
-        await Page.GotoAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net/");
-        
-        //Register a new user
-        await Page.GetByRole(AriaRole.Link, new() { Name = "register" }).ClickAsync();
-        await Page.GetByPlaceholder("Username").FillAsync(username);
-        await Page.GetByPlaceholder("name@example.com").FillAsync(email);
-        await Page.GetByLabel("Password", new() { Exact = true }).FillAsync(password);
-        await Page.GetByLabel("Confirm Password").FillAsync(password);
-        await Page.GetByRole(AriaRole.Button, new() { Name = "Register" }).ClickAsync();
-        
-        await Page.WaitForURLAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net/");
-
-        
-        //Go to about me page
-        await Page.GetByRole(AriaRole.Link, new() { Name = "About me" }).ClickAsync();
-        
-        //Collect information shown
-        await Expect(Page.GetByText("About me")).ToBeVisibleAsync();
+        //Check that the page is rendered correctly
+        await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "About Me" }))
+            .ToBeVisibleAsync();
         await Expect(Page.GetByRole(AriaRole.Cell, new() { Name = "Feature", Exact = true }))
             .ToBeVisibleAsync();
         await Expect(Page.GetByRole(AriaRole.Cell, new() { Name = "Information", Exact = true }))
@@ -41,12 +61,12 @@ public class PlaywrightAboutMeTest : PageTest
         
         await Expect(Page.GetByRole(AriaRole.Cell, new() { Name = "Name", Exact = true }))
             .ToBeVisibleAsync();
-        await Expect(Page.GetByRole(AriaRole.Cell, new() { Name = username, Exact = true }))
+        await Expect(Page.GetByRole(AriaRole.Cell, new() { Name = _username, Exact = true }))
             .ToBeVisibleAsync();
         
         await Expect(Page.GetByRole(AriaRole.Cell, new() { Name = "Email", Exact = true }))
             .ToBeVisibleAsync();
-        await Expect(Page.GetByRole(AriaRole.Cell, new() { Name = email, Exact = true }))
+        await Expect(Page.GetByRole(AriaRole.Cell, new() { Name = _email, Exact = true }))
             .ToBeVisibleAsync();
 
         var following = Page
