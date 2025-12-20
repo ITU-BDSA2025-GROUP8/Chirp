@@ -53,13 +53,13 @@ jobs:
           echo "AUTHENTICATION_GITHUB_CLIENTID=clientID" >> src/Chirp.Web/.env
           echo "AUTHENTICATION_GITHUB_CLIENTSECRET=clientSecret" >> src/Chirp.Web/.env
 
-      - name: Build Linux
+      - name: Publish Linux
         run: dotnet publish src/Chirp.Web/Chirp.Web.csproj -c Release -r linux-x64 --self-contained false /p:PublishSingleFile=true /p:UseAppHost=true -o out/linux
         
-      - name: Build Windows
+      - name: Publish Windows
         run: dotnet publish src/Chirp.Web/Chirp.Web.csproj -c Release -r win-x64 --self-contained false /p:PublishSingleFile=true /p:UseAppHost=true -o out/win
 
-      - name: Build macOS
+      - name: Publish macOS
         run: dotnet publish src/Chirp.Web/Chirp.Web.csproj -c Release -r osx-x64 --self-contained false /p:PublishSingleFile=true /p:UseAppHost=true -o out/macos
 
       - name: Copy .env to outputs
