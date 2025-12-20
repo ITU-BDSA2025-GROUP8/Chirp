@@ -9,8 +9,6 @@ using NUnit.Framework;
 
 [TestFixture]
 
-//todo: remember to check database
-
 public class PlaywrightAboutMeTest : PageTest
 {
     private string? _username;
@@ -25,7 +23,6 @@ public class PlaywrightAboutMeTest : PageTest
     }
     
     
-
     [SetUp]
     public async Task RegisterUser()
     {
@@ -49,8 +46,11 @@ public class PlaywrightAboutMeTest : PageTest
     }
 
     [Test]
-    public async Task ShowAboutMePageCorrectly()
+    public async Task ShowAboutMePageCorrectlyBasedOnDatabase()
     {
+        var userInDatabase = await _userManager.FindByNameAsync(_username);
+        Assert.IsNotNull(userInDatabase, "User was not found in the database.");
+        
         //Check that the page is rendered correctly
         await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "About Me" }))
             .ToBeVisibleAsync();
@@ -59,29 +59,44 @@ public class PlaywrightAboutMeTest : PageTest
         await Expect(Page.GetByRole(AriaRole.Cell, new() { Name = "Information", Exact = true }))
             .ToBeVisibleAsync();
         
+        
+        //Check that the information is correct
+        //Username
         await Expect(Page.GetByRole(AriaRole.Cell, new() { Name = "Name", Exact = true }))
             .ToBeVisibleAsync();
         await Expect(Page.GetByRole(AriaRole.Cell, new() { Name = _username, Exact = true }))
             .ToBeVisibleAsync();
+        Assert.AreEqual(_username, userInDatabase.Name, "Username in database does not match the expected username.");
         
+        //Email
         await Expect(Page.GetByRole(AriaRole.Cell, new() { Name = "Email", Exact = true }))
             .ToBeVisibleAsync();
         await Expect(Page.GetByRole(AriaRole.Cell, new() { Name = _email, Exact = true }))
             .ToBeVisibleAsync();
+        Assert.AreEqual(_email, userInDatabase.Email, "Email in database does not match the expected email.");
 
+        //Following
         var following = Page
             .GetByRole(AriaRole.Cell, new() { Name = "Following", Exact = true })
             .Locator("xpath=following-sibling::td");
 
         await Expect(following).ToBeVisibleAsync();
         await Expect(following).ToHaveTextAsync("You are not following anyone.");
+        Assert.IsEmpty(userInDatabase.Following, "Following in database should be empty.");
         
+        //Cheeps
         var cheeps = Page
             .GetByRole(AriaRole.Cell, new() { Name = "Cheeps", Exact = true })
             .Locator("xpath=following-sibling::td");
-
         await Expect(cheeps).ToBeVisibleAsync();
         await Expect(cheeps).ToHaveTextAsync("There are no cheeps so far.");
+        Assert.IsEmpty(userInDatabase.Cheeps, "Cheeps in database should be empty.");
+        
+        //Password stored correctly
+        var passwordValid = await _userManager.CheckPasswordAsync(userInDatabase, Password);
+        Assert.IsTrue(passwordValid, "Password in database does not match the expected password.");
+
+        
 
     }
 
