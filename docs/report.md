@@ -13,7 +13,7 @@ numbersections: true
 # Design and Architecture of _Chirp!_
 
 ## Domain model
-The domain model of the Chirp application is relatively simple. It consists of Cheeps which is written by an Author that inherits from IdentityUser.
+The domain model of the Chirp application consists of Cheep, Author and IdentityUser. The Cheep is written by an Author that inherits from IdentityUser as visualized below.
 
 ![Illustration of the _Chirp!_ data model as UML class diagram.](docs/images/domain_model.png)
 
