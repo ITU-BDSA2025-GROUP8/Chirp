@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Playwright;
+using Chirp.Web.Tests.PlaywrightUITests;
 
 namespace Chirp.Web.Tests.PlaywrightUITests;
 
@@ -12,14 +14,13 @@ public class PlaywrightEndToEndTest : PageTest
     private const string HomePage = "https://bdsa2024group8chirprazor2025.azurewebsites.net/";
     private const string TestEmail = "test@test.dk";
     private const string TestPassword = "Test@test.dk1";
-    const string Author = "Jacqualine Gilcoine";
 
     //Helpers
-    //Registering with testuser
+    //Registering with test user
 
     private async Task Register()
     {
-        //todo: problem if testuser already exists
+        //todo: problem if test user already exists
         await Page.GotoAsync(HomePage);
         await Page.GetByRole(AriaRole.Link, new() { Name = "register" }).ClickAsync();
         await Page.GetByPlaceholder("Username").FillAsync("Robert2");
@@ -30,9 +31,10 @@ public class PlaywrightEndToEndTest : PageTest
 
     }
 
-//log in with testuser
+//log in with test user
     private async Task Login()
     {
+        
         await Page.GotoAsync(HomePage);
         await Page.GetByRole(AriaRole.Link, new() { Name = "login" }).ClickAsync();
         await Page.GetByPlaceholder("name@example.com").FillAsync(TestEmail);
@@ -47,11 +49,7 @@ public class PlaywrightEndToEndTest : PageTest
         await Page.Locator("#CheepText").FillAsync(cheep);
         await Page.GetByRole(AriaRole.Button, new() { Name = "Share" }).ClickAsync();
     }
-
-    private async Task GoToPrivateTimeline()
-    {
-        await Page.GetByRole(AriaRole.Link, new() { Name = "my timeline" }).ClickAsync();
-    }
+    
     //todo: fix registration
     //[Test]
     // public async Task RegisterNewUser_AllowsCheeping()
