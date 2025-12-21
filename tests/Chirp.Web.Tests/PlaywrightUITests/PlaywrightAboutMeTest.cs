@@ -76,6 +76,34 @@ public class PlaywrightAboutMeTest : PageTest
         await Expect(cheeps).ToHaveTextAsync("There are no cheeps so far.");
     }
 
+    [Test]
+    public async Task FollowingAndUnfollowingIsShownCorrectly()
+    {
+        //Checking that the user is not following anyone at the start
+        await Page.GetByRole(AriaRole.Cell, new() { Name = "Following", Exact = true }).ClickAsync();
+        await Page.GetByText("You are not following anyone.").ClickAsync();
+        
+        //Go to public timeline
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Public timeline" }).ClickAsync();
+        
+        //Follow Jacqualine Gilcoine
+        await Page.Locator("p").Filter(new() { HasText = "Jacqualine Gilcoine Follow Starbuck now is what we hear the worst. — 8/1/2023 1" }).GetByRole(AriaRole.Link).Nth(1).ClickAsync();
+        
+        //Check that the user is now following Jacqualine Gilcoine
+        await Page.GetByRole(AriaRole.Link, new() { Name = "About me" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Cell, new() { Name = "Following" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Cell, new() { Name = "Jacqualine Gilcoine" }).ClickAsync();
+        
+        //Unfollowing Jacqualine Gilcoine
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Public timeline" }).ClickAsync();
+        await Page.Locator("p").Filter(new() { HasText = "Jacqualine Gilcoine Unfollow Starbuck now is what we hear the worst. — 8/1/2023" }).GetByRole(AriaRole.Link).Nth(1).ClickAsync();
+        
+        //Check that the user is not following anyone anymore
+        await Page.GetByRole(AriaRole.Link, new() { Name = "About me" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Cell, new() { Name = "Following", Exact = true }).ClickAsync();
+        await Page.GetByText("You are not following anyone.").ClickAsync();
+    }
+
     [TearDown]
     public async Task DeleteUser()
     {
