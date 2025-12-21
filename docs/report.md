@@ -22,11 +22,12 @@ Here comes a description of our domain model.
 The code base is structured according to the onion achitecture template,
 with one notable exception. Usually, the domain entities are situated within core of the application
 and this also was the case for this app, before EF Core Identity was implemented.
-With this task came some decesions about how to handle the author/user semantics.
-Ultimately, it was decided that EF Core users and cheep authors would be combined
+With this task came some decesions about how to handle the author/Identity user semantics.
+Ultimately, it was decided that Identity users and cheep authors would be combined
+by having the Author class inherit from Identity user,
 to avoid complications between different types of user accounts.
 As a result, the domain entities were moved to `Chirp.Infrastructure`
-to accomodate EF Core Identity.
+to accomodate this decision.
 Besides this discrepancy, the Chirp! application adheres to the standard onion architecture template.
 Below is an overview of the codebase structure.
 
