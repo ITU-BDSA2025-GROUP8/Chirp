@@ -33,9 +33,9 @@ Here comes a description of our domain model.
 ## Team work
 There is going to be a picture of project board here.
 
-As shown in the flow of activities below is the flow of out project work. 
+Shown in the flow of activities below is the workflow of our project development. 
 <br>Development starts with issue creation in GitHub, formulated using user stories describing the desired functionality and acceptance criteria.
-<br>From the issue, a dedicated feature branch is created. Development on the functionality is developed and tested in isolation.
+<br>From the issue, a dedicated feature branch is created, as we work with trunk-based development. The functionality is then developed and tested in isolation.
 <br>When the feature is completed, a pull request is opened and reviewed by teammates. If the pull request is approved, the changes are merged into the main branch 
 
 ## How to make _Chirp!_ work locally
