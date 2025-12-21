@@ -103,6 +103,38 @@ public class PlaywrightAboutMeTest : PageTest
         await Page.GetByRole(AriaRole.Cell, new() { Name = "Following", Exact = true }).ClickAsync();
         await Page.GetByText("You are not following anyone.").ClickAsync();
     }
+    
+    [Test]
+    public async Task FollowingMultiplePeople()
+    {
+        //Checking that the user is not following anyone at the start
+        await Page.GetByRole(AriaRole.Cell, new() { Name = "Following", Exact = true }).ClickAsync();
+        await Page.GetByText("You are not following anyone.").ClickAsync();
+        
+        //Follow multiple people
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Public timeline" }).ClickAsync();
+        await Page.Locator("p").Filter(new() { HasText = "Jacqualine Gilcoine Follow Starbuck now is what we hear the worst. — 8/1/2023 1" }).GetByRole(AriaRole.Link).Nth(1).ClickAsync();
+        await Page.Locator("p").Filter(new() { HasText = "Mellie Yost Follow But what" }).GetByRole(AriaRole.Link).Nth(1).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "About me" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Cell, new() { Name = "Following" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Cell, new() { Name = "Jacqualine Gilcoine, Mellie" }).ClickAsync();
+        
+        //Checking that further following works as expected
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Public timeline" }).ClickAsync();
+        await Page.Locator("p").Filter(new() { HasText = "Malcolm Janski Follow At" }).GetByRole(AriaRole.Link).Nth(1).ClickAsync();
+        await Page.Locator("p").Filter(new() { HasText = "Wendell Ballan Follow As I" }).GetByRole(AriaRole.Link).Nth(1).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "About me" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Cell, new() { Name = "Following" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Cell, new() { Name = "Jacqualine Gilcoine, Mellie" }).ClickAsync();
+        
+        //Unfollowing multiple people
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Public timeline" }).ClickAsync();
+        await Page.Locator("p").Filter(new() { HasText = "Mellie Yost Unfollow But what" }).GetByRole(AriaRole.Link).Nth(1).ClickAsync();
+        await Page.Locator("p").Filter(new() { HasText = "Malcolm Janski Unfollow At" }).GetByRole(AriaRole.Link).Nth(1).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "About me" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Cell, new() { Name = "Following" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Cell, new() { Name = "Jacqualine Gilcoine, Wendell" }).ClickAsync();
+    }
 
     [TearDown]
     public async Task DeleteUser()
