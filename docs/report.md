@@ -35,6 +35,19 @@ Here comes a description of our domain model.
 ## How to make _Chirp!_ work locally
 
 ## How to run test suite locally
+Once the repository has been cloned, running the tests is quite strightforward.
+However, to run the tests generated using Playwright, you need to install it first using
+`dotnet playwright install`.
+Then, simply navigate to the project root folder in a terminal and run `dotnet test`.
+This should run the entire test suite.
+<br><br>
+The test suite consists of unit tests pertaining to the code found in
+`Chirp.Core` and `Chirp.Infrastructure`.
+These ensure that the internal processing of the application's functionality are tested
+thoroughly and individually.
+Besides these unit tests the test suite also contains integration tests found in `Chirp.Web`.
+These include both end-to-end tests of larger scenarios as well as tests of individual UI
+elements.
 
 # Ethics
 
