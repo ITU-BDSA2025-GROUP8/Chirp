@@ -14,7 +14,7 @@ public class PlaywrightForgetMeTest : PageTest
         await Page.GotoAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net");
         //Register
         await Page.GotoAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net");
-        await Page.GetByRole(AriaRole.Link, new() { Name = "register" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Register" }).ClickAsync();
         await Page.GetByPlaceholder("Username").FillAsync("TestOfForgetMe");
         await Page.GetByPlaceholder("name@example.com").FillAsync("TestOfForgetMe@test.dk");
         await Page.GetByLabel("Password", new() { Exact = true }).FillAsync("TestOfForgetMe@test.dk1");
@@ -35,14 +35,14 @@ public class PlaywrightForgetMeTest : PageTest
         await Expect(Page.GetByRole(AriaRole.Link, new() { Name = "login" })).ToBeVisibleAsync();
         
         //can't log in again
-        await Page.GetByRole(AriaRole.Link, new() { Name = "login" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
         await Page.GetByPlaceholder("name@example.com").FillAsync("robert@test.dk");
         await Page.GetByPlaceholder("password").FillAsync("Robert@test.dk1");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
         
         //Can register with same credentials
         await Page.GotoAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net");
-        await Page.GetByRole(AriaRole.Link, new() { Name = "register" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Register" }).ClickAsync();
         await Page.GetByPlaceholder("Username").FillAsync("TestOfForgetMe");
         await Page.GetByPlaceholder("name@example.com").FillAsync("TestOfForgetMe@test.dk");
         await Page.GetByLabel("Password", new() { Exact = true }).FillAsync("TestOfForgetMe@test.dk1");

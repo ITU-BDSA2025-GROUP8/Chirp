@@ -1,23 +1,9 @@
-
 using Chirp.Core.DTO;
 using Chirp.Core.Interfaces;
-using Chirp.Infrastructure.Entities;
 
-namespace Chirp.Web.Services;
+namespace Chirp.Infrastructure.Services;
 
 public record CheepViewModel(string Author, string Message, string Timestamp,List<string> LikedBy);
-
-public interface ICheepService
-{
-    public List<CheepDTO> GetCheeps(out bool hasNext, int? page);
-    public List<CheepDTO> GetCheepsFromAuthor(string author, out bool hasNext, int? page);
-    public List<CheepDTO> GetCheepsFromAuthorOnOnePage(string author);
-    public Task CreateCheepFromDTO(CheepDTO cheep);
-    public List<CheepDTO> GetCheepsFromAuthors(IList<string> authors, out bool hasNext, int? page = null);
-    public Task LikeCheep(int cheep,string likedBy);
-    public Task UnLikeCheep(int cheep, string likedBy);
-
-}
 
 public class CheepService : ICheepService
 {

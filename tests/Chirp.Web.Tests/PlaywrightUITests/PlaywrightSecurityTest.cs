@@ -13,11 +13,11 @@ public class PlaywrightSecurityTest: PageTest
     {
         //Login as user registered with SQL injection as username
         await Page.GotoAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net/");
-        await Page.GetByRole(AriaRole.Link, new() { Name = "login" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
         await Page.GetByPlaceholder("name@example.com").FillAsync("robert@test.dk");
         await Page.GetByPlaceholder("password").FillAsync("Robert@test.dk1");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
-        await Page.GetByRole(AriaRole.Link, new() { Name = "public timeline" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Public timeline" }).ClickAsync();
         await Expect(Page.GetByText("Public Timeline What's on")).ToBeVisibleAsync();
         
         //Test with XSS attack

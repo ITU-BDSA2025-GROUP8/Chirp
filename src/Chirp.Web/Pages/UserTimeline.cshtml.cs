@@ -1,7 +1,7 @@
-﻿using Chirp.Infrastructure.Entities;
+﻿using Chirp.Core.Interfaces;
+using Chirp.Infrastructure.Entities;
 using Chirp.Web.Pages.Shared;
 using Microsoft.AspNetCore.Mvc;
-using Chirp.Web.Services;
 using Microsoft.AspNetCore.Identity;
 
 namespace Chirp.Web.Pages;
