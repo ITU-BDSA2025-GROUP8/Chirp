@@ -1,14 +1,8 @@
 ﻿using Microsoft.Playwright;
-using System;
-using System.Threading.Tasks;
 using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
-using var playwright = await Playwright.CreateAsync();
-await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
-{
-    Headless = false,
-});
 
+[TestFixture]
 public class PlaywrightPageButtonTest : PageTest
 {
     [Test]
