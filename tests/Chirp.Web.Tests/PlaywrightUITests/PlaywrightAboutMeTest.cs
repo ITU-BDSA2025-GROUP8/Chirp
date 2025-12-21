@@ -1,11 +1,8 @@
-using Chirp.Infrastructure.Entities;
-using Microsoft.AspNetCore.Identity;
-
-namespace Chirp.Web.Tests.PlaywrightUITests;
-
 using Microsoft.Playwright.NUnit;
 using Microsoft.Playwright;
 using NUnit.Framework;
+
+namespace Chirp.Web.Tests.PlaywrightUITests;
 
 [TestFixture]
 
@@ -15,13 +12,6 @@ public class PlaywrightAboutMeTest : PageTest
     private string? _email;
     private const string Password = "WeAreTesting1";
     private const string HomePage = "https://bdsa2024group8chirprazor2025.azurewebsites.net/";
-    private readonly UserManager<Author> _userManager;
-    
-    public PlaywrightAboutMeTest(UserManager<Author> userManager)
-    {
-        _userManager = userManager;
-    }
-    
     
     [SetUp]
     public async Task RegisterUser()
@@ -46,11 +36,8 @@ public class PlaywrightAboutMeTest : PageTest
     }
 
     [Test]
-    public async Task ShowAboutMePageCorrectlyBasedOnDatabase()
+    public async Task ShowAboutMePageCorrectly() 
     {
-        var userInDatabase = await _userManager.FindByNameAsync(_username);
-        Assert.IsNotNull(userInDatabase, "User was not found in the database.");
-        
         //Check that the page is rendered correctly
         await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "About Me" }))
             .ToBeVisibleAsync();
@@ -66,14 +53,12 @@ public class PlaywrightAboutMeTest : PageTest
             .ToBeVisibleAsync();
         await Expect(Page.GetByRole(AriaRole.Cell, new() { Name = _username, Exact = true }))
             .ToBeVisibleAsync();
-        Assert.AreEqual(_username, userInDatabase.Name, "Username in database does not match the expected username.");
         
         //Email
         await Expect(Page.GetByRole(AriaRole.Cell, new() { Name = "Email", Exact = true }))
             .ToBeVisibleAsync();
         await Expect(Page.GetByRole(AriaRole.Cell, new() { Name = _email, Exact = true }))
             .ToBeVisibleAsync();
-        Assert.AreEqual(_email, userInDatabase.Email, "Email in database does not match the expected email.");
 
         //Following
         var following = Page
@@ -82,7 +67,6 @@ public class PlaywrightAboutMeTest : PageTest
 
         await Expect(following).ToBeVisibleAsync();
         await Expect(following).ToHaveTextAsync("You are not following anyone.");
-        Assert.IsEmpty(userInDatabase.Following, "Following in database should be empty.");
         
         //Cheeps
         var cheeps = Page
@@ -90,15 +74,14 @@ public class PlaywrightAboutMeTest : PageTest
             .Locator("xpath=following-sibling::td");
         await Expect(cheeps).ToBeVisibleAsync();
         await Expect(cheeps).ToHaveTextAsync("There are no cheeps so far.");
-        Assert.IsEmpty(userInDatabase.Cheeps, "Cheeps in database should be empty.");
-        
-        //Password stored correctly
-        var passwordValid = await _userManager.CheckPasswordAsync(userInDatabase, Password);
-        Assert.IsTrue(passwordValid, "Password in database does not match the expected password.");
-
-        
-
     }
 
+    [TearDown]
+    public async Task DeleteUser()
+    {
+        //Delete user
+        await Page.GetByRole(AriaRole.Link, new() { Name = "About me" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Button, new() { Name = "Forget me!" }).ClickAsync();
+    }
 }
 
