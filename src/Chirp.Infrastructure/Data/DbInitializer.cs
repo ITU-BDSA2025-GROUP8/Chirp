@@ -1,6 +1,6 @@
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Entities;
-
+using Microsoft.AspNetCore.Identity;
 namespace Chirp.Infrastructure.Data;
 
 using System;
@@ -13,24 +13,23 @@ using System;
 
 public static class DbInitializer
 {
-    public static void SeedDatabase(ChirpDBContext chirpContext)
+    public static async Task SeedDatabase(ChirpDBContext chirpContext, UserManager<Author> userManager)
     {
         if (!(chirpContext.Authors.Any() && chirpContext.Cheeps.Any()))
         {
-            var a1 = new Author() { Id = "1", Name = "Roger Histand", Email = "Roger+Histand@hotmail.com", Cheeps = new List<Cheep>(), Following = new List<string>() };
-            var a2 = new Author() { Id = "2", Name = "Luanna Muro", Email = "Luanna-Muro@ku.dk", Cheeps = new List<Cheep>() , Following = new List<string>() };
-            var a3 = new Author() { Id = "3", Name = "Wendell Ballan", Email = "Wendell-Ballan@gmail.com", Cheeps = new List<Cheep>() , Following = new List<string>() };
-            var a4 = new Author() { Id = "4", Name = "Nathan Sirmon", Email = "Nathan+Sirmon@dtu.dk", Cheeps = new List<Cheep>() , Following = new List<string>() };
-            var a5 = new Author() { Id = "5", Name = "Quintin Sitts", Email = "Quintin+Sitts@itu.dk", Cheeps = new List<Cheep>() , Following = new List<string>() };
-            var a6 = new Author() { Id = "6", Name = "Mellie Yost", Email = "Mellie+Yost@ku.dk", Cheeps = new List<Cheep>() , Following = new List<string>() };
-            var a7 = new Author() { Id = "7", Name = "Malcolm Janski", Email = "Malcolm-Janski@gmail.com", Cheeps = new List<Cheep>() , Following = new List<string> ()};
-            var a8 = new Author() { Id = "8", Name = "Octavio Wagganer", Email = "Octavio.Wagganer@dtu.dk", Cheeps = new List<Cheep>() , Following = new List<string>()};
-            var a9 = new Author() { Id = "9", Name = "Johnnie Calixto", Email = "Johnnie+Calixto@itu.dk", Cheeps = new List<Cheep>() , Following = new List<string>()};
-            var a10 = new Author() { Id = "10", Name = "Jacqualine Gilcoine", Email = "Jacqualine.Gilcoine@gmail.com", Cheeps = new List<Cheep>(), Following = new List<string>()  };
-            var a11 = new Author() { Id = "11", Name = "Helge", Email = "ropf@itu.dk", Cheeps = new List<Cheep>(), Following = new List<string>() };
-            var a12 = new Author() { Id = "12", Name = "Adrian", Email = "adho@itu.dk", Cheeps = new List<Cheep>(), Following = new List<string>() };
-
-            var authors = new List<Author>() { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12 };
+            var a1 = new Author() { Name = "Roger Histand", Email = "Roger+Histand@hotmail.com",UserName = "Roger+Histand@hotmail.com", Cheeps = new List<Cheep>(), Following = new List<string>() };
+            var a2 = new Author() { Name = "Luanna Muro", Email = "Luanna-Muro@ku.dk",UserName = "Luanna-Muro@ku.dk", Cheeps = new List<Cheep>() , Following = new List<string>() };
+            var a3 = new Author() { Name = "Wendell Ballan", Email = "Wendell-Ballan@gmail.com",UserName = "Wendell-Ballan@gmail.com", Cheeps = new List<Cheep>() , Following = new List<string>() };
+            var a4 = new Author() { Name = "Nathan Sirmon", Email = "Nathan+Sirmon@dtu.dk",UserName = "Nathan+Sirmon@dtu.dk", Cheeps = new List<Cheep>() , Following = new List<string>() };
+            var a5 = new Author() { Name = "Quintin Sitts", Email = "Quintin+Sitts@itu.dk",UserName = "Quintin+Sitts@itu.dk", Cheeps = new List<Cheep>() , Following = new List<string>() };
+            var a6 = new Author() { Name = "Mellie Yost", Email = "Mellie+Yost@ku.dk",UserName = "Mellie+Yost@ku.dk", Cheeps = new List<Cheep>() , Following = new List<string>() };
+            var a7 = new Author() { Name = "Malcolm Janski", Email = "Malcolm-Janski@gmail.com",UserName = "Malcolm-Janski@gmail.com", Cheeps = new List<Cheep>() , Following = new List<string> ()};
+            var a8 = new Author() { Name = "Octavio Wagganer", Email = "Octavio.Wagganer@dtu.dk",UserName = "Octavio.Wagganer@dtu.dk", Cheeps = new List<Cheep>() , Following = new List<string>()};
+            var a9 = new Author() { Name = "Johnnie Calixto", Email = "Johnnie+Calixto@itu.dk",UserName = "Johnnie+Calixto@itu.dk", Cheeps = new List<Cheep>() , Following = new List<string>()};
+            var a10 = new Author() { Name = "Jacqualine Gilcoine", Email = "Jacqualine.Gilcoine@gmail.com",UserName = "Jacqualine.Gilcoine@gmail.com", Cheeps = new List<Cheep>(), Following = new List<string>()  };
+            var a11 = new Author() { Name = "Helge", Email = "ropf@itu.dk",UserName = "ropf@itu.dk", Cheeps = new List<Cheep>(), Following = new List<string>() };
+            var a12 = new Author() { Name = "Adrian", Email = "adho@itu.dk",UserName = "adho@itu.dk", Cheeps = new List<Cheep>(), Following = new List<string>() };
+            var a13 = new Author() { Name = "Robert", Email = "robert@test.dk",UserName = "robert@test.dk",Cheeps = new List<Cheep>(), Following = new List<string>()};
 
             var c1 = new Cheep() { CheepId = 1,  Author = a10, Text = "They were married in Chicago, with old Smith, and was expected aboard every day; meantime, the two went past me.", Date = DateTime.Parse("2023-08-01 13:14:37"), LikedBy = new List<string>()};
             var c2 = new Cheep() { CheepId = 2,  Author = a10, Text = "And then, as he listened to all that''s left o'' twenty-one people.", Date = DateTime.Parse("2023-08-01 13:15:21"), LikedBy = new List<string>()};
@@ -703,10 +702,20 @@ public static class DbInitializer
             a8.Cheeps = new List<Cheep>() { c55, c124, c139, c151, c164, c263, c310, c328, c360, c375, c430, c470, c564, c576, c605 };
             a11.Cheeps = new List<Cheep>() { c656 };
             a12.Cheeps = new List<Cheep>() { c657 };
+            
+            await userManager.CreateAsync(a11,"LetM31n!");
+            await userManager.CreateAsync(a12, "M32Want_Access");
+            await userManager.CreateAsync(a13, "Robert@test.dk1");
+            
+            var authors = new List<Author>() { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10};
 
-            chirpContext.Authors.AddRange(authors);
+            foreach (var author in authors)
+            {
+                await userManager.CreateAsync(author, "Password123");
+            }
+            
             chirpContext.Cheeps.AddRange(cheeps);
-            chirpContext.SaveChanges();
+            await chirpContext.SaveChangesAsync();
         }
     }
 }

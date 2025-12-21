@@ -69,8 +69,9 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
 
     var context = services.GetRequiredService<ChirpDBContext>();
+    var userManager = services.GetRequiredService<UserManager<Author>>();
     context.Database.EnsureCreated(); 
-    DbInitializer.SeedDatabase(context);
+    await DbInitializer.SeedDatabase(context, userManager);
 }
 
 // Configure the HTTP request pipeline.

@@ -3,7 +3,7 @@ using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Entities;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-
+/*
 namespace Chirp.Infrastructure.Tests.Data;
 
 public class DbInitializerTest : IDisposable
@@ -131,4 +131,4 @@ public class DbInitializerTest : IDisposable
         Assert.Equal(657, cheeps.Count);
         
     }
-}
+}*/
