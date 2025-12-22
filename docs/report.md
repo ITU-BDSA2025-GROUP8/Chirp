@@ -35,12 +35,27 @@ Here comes a description of our domain model.
 ## How to make _Chirp!_ work locally
 
 ## How to run test suite locally
-Once the repository has been cloned, running the tests is quite strightforward.
-However, to run the tests generated using Playwright, you need to install it first using
-`dotnet playwright install`.
+### Prerequisites
+1. Clone the repository. Follow the steps outlined in the previous section.
+2. Install Playwright, which is required for the integration tests.
+See the official documentation [here](https://playwright.dev/docs/intro) or if you are
+on Windows, complete the following steps:
+    1. Open a terminal in the project root folder.
+    2. Run the following commands:
+       ```
+       cd .\tests\Chirp.Web.Tests\
+       dotnet restore
+       pwsh bin/Debug/net8.0/playwright.ps1 install
+       ```
+       _Tip: If the `pwsh` command does not work, your powershell version might be outdated._
+
+### Execute tests
+To run the tests...
+
 Then, simply navigate to the project root folder in a terminal and run `dotnet test`.
 This should run the entire test suite.
-<br><br>
+
+### Test suite describtion
 The test suite consists of unit tests pertaining to the code found in
 `Chirp.Core` and `Chirp.Infrastructure`.
 These ensure that the internal processing of the application's functionality are tested
