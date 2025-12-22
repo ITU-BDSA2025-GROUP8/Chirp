@@ -87,7 +87,6 @@ public class CheepRepositoryTest : IDisposable
         Assert.Equal(3, allCheeps.Count);
         Assert.Contains(allCheeps, c => c.Text == "hi" && c.AuthorName == "Test1");
         Assert.Contains(allCheeps, c => c.Text == "hello" && c.AuthorName == "Test2");
-        //Assert.All(allCheeps, c => Assert.True(c.Id > 0)); // Id should exist todo: check if this is needed?
 
         //Assert cheeps are in correct order (newest first)
         Assert.True(allCheeps[0].CreatedAt > allCheeps[1].CreatedAt);
