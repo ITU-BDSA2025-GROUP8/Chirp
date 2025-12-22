@@ -56,6 +56,40 @@ public class AuthorRepositoryTest : IDisposable
     }
 
     [Fact]
+    public async Task CreateAuthorsWithSameNameTest()
+    {
+        // Test the method
+        using var context = CreateDbContext();
+        context.Database.EnsureCreated();
+        var repository = new AuthorRepository(context);
+
+        var authorDTOTest = new AuthorDTO()
+        {
+            Id = "1",
+            Name = "John Doe",
+            Email = "test@itu.dk",
+            Cheeps = new List<CheepDTO>()
+        };
+        
+        var sameNameAuthor = new AuthorDTO()
+        {
+            Id = "2",
+            Name = "John Doe",
+            Email = "tester@itu.dk",
+            Cheeps = new List<CheepDTO>()
+        };
+
+        await repository.CreateAuthor(authorDTOTest);
+        await Assert.ThrowsAsync<DbUpdateException>(() => repository.CreateAuthor(sameNameAuthor));
+
+        var authors = await repository.GetAllAuthors();
+        Assert.DoesNotContain(authors, a => a.Id == "2");
+        
+        //Clean up
+        Dispose();
+    }
+
+    [Fact]
     public async Task GetAllAuthorsTest()
     {
         // Add to the database
