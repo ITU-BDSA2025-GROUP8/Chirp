@@ -1,5 +1,5 @@
-﻿using Chirp.Infrastructure.Entities;
-using Chirp.Web.Services;
+﻿using Chirp.Core.Interfaces;
+using Chirp.Infrastructure.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

@@ -212,4 +212,24 @@ public class AuthorRepository : IAuthorRepository
         await _context.SaveChangesAsync();
     }
     
+    // Query to delete author
+    public async Task DeleteAuthor(AuthorDTO self)
+    {
+        
+        var query = from author in _context.Authors
+            where author.Id == self.Id
+            select author;
+        var originalAuthor = await query.FirstOrDefaultAsync();
+        
+        if (originalAuthor == null)
+        {
+            throw new Exception("Unable to find the original author");
+        }
+        
+        _context.Remove(originalAuthor);
+        
+        await _context.SaveChangesAsync();
+        
+        
+    }
 }

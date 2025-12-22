@@ -56,6 +56,40 @@ public class AuthorRepositoryTest : IDisposable
     }
 
     [Fact]
+    public async Task CreateAuthorsWithSameNameTest()
+    {
+        // Test the method
+        using var context = CreateDbContext();
+        context.Database.EnsureCreated();
+        var repository = new AuthorRepository(context);
+
+        var authorDTOTest = new AuthorDTO()
+        {
+            Id = "1",
+            Name = "John Doe",
+            Email = "test@itu.dk",
+            Cheeps = new List<CheepDTO>()
+        };
+        
+        var sameNameAuthor = new AuthorDTO()
+        {
+            Id = "2",
+            Name = "John Doe",
+            Email = "tester@itu.dk",
+            Cheeps = new List<CheepDTO>()
+        };
+
+        await repository.CreateAuthor(authorDTOTest);
+        await Assert.ThrowsAsync<DbUpdateException>(() => repository.CreateAuthor(sameNameAuthor));
+
+        var authors = await repository.GetAllAuthors();
+        Assert.DoesNotContain(authors, a => a.Id == "2");
+        
+        //Clean up
+        Dispose();
+    }
+
+    [Fact]
     public async Task GetAllAuthorsTest()
     {
         // Add to the database
@@ -136,9 +170,9 @@ public class AuthorRepositoryTest : IDisposable
         context.Authors.AddRange(a1, a2);
         
         context.Cheeps.AddRange(
-            new Cheep { Author = a1, Text = "hello", Date = new DateTime(2025, 10, 10) },
-            new Cheep { Author = a1, Text = "world", Date = new DateTime(2025, 10, 11) },
-            new Cheep { Author = a2, Text = "cheep", Date = new DateTime(2025, 10, 12) }
+            new Cheep { Author = a1, Text = "hello", Date = new DateTime(2025, 10, 10),LikedBy = new List<string>() },
+            new Cheep { Author = a1, Text = "world", Date = new DateTime(2025, 10, 11),LikedBy = new List<string>() },
+            new Cheep { Author = a2, Text = "cheep", Date = new DateTime(2025, 10, 12),LikedBy = new List<string>() }
         );
         context.SaveChanges();
         
@@ -152,7 +186,9 @@ public class AuthorRepositoryTest : IDisposable
         Assert.Equal("test1", dto.Name);
         Assert.Equal("test1@itu.dk", dto.Email);
         Assert.Equal(2, dto.Cheeps.Count);
-        
+
+        //Clean up
+        Dispose();
     }
 
     [Fact]
@@ -166,9 +202,9 @@ public class AuthorRepositoryTest : IDisposable
         context.Authors.AddRange(a1, a2);
         
         context.Cheeps.AddRange(
-            new Cheep { Author = a1, Text = "hello", Date = new DateTime(2025, 10, 10) },
-            new Cheep { Author = a1, Text = "world", Date = new DateTime(2025, 10, 11) },
-            new Cheep { Author = a2, Text = "cheep", Date = new DateTime(2025, 10, 12) }
+            new Cheep { Author = a1, Text = "hello", Date = new DateTime(2025, 10, 10),LikedBy = new List<string>() },
+            new Cheep { Author = a1, Text = "world", Date = new DateTime(2025, 10, 11),LikedBy = new List<string>() },
+            new Cheep { Author = a2, Text = "cheep", Date = new DateTime(2025, 10, 12),LikedBy = new List<string>() }
         );
         context.SaveChanges();
         var repository = new AuthorRepository(context);
@@ -181,6 +217,9 @@ public class AuthorRepositoryTest : IDisposable
         Assert.Equal("test1", dto.Name);
         Assert.Equal("test1@itu.dk", dto.Email);
         Assert.Equal(2, dto.Cheeps.Count);
+
+        //Clean up
+        Dispose();
     }
 
     [Fact]
@@ -199,6 +238,9 @@ public class AuthorRepositoryTest : IDisposable
                 { Cheeps = new List<CheepDTO>(), Email = a1.Email, Following = a1.Following, Id = a1.Id, Name = a1.Name },
             a2.Name);
         Assert.True(a1.Following.Contains(a2.Name));
+
+        //Clean up
+        Dispose();
     }
 
     [Fact]
@@ -223,5 +265,48 @@ public class AuthorRepositoryTest : IDisposable
             },
             a2.Name);
         Assert.False(a1.Following.Contains(a2.Name));
+
+        //Clean up
+        Dispose();
+    }
+
+    [Fact]
+    public async Task DeleteAuthorTest()
+    {
+        using var context = CreateDbContext();
+        context.Database.EnsureCreated();
+        var repository = new AuthorRepository(context);
+        var a1 = new Author
+        {
+            Id = "1", Name = "test1", Email = "test1@itu.dk", Cheeps = new List<Cheep>(), Following = new List<string>()
+        };
+        var a2 = new Author
+        {
+            Id = "2", Name = "test2", Email = "test2@itu.dk", Cheeps = new List<Cheep>(), Following = new List<string>()
+        };
+        context.Authors.AddRange(a1, a2);
+        context.SaveChanges();
+        var authorDTOTest = new AuthorDTO()
+        {
+            Id = "1",
+            Name = "John Doe",
+            Email = "test@itu.dk",
+            Cheeps = new List<CheepDTO>()
+        };
+
+        // Assert
+        var authorsBefore = await repository.GetAllAuthors();
+        var numberOfAuthorsBefore = authorsBefore.Count();
+        Assert.Equal(2, numberOfAuthorsBefore);
+
+        await repository.DeleteAuthor(authorDTOTest);
+
+        var authorsAfter = await repository.GetAllAuthors();
+        var numberOfAuthorsAfter = authorsAfter.Count();
+        Assert.Equal(1, numberOfAuthorsAfter);
+
+        //Clean up
+        Dispose();
+
     }
 }

@@ -26,7 +26,7 @@ public class CheepTest
             Text = "This is a test",
             Date = date,
             Author = author,
-            
+            LikedBy = []
         };
         
         Assert.Equal(1, cheep.CheepId);
@@ -56,7 +56,8 @@ public class CheepTest
         {
             Author = author,
             Date = new DateTime(2025, 1, 1),
-            Text = input
+            Text = input,
+            LikedBy = []
         };
 
         var validationContext = new ValidationContext(cheep);

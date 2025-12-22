@@ -32,6 +32,7 @@ public class CheepRepository : ICheepRepository
             Author = author,
             Text = newCheep.Text, 
             Date = newCheep.CreatedAt,
+            LikedBy = []
         };
         
         // Adds and saves the cheep in the database
@@ -50,13 +51,33 @@ public class CheepRepository : ICheepRepository
                 Id = cheep.CheepId,
                 CreatedAt = cheep.Date, 
                 Text = cheep.Text,
-                AuthorId = cheep.Author.Name
+                AuthorId = cheep.Author.Id,
+                AuthorName = cheep.Author.Name,
+                LikedBy = cheep.LikedBy
             }).Skip(GetOffset(page)).Take(32);
         
         // Executing the query
         var result = await query.ToListAsync();
         
         return result;
+    }
+
+    //Get singe cheep from Id
+    public async Task<CheepDTO> GetCheep(int id)
+    {
+        var query = (from cheep in _context.Cheeps
+            where cheep.CheepId == id
+            select new CheepDTO
+            {
+                Id = cheep.CheepId,
+                CreatedAt = cheep.Date,
+                Text = cheep.Text,
+                AuthorId = cheep.Author.Id,
+                AuthorName = cheep.Author.Name,
+                LikedBy = cheep.LikedBy
+            });
+        var result = await query.FirstOrDefaultAsync();
+        return result!;
     }
     
     public async Task<List<CheepDTO>> ReadCheepsBy(string authorName, int? page = null)
@@ -70,8 +91,31 @@ public class CheepRepository : ICheepRepository
                 Id = cheep.CheepId,
                 CreatedAt = cheep.Date,
                 Text = cheep.Text,
-                AuthorId = cheep.Author.Name
+                AuthorId = cheep.Author.Id,
+                AuthorName = cheep.Author.Name,
+                LikedBy = cheep.LikedBy
             }).Skip(GetOffset(page)).Take(32);
+        
+        // Execution of the query
+        var result = await query.ToListAsync();
+        
+        return result;
+    }
+    
+    //Shows all cheeps written by a single author on one page
+    public async Task<List<CheepDTO>> ReadCheepsByOnOnePage(string authorName)
+    {
+        // Construction of the query that selects cheeps written by the authorName
+        var query = (from cheep in _context.Cheeps
+            where cheep.Author.Name == authorName
+            orderby cheep.Date descending
+            select new CheepDTO
+            {
+                Id = cheep.CheepId,
+                CreatedAt = cheep.Date,
+                Text = cheep.Text,
+                AuthorId = cheep.Author.Name
+            });
         
         // Execution of the query
         var result = await query.ToListAsync();
@@ -90,7 +134,9 @@ public class CheepRepository : ICheepRepository
                 Id = cheep.CheepId,
                 CreatedAt = cheep.Date,
                 Text = cheep.Text,
-                AuthorId = cheep.Author.Name
+                AuthorId = cheep.Author.Name,
+                AuthorName = cheep.Author.Name,
+                LikedBy = cheep.LikedBy
             }).Skip(GetOffset(page)).Take(32);
         
         // Execution of the query
@@ -137,6 +183,7 @@ public class CheepRepository : ICheepRepository
         originalCheep.Text = alteredCheep.Text;
         originalCheep.Date = alteredCheep.CreatedAt;
         originalCheep.CheepId = alteredCheep.Id;
+        originalCheep.LikedBy = alteredCheep.LikedBy!;
     }
     
     // Utility method: find the author object
@@ -157,8 +204,9 @@ public class CheepRepository : ICheepRepository
         int offset = 0; //default offset is 0
         if (page != null && page > 1)
         {
-            offset = (page.Value-1) * 32;
+            offset = (page.Value - 1) * 32;
         }
+
         return offset;
     }
 }

@@ -18,7 +18,7 @@ public class PlaywrightUiTest : PageTest
         await Expect(cheepBox).Not.ToBeVisibleAsync();
         //log in
         await Page.GotoAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net/");
-        await Page.GetByRole(AriaRole.Link, new() { Name = "login" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
         await Page.GetByPlaceholder("name@example.com").FillAsync("robert@test.dk");
         await Page.GetByPlaceholder("password").FillAsync("Robert@test.dk1");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();        
@@ -34,7 +34,7 @@ public class PlaywrightUiTest : PageTest
     {
         await Page.GotoAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net/");
         //log in
-        await Page.GetByRole(AriaRole.Link, new() { Name = "login" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
         await Page.GetByPlaceholder("name@example.com").FillAsync("robert@test.dk");
         await Page.GetByPlaceholder("password").FillAsync("Robert@test.dk1");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();

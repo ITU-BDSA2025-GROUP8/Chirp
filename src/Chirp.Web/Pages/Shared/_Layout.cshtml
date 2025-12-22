@@ -22,17 +22,18 @@
                     var currentUser = await UserManager.GetUserAsync(User);
                     var displayName = currentUser?.Name ?? User.Identity.Name;
                 }
-                <a href="/@displayName">my timeline</a> |
-                <a href="/">public timeline</a> |
+                <a href="/">Public timeline</a> |
+                <a href="/@displayName">My timeline</a> |
+                <a href="/AboutMe">About me</a> |
                 <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/logout"> Logout [@displayName]</a>
             </div>
         }
         else
         {
             <div>
-                <a href="/">public timeline</a> |
-                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">register</a>
-                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">login</a>
+                <a href="/">Public timeline</a> |
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a> |
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
             </div>
         }
     </div>
