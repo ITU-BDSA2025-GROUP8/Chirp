@@ -81,6 +81,12 @@ public class AuthorRepositoryTest : IDisposable
 
         await repository.CreateAuthor(authorDTOTest);
         await Assert.ThrowsAsync<DbUpdateException>(() => repository.CreateAuthor(sameNameAuthor));
+
+        var authors = await repository.GetAllAuthors();
+        Assert.DoesNotContain(authors, a => a.Id == "2");
+        
+        //Clean up
+        Dispose();
     }
 
     [Fact]
