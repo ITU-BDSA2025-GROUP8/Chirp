@@ -1,4 +1,3 @@
-using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Entities;
 
 namespace Chirp.Infrastructure.Data;
@@ -13,6 +12,7 @@ using System;
 
 public static class DbInitializer
 {
+    //if the database is empty (does not have any authors and cheeps), the database will be seeded with some sample data.
     public static void SeedDatabase(ChirpDBContext chirpContext)
     {
         if (!(chirpContext.Authors.Any() && chirpContext.Cheeps.Any()))
