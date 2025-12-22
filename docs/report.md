@@ -55,7 +55,7 @@ UI and end-to-end tests generated using Playwright are located in `Chirp.Web.Tes
 
 The image above illustrates the sequence of interactions which occours, when an unauthorized user first 
 accesses the application on the public timeline. An HTTP GET request to the root endpoint "/" is received by 
-ASP.Net Core, which calls the Public Model `public.cshtml.cs` page model's OnGetAsync method.
+ASP.Net Core, which calls the Public Models (`public.cshtml.cs`) OnGetAsync method.
 From there, the user is identified as unauthenticated by the ASP.NET Core authentication system and treated as 
 anonymous. Through a couple of lifelines, a list of cheeps is collected and returned to ASP.Net Core. ASP.Net 
 Core then renders the `public.cshtml` page through the Razor Page engine and returns the rendered HTML 
