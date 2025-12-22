@@ -49,14 +49,21 @@ UI and end-to-end tests generated using playwright are located in `Chirp.Web.Tes
 ## User activities
 The first page any Chirp! user sees is the public timeline which displays all cheeps.
 Unauthorized users are limited to browsing cheeps on this public timeline
-and visiting other author's private timelines. As illustrated by the diagram below,
-the majority of the app's functionality is exclusively available to authorized users.
+and visiting other authors' private timelines. If a user wishes to further interact with
+cheeps and authors, authentication is required as illustrated by the diagram below.
+
+![Illustration of unauthorized user and authentication process](images/user_activities_unauthorized.png)
+<br>
+*A typical unathorized user's journey before and through the authentication process.*
+
+The majority of the app's functionality is exclusively available to authorized users.
 Specifically, creating cheeps, liking cheeps and following other authors.
 Authorized users can also view their user-information on the About Me page,
 as well as choose to delete their account from the application.
 
-![Illustration of code base](images/user_activities.png)
-*Illustration of a typical user journey through the Chirp! application.*
+![Illustration of code base](images/user_activities_authorized.png)
+<br>
+*A typical authorized user's journey through the Chirp! application.*
 
 ## Sequence of functionality/calls trough _Chirp!_
 
