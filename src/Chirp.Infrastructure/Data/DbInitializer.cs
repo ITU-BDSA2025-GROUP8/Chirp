@@ -5,7 +5,7 @@ namespace Chirp.Infrastructure.Data;
 using System;
 
 /*
- Code given from the git page of the course, session 6 > data > DbInitializer.cs 
+ Code given from the git page of the course, session 6 > data > DbInitializer.cs
  The only modifications made are that a few properties have had their name slightly changed to fit our model.
  Code copied 21.10.2025
  */

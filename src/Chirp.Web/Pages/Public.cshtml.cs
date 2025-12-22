@@ -41,8 +41,8 @@ public class PublicModel : TimelineBaseModel
     public async Task<ActionResult> OnPostLikeAsync(int cheep, string returnUrl)
     {
         var currentUser = await UserManager.GetUserAsync(User);
-       await _cheepService.LikeCheep(cheep, currentUser!.Name);
-       return LocalRedirect(returnUrl);
+        await _cheepService.LikeCheep(cheep, currentUser!.Name);
+        return LocalRedirect(returnUrl);
     }
 
     public async Task<ActionResult> OnPostUnLikeAsync(int cheep,string returnUrl)

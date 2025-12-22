@@ -33,4 +33,4 @@ public class AuthorService : IAuthorService
         AuthorDTO? self = await GetAuthorByName(thisUsername);
         await _authorRepository.DeleteAuthor(self!);
     }
-}    
+}

@@ -58,8 +58,6 @@ public class UserTimelineModel : TimelineBaseModel
         // Used for page links
         PageNumber = page;
         
-        
-        
         return Page();
     }
     
