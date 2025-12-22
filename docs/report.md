@@ -47,8 +47,8 @@ are found in
 UI and end-to-end tests generated using Playwright are located in `Chirp.Web.Tests`.
 
 ## Architecture of deployed application
-The diagram below shows rhe deployment architecture of the Chirp! application. The system follows a client-server architecture, where users interact with the application through a web browser. Client requests are sent over HTTPS to an ASP.NET Core Razor Pages application deployed on Azure App Service.
-<br> 
+The diagram below shows the deployment architecture of the Chirp! application. The system follows a client-server architecture, where users interact with the application through a web browser. Client requests are sent over HTTPS to an ASP.NET Core Razor Pages application deployed on Azure App Service.
+<br> The web application is responsible for handling application logic. Data is stores in a local SQLite database file that is deployed togeyher with the application. A single client node is shown in the diagram, representing multiple possivle concurrent clients can interact with the deployed application.
 
 ## User activities
 The first page any Chirp! user sees is the public timeline which displays all cheeps.
