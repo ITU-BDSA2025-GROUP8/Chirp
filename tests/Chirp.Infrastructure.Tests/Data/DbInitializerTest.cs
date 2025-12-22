@@ -1,8 +1,13 @@
 using System.Data.Common;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Chirp.Infrastructure.Tests.Data;
 
@@ -28,7 +33,7 @@ public class DbInitializerTest : IDisposable
     
     
     [Fact]
-    public void TestDbInitializerSeedsEmptyDatabaseWithExampleData()
+    public async Task TestDbInitializerSeedsEmptyDatabaseWithExampleData()
     {
         
         using var context = CreateDbContext();
@@ -37,13 +42,17 @@ public class DbInitializerTest : IDisposable
         bool isDatabaseEmpty = !context.Authors.Any() && !context.Cheeps.Any();
         Assert.True(isDatabaseEmpty);
         
-        DbInitializer.SeedDatabase(context);
+        var userManager = CreateUserManager(context);
+        
+        var initializer = new DbInitializer(context,userManager);
+        
+        await initializer.SeedDatabase();
         
         isDatabaseEmpty = !context.Authors.Any() && !context.Cheeps.Any();
         Assert.False(isDatabaseEmpty);
         
         HashSet<Author> authors = context.Authors.ToHashSet();
-        Assert.Equal(12, authors.Count);
+        Assert.Equal(13, authors.Count);
         Assert.Contains(authors, author => author.Name == "Roger Histand");
         Assert.Contains(authors, author => author.Email == "Mellie+Yost@ku.dk");
         Assert.Contains(authors, author => author.Name == "Adrian");
@@ -59,7 +68,7 @@ public class DbInitializerTest : IDisposable
     }
 
     [Fact]
-    public void TestDbInitializerDoesNotSeedDatabaseIfNotEmpty()
+    public async Task TestDbInitializerDoesNotSeedDatabaseIfNotEmpty()
     {
         using var context = CreateDbContext();
         context.Database.EnsureCreated();
@@ -88,7 +97,11 @@ public class DbInitializerTest : IDisposable
         HashSet<Cheep> cheeps = context.Cheeps.ToHashSet();
         Assert.Equal(2, cheeps.Count);
         
-        DbInitializer.SeedDatabase(context);
+        var userManager = CreateUserManager(context);
+        
+        var initializer = new DbInitializer(context,userManager);
+        
+        await initializer.SeedDatabase();
         
         authors = context.Authors.ToHashSet();
         Assert.Equal(2, authors.Count);
@@ -108,27 +121,71 @@ public class DbInitializerTest : IDisposable
     }
 
     [Fact]
-    public void TestDbInitializerDoesNotDoubleSeededDataIfCalledTwice()
+    public async Task TestDbInitializerDoesNotDoubleSeededDataIfCalledTwice()
     {
         using var context = CreateDbContext();
         context.Database.EnsureCreated();
         bool isDatabaseEmpty = !context.Authors.Any() && !context.Cheeps.Any();
         Assert.True(isDatabaseEmpty);
         
-        DbInitializer.SeedDatabase(context);
+        var userManager = CreateUserManager(context);
+        
+        var initializer = new DbInitializer(context,userManager);
+        
+        await initializer.SeedDatabase();
         
         isDatabaseEmpty = !context.Authors.Any() && !context.Cheeps.Any();
         Assert.False(isDatabaseEmpty);
         HashSet<Author> authors = context.Authors.ToHashSet();
-        Assert.Equal(12, authors.Count);
+        Assert.Equal(13, authors.Count);
         HashSet<Cheep> cheeps = context.Cheeps.ToHashSet();
         Assert.Equal(657, cheeps.Count);
         
-        DbInitializer.SeedDatabase(context);
+        await initializer.SeedDatabase();
+        
         authors = context.Authors.ToHashSet();
         Assert.Equal(12, authors.Count);
         cheeps = context.Cheeps.ToHashSet();
         Assert.Equal(657, cheeps.Count);
         
     }
+private static UserManager<Author> CreateUserManager(DbContext context)
+{
+    var store = new UserStore<Author>(context);
+
+    var identityOptions = Options.Create(new IdentityOptions());
+
+    var passwordHasher = new PasswordHasher<Author>();
+
+    var userValidators = new List<IUserValidator<Author>>
+    {
+        new UserValidator<Author>()
+    };
+
+    var passwordValidators = new List<IPasswordValidator<Author>>
+    {
+        new PasswordValidator<Author>()
+    };
+
+    var lookupNormalizer = new UpperInvariantLookupNormalizer();
+    var errorDescriber = new IdentityErrorDescriber();
+
+    var services = new ServiceCollection()
+        .AddLogging()
+        .BuildServiceProvider();
+
+    var logger = services.GetRequiredService<ILogger<UserManager<Author>>>();
+
+    return new UserManager<Author>(
+        store,
+        identityOptions,
+        passwordHasher,
+        userValidators,
+        passwordValidators,
+        lookupNormalizer,
+        errorDescriber,
+        services,
+        logger
+    );
+}
 }
