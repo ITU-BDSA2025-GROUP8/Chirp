@@ -61,7 +61,7 @@ Specifically, creating cheeps, liking cheeps and following other authors.
 Authorized users can also view their user-information on the About Me page,
 as well as choose to delete their account from the application.
 
-![Illustration of code base](images/user_activities_authorized.png)
+![Illustration of code base](images/user_activities_authorized_alt.png)
 <br>
 *A typical authorized user's journey through the Chirp! application.*
 
