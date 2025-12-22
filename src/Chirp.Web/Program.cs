@@ -40,6 +40,7 @@ builder.Services.AddScoped<ICheepService, CheepService>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 bool gotClientId = Environment.GetEnvironmentVariable("AUTHENTICATION_GITHUB_CLIENTID") != null;
 bool gotClientSecret = Environment.GetEnvironmentVariable("AUTHENTICATION_GITHUB_CLIENTSECRET") != null;
@@ -66,12 +67,8 @@ var app = builder.Build();
 //Code from https://learn.microsoft.com/en-us/aspnet/core/data/ef-rp/intro?view=aspnetcore-8.0&tabs=visual-studio-code#seed-the-database
 using (var scope = app.Services.CreateScope())
 {
-    var services = scope.ServiceProvider;
-
-    var context = services.GetRequiredService<ChirpDBContext>();
-    var userManager = services.GetRequiredService<UserManager<Author>>();
-    context.Database.EnsureCreated(); 
-    await DbInitializer.SeedDatabase(context, userManager);
+    var initializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+    await initializer.SeedDatabase();
 }
 
 // Configure the HTTP request pipeline.

@@ -9,8 +9,7 @@ public class Author : IdentityUser
 {
     // IdentityUser already have an ID and email fields
     
-    [Required]
-    public required string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
     public ICollection<Cheep> Cheeps { get; set; } = new List<Cheep>();
     public IList<string> Following { get; set; } = new List<string>();
 }
