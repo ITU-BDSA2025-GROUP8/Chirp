@@ -44,7 +44,15 @@ The last workflow builds and deploys the Chirp! application to Azure upon a push
 
 
 ## Team work
+There is going to be a picture of project board here.
 
+Shown in the flow of activities below is the workflow of our project development. 
+<br>Development starts with issue creation in GitHub, specified using user stories that describes the desired functionality and acceptance criteria.
+<br>After issue creation, the team agrees on responsibility for the task, researching the subject and consulting the lecture material. A dedicated feature branch is created, as we work with trunk-based development. The functionality is then developed and tested in isolation, often utilizing pair programming.
+<br>When the feature is completed, a pull request is opened and thereafter reviewed by teammates. If the pull request is not approved, the assignee makes changes according to reviewer feedback. Once approved, the changes are merged into the main branch.
+
+![Workflow of project development](images/team_work.png)
+<br>*Workflow showing the development process from issue creation to merging into the main branch.*
 ## How to make _Chirp!_ work locally
 The Chirp! application runs on .NET 8 so you need to have that installed before you can run it. It can be downloaded here: https://dotnet.microsoft.com/en-us/download/dotnet/8.0
 
