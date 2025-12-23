@@ -9,15 +9,16 @@ namespace Chirp.Infrastructure.Repositories;
 public class AuthorRepository : IAuthorRepository
 {
     private readonly ChirpDBContext _context;
+    
     public AuthorRepository(ChirpDBContext context)
     {
         _context = context;
     }
 
-    // Create new author
+    // Create a new author
     public async Task CreateAuthor(AuthorDTO newUser)
     {
-        // Creates new Author
+        // Creates a new author
         Author author = new()
         {
             Name = newUser.Name,
@@ -102,8 +103,6 @@ public class AuthorRepository : IAuthorRepository
         }
         
         originalAuthor.Cheeps = cheeps;
-
-
     }
     
     // Translate from CheepDTO to Cheeps by querying DB
@@ -149,6 +148,7 @@ public class AuthorRepository : IAuthorRepository
         var result = query.FirstOrDefault();
         return result;
     }
+    
     //Query that selects the author whose email matches the provided
     public async Task<AuthorDTO?> FindByEmail(string email){
         // Construction of query gets the matching author incl. cheeps
@@ -229,7 +229,5 @@ public class AuthorRepository : IAuthorRepository
         _context.Remove(originalAuthor);
         
         await _context.SaveChangesAsync();
-        
-        
     }
 }
