@@ -42,6 +42,7 @@ builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 
 bool gotClientId = Environment.GetEnvironmentVariable("AUTHENTICATION_GITHUB_CLIENTID") != null;
 bool gotClientSecret = Environment.GetEnvironmentVariable("AUTHENTICATION_GITHUB_CLIENTSECRET") != null;
+
 // Add OAuth to the App
 if (gotClientId && gotClientSecret)
 {
