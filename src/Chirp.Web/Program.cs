@@ -67,6 +67,10 @@ var app = builder.Build();
 //Code from https://learn.microsoft.com/en-us/aspnet/core/data/ef-rp/intro?view=aspnetcore-8.0&tabs=visual-studio-code#seed-the-database
 using (var scope = app.Services.CreateScope())
 {
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<ChirpDBContext>();
+    context.Database.Migrate();
+    
     var initializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
     await initializer.SeedDatabase();
 }
