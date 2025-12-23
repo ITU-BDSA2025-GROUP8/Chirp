@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Chirp.Web.Pages;
 
-//Pages for cheeps from all authors
+// Page model for 'Public timeline' containing all cheeps from all authors
 public class PublicModel : TimelineBaseModel
 {
     
-    //Inherits from parent class TimelineBaseModel, which injects the cheep service and sets a model
+    // Inherits from parent class TimelineBaseModel, which injects the Services and sets the model
     public PublicModel(ICheepService cheepService, IAuthorService authorService, UserManager<Author> userManager) : base(cheepService, authorService, userManager)
     {
     }
@@ -19,12 +19,12 @@ public class PublicModel : TimelineBaseModel
     public int PageNumber { get; set; }
     public bool HasMorePages { get; set; }
 
-    //Get all cheeps by all authors
+    // Get all cheeps by all authors
     public async Task<ActionResult> OnGetAsync([FromQuery] int page = 1, [FromQuery] string? error = null)
     {
         HandleError(error);
         
-        //Call base method to get user info
+        // Call base method to get user info
         await GetUserInformation();
         
         Cheeps = _cheepService.GetCheeps(out bool hasNext, page);
@@ -38,6 +38,7 @@ public class PublicModel : TimelineBaseModel
         return Page();
     }
 
+    // OnPost-method for when a user likes a cheep
     public async Task<ActionResult> OnPostLikeAsync(int cheep, string returnUrl)
     {
         var currentUser = await UserManager.GetUserAsync(User);
@@ -45,6 +46,7 @@ public class PublicModel : TimelineBaseModel
         return LocalRedirect(returnUrl);
     }
 
+    // OnPost-method for when a user unlikes a cheep
     public async Task<ActionResult> OnPostUnLikeAsync(int cheep,string returnUrl)
     {
         var currentUser = await UserManager.GetUserAsync(User);
