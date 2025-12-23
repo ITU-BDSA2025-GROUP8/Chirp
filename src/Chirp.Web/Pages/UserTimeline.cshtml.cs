@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Chirp.Web.Pages;
 
-//Pages for cheeps from a specific author
+// Page model for 'User timeline' containing all cheeps from a specific authors and for own timeline showing cheeps from authors followed
 public class UserTimelineModel : TimelineBaseModel
 {
     [BindProperty]
@@ -61,6 +61,7 @@ public class UserTimelineModel : TimelineBaseModel
         return Page();
     }
     
+    //OnPost-method for liking a cheep
     public async Task<ActionResult> OnPostLikeAsync(int cheep, string returnUrl)
     {
         var currentUser = await UserManager.GetUserAsync(User);
@@ -68,6 +69,7 @@ public class UserTimelineModel : TimelineBaseModel
         return LocalRedirect(returnUrl);
     }
 
+    //OnPost-method for unliking a cheep
     public async Task<ActionResult> OnPostUnLikeAsync(int cheep,string returnUrl)
     {
         var currentUser = await UserManager.GetUserAsync(User);
