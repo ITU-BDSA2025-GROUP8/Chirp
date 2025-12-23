@@ -2,20 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 
 namespace Chirp.Web.Areas.Identity.Pages.Account
 {
@@ -88,6 +80,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             public bool RememberMe { get; set; }
         }
 
+        // OnGet-method for the Login page
         public async Task OnGetAsync(string returnUrl = null)
         {
             if (!string.IsNullOrEmpty(ErrorMessage))
@@ -105,6 +98,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
         }
 
+        //OnPost-method for the login page
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
@@ -129,8 +123,8 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    var displayname = user.Name;
-                    return LocalRedirect("/" + displayname);
+                    var displayName = user.Name;
+                    return LocalRedirect("/" + displayName);
                 }
                 if (result.RequiresTwoFactor)
                 {
@@ -148,7 +142,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                 }
             }
 
-            // If we got this far, something failed, redisplay form
+            // If the application got this far, something failed, redisplay form
             return Page();
         }
     }
