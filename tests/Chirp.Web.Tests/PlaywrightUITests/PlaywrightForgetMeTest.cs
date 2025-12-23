@@ -1,7 +1,6 @@
 ﻿using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
-using Assert = Xunit.Assert;
 
 namespace Chirp.Web.Tests.PlaywrightUITests;
 
@@ -12,7 +11,8 @@ public class PlaywrightForgetMeTest : PageTest
     public async Task ForgetMeTest()
     {
         await Page.GotoAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net");
-        //Register
+        
+        // Register
         await Page.GotoAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Register" }).ClickAsync();
         await Page.GetByPlaceholder("Username").FillAsync("TestOfForgetMe");
@@ -20,27 +20,28 @@ public class PlaywrightForgetMeTest : PageTest
         await Page.GetByLabel("Password", new() { Exact = true }).FillAsync("TestOfForgetMe@test.dk1");
         await Page.GetByLabel("Confirm Password", new() { Exact = true }).FillAsync("TestOfForgetMe@test.dk1");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Register" }).ClickAsync();
-        //make cheep
+        
+        // Make cheep
         await Page.Locator("#CheepText").ClickAsync();
         await Page.Locator("#CheepText").FillAsync("Test that this is deleted when i press the 'Forget Me!' button");
         await Page.Locator("#CheepText").PressAsync("Enter");
         
-        //forget me
+        // Forget me
         await Page.GetByRole(AriaRole.Link, new() { Name = "About me" }).ClickAsync();
         await Page.GetByRole(AriaRole.Button, new() { Name = "Forget me!" }).ClickAsync();
         
-        //assert user have been logged out and cheep is also deleted
+        // Assert user have been logged out and cheep is also deleted
         await Expect(Page.Locator("#messagelist")).Not
             .ToContainTextAsync("Test that this is deleted when i press the 'Forget Me!' button");
         await Expect(Page.GetByRole(AriaRole.Link, new() { Name = "login" })).ToBeVisibleAsync();
         
-        //can't log in again
+        // Assert user can't log in again
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
         await Page.GetByPlaceholder("name@example.com").FillAsync("robert@test.dk");
         await Page.GetByPlaceholder("password").FillAsync("Robert@test.dk1");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
         
-        //Can register with same credentials
+        // Can register with same credentials
         await Page.GotoAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net");
         await Page.GetByRole(AriaRole.Link, new() { Name = "Register" }).ClickAsync();
         await Page.GetByPlaceholder("Username").FillAsync("TestOfForgetMe");
@@ -49,11 +50,11 @@ public class PlaywrightForgetMeTest : PageTest
         await Page.GetByLabel("Confirm Password", new() { Exact = true }).FillAsync("TestOfForgetMe@test.dk1");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Register" }).ClickAsync();
 
-        //assert cheep is also deleted
+        // Assert cheep is also deleted
         await Page.GetByRole(AriaRole.Link, new() { Name = "My timeline" }).ClickAsync();
         await Expect(Page.GetByRole(AriaRole.Emphasis)).ToContainTextAsync("There are no cheeps so far.");
 
-        //forget me - to clean up
+        // Forget me - to clean up
         await Page.GetByRole(AriaRole.Link, new() { Name = "About me" }).ClickAsync();
         await Page.GetByRole(AriaRole.Button, new() { Name = "Forget me!" }).ClickAsync();
     }

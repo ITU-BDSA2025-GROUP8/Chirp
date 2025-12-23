@@ -17,7 +17,7 @@ public class AuthorTest
 
         var cheeps = new List<Cheep>
         {
-            new Cheep
+            new()
             {
                 CheepId = 1,
                 Text = "This is a test",
