@@ -78,6 +78,30 @@ Because of how OAuth works, you will not be able register or login with GitHub l
 
 If you want to try the OAuth functionallity, use the deployed version found here: https://bdsa2024group8chirprazor2025.azurewebsites.net/
 ## How to run test suite locally
+### Prerequisites
+1. Clone the repository. Follow the steps outlined in the previous section.
+2. Install Playwright, which is required for the integration tests.
+Follow the official documentation [here](https://playwright.dev/docs/intro) - or if you are
+on Windows, install by running the following commands from the project root:
+    ```
+    cd .\tests\Chirp.Web.Tests\
+    dotnet restore
+    pwsh bin/Debug/net8.0/playwright.ps1 install
+    ```
+    _Tip: If the `pwsh` command does not work, your powershell version might be outdated._
+
+### Execute tests
+To run the tests, open a terminal in the project root and run `dotnet test`.
+This should run the entire test suite.
+
+### Test suite description
+The test suite consists of unit tests pertaining to the code found in
+`Chirp.Core` and `Chirp.Infrastructure`.
+These ensure that the internal processing of the application's functionality are tested
+thoroughly and individually.
+Besides these unit tests the test suite also contains integration tests found in `Chirp.Web`.
+These include both end-to-end tests of larger scenarios and tests of individual UI
+elements.
 
 # Ethics
 
