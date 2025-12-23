@@ -61,7 +61,7 @@ anonymous. Through a couple of lifelines, a list of cheeps is collected and retu
 Core then renders the `public.cshtml` page through the Razor Page engine and returns the rendered HTML 
 to the user.
 TimelineBaseModel is illustrated in the diagram to for transparancy about communication as the calls between the 
-Razor Pages otherwise woulbe be hidden due to being internal.
+Razor Pages otherwise would be be hidden due to being internal.
 
 
 
