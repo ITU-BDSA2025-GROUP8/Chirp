@@ -11,7 +11,7 @@ namespace Chirp.Web.Pages.Shared;
 
 public class TimelineBaseModel : PageModel
 {
-    protected readonly ICheepService _cheepService; //set to protected to be accessible in child classes
+    protected readonly ICheepService _cheepService;
     protected readonly IAuthorService _authorService;
     public List<CheepDTO>? Cheeps { get; set; }
     [BindProperty]
@@ -90,7 +90,7 @@ public class TimelineBaseModel : PageModel
         //Call the repository method for creating a cheep
         await _cheepService.CreateCheepFromDTO(cheepDTO);
         
-        StatusMessage = "Chirp was succesfully created!";
+        StatusMessage = "Chirp was successfully created!";
         
         return RedirectToPage();
     }
