@@ -30,16 +30,16 @@ public class DbInitializer : IDbInitializer
         {
             return;
         }
-        await CreateAuthorAsync("Roger Histand", "Roger+Histand@hotmail.com", "");
-        await CreateAuthorAsync("Luanna Muro", "Luanna-Muro@ku.dk", "");
-        await CreateAuthorAsync("Wendell Ballan", "Wendell-Ballan@gmail.com", "");
-        await CreateAuthorAsync("Nathan Sirmon", "Nathan+Sirmon@dtu.dk", "");
-        await CreateAuthorAsync("Quintin Sitts", "Quintin+Sitts@itu.dk", "");
-        await CreateAuthorAsync("Mellie Yost", "Mellie+Yost@ku.dk", "");
-        await CreateAuthorAsync("Malcolm Janski", "Malcolm-Janski@gmail.com", "");
-        await CreateAuthorAsync("Octavio Wagganer", "Octavio.Wagganer@dtu.dk", "");
-        await CreateAuthorAsync("Johnnie Calixto", "Johnnie+Calixto@itu.dk", "");
-        await CreateAuthorAsync("Jacqualine Gilcoine", "Jacqualine.Gilcoine@gmail.com", "");
+        await CreateAuthorAsync("Roger Histand", "Roger+Histand@hotmail.com", "Seed0@test.dk");
+        await CreateAuthorAsync("Luanna Muro", "Luanna-Muro@ku.dk", "Seed0@test.dk");
+        await CreateAuthorAsync("Wendell Ballan", "Wendell-Ballan@gmail.com", "Seed0@test.dk");
+        await CreateAuthorAsync("Nathan Sirmon", "Nathan+Sirmon@dtu.dk", "Seed0@test.dk");
+        await CreateAuthorAsync("Quintin Sitts", "Quintin+Sitts@itu.dk", "Seed0@test.dk");
+        await CreateAuthorAsync("Mellie Yost", "Mellie+Yost@ku.dk", "Seed0@test.dk");
+        await CreateAuthorAsync("Malcolm Janski", "Malcolm-Janski@gmail.com", "Seed0@test.dk");
+        await CreateAuthorAsync("Octavio Wagganer", "Octavio.Wagganer@dtu.dk", "Seed0@test.dk");
+        await CreateAuthorAsync("Johnnie Calixto", "Johnnie+Calixto@itu.dk", "Seed0@test.dk");
+        await CreateAuthorAsync("Jacqualine Gilcoine", "Jacqualine.Gilcoine@gmail.com", "Seed0@test.dk");
         await CreateAuthorAsync("Helge", "ropf@itu.dk", "LetM31n!");
         await CreateAuthorAsync("Adrian", "adho@itu.dk", "M32Want_Access");
         await CreateAuthorAsync("Robert", "robert@test.dk", "Robert@test.dk1");

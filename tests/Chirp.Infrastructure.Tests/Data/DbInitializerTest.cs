@@ -144,7 +144,7 @@ public class DbInitializerTest : IDisposable
         await initializer.SeedDatabase();
         
         authors = context.Authors.ToHashSet();
-        Assert.Equal(12, authors.Count);
+        Assert.Equal(13, authors.Count);
         cheeps = context.Cheeps.ToHashSet();
         Assert.Equal(657, cheeps.Count);
         
