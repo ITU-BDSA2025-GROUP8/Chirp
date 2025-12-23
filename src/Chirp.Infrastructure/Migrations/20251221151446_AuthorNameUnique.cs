@@ -5,16 +5,24 @@
 namespace Chirp.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class RemoveIsDeletedPropertyFromEntities : Migration
+    public partial class AuthorNameUnique : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_Name",
+                table: "AspNetUsers",
+                column: "Name",
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropIndex(
+                name: "IX_AspNetUsers_Name",
+                table: "AspNetUsers");
         }
     }
 }

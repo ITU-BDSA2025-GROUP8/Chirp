@@ -19,6 +19,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Chirp.Web.Areas.Identity.Pages.Account
@@ -124,8 +126,20 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 user.Name = Input.Username;
                 user.Following = new List<string>();
-                var result = await _userManager.CreateAsync(user, Input.Password);
-
+                IdentityResult result;
+                try
+                {
+                    result = await _userManager.CreateAsync(user, Input.Password);
+                }
+                catch (DbUpdateException e)
+                    when (e.InnerException is SqliteException sqliteEx
+                          && sqliteEx.SqliteErrorCode == 19 && sqliteEx.Message.Contains("AspNetUsers.Name"))
+                
+                {
+                    ModelState.AddModelError(string.Empty, "The username you entered is already taken.");
+                    return Page();
+                }
+                
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
