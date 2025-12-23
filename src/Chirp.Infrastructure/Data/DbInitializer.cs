@@ -1,4 +1,3 @@
-using Chirp.Core.DTO;
 using Chirp.Core.Interfaces;
 using Chirp.Infrastructure.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -18,12 +17,14 @@ public class DbInitializer : IDbInitializer
         _userManager = userManager;
     }
 
+    //Seeds the database with sample data.
     public async Task SeedDatabase()
     {
         await SeedAuthorsAsync();
         await SeedCheepsAsync();
     }
     
+    //If no authors are in the database, it will be seeded with sample data of authors
     private async Task SeedAuthorsAsync()
     {
         if (_userManager.Users.Any())
@@ -45,6 +46,7 @@ public class DbInitializer : IDbInitializer
         await CreateAuthorAsync("Robert", "robert@test.dk", "Robert@test.dk1");
     }
 
+    //Creates an author in the database
     private async Task CreateAuthorAsync(string name, string email, string password)
     {
         if (await _userManager.FindByNameAsync(name) != null)
@@ -69,6 +71,7 @@ public class DbInitializer : IDbInitializer
         }
     }
     
+    // If no cheeps are in the database, seed it with sample data of cheeps
     private async Task SeedCheepsAsync()
     {
         if (_context.Cheeps.Any())
