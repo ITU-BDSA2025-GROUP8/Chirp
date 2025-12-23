@@ -56,9 +56,10 @@ public class AboutMe : PageModel
         return Page();
     }
 
+    //OnPost-method for the About Me Page is activated if the user presses the "Forget Me!" button - permanently deleting the user
     public async Task<IActionResult> OnPost()
     {
-        // Delete User and their cheeps
+        // Delete Author
         var author = await _userManager.GetUserAsync(HttpContext.User);
         await _authorService.DeleteAuthor(author!.Name);
         

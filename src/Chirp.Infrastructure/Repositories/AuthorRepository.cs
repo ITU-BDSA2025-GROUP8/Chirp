@@ -9,15 +9,16 @@ namespace Chirp.Infrastructure.Repositories;
 public class AuthorRepository : IAuthorRepository
 {
     private readonly ChirpDBContext _context;
+    
     public AuthorRepository(ChirpDBContext context)
     {
         _context = context;
     }
 
-    // Create new author
+    // Create a new author
     public async Task CreateAuthor(AuthorDTO newUser)
     {
-        // Creates new Author
+        // Creates a new author
         Author author = new()
         {
             Name = newUser.Name,
@@ -102,8 +103,6 @@ public class AuthorRepository : IAuthorRepository
         }
         
         originalAuthor.Cheeps = cheeps;
-
-
     }
     
     // Translate from CheepDTO to Cheeps by querying DB
@@ -111,7 +110,7 @@ public class AuthorRepository : IAuthorRepository
     {
         var query = from cheep in _context.Cheeps
             where cheep.CheepId == oldCheep.Id
-                select cheep;
+            select cheep;
         var originalCheep = await query.FirstOrDefaultAsync();
         if (originalCheep == null)
         {
@@ -131,7 +130,7 @@ public class AuthorRepository : IAuthorRepository
 
         var authors = await authorsQuery.ToListAsync();
         var query = from author in authors
-        select new AuthorDTO()
+            select new AuthorDTO()
             {
                 Id = author.Id, 
                 Name = author.Name,
@@ -146,9 +145,10 @@ public class AuthorRepository : IAuthorRepository
                     })
                     .ToList()
             };
-            var result = query.FirstOrDefault();
-            return result;
+        var result = query.FirstOrDefault();
+        return result;
     }
+    
     //Query that selects the author whose email matches the provided
     public async Task<AuthorDTO?> FindByEmail(string email){
         // Construction of query gets the matching author incl. cheeps
@@ -157,26 +157,26 @@ public class AuthorRepository : IAuthorRepository
                 select author)
             .Include(a => a.Cheeps);
         
-    var authors = await authorsQuery.ToListAsync();
+        var authors = await authorsQuery.ToListAsync();
 
-    var query = from author in authors
-        select new AuthorDTO()
-        {
-            Id = author.Id,
-            Name = author.Name,
-            Email = author.Email,
-            //for each cheep, create new CheepDTO object
-            Cheeps = author.Cheeps
-                //projects the Author entity into an AuthorDTO including the cheeps
-                .Select(c => new CheepDTO
-                {
-                    Id = c.CheepId,
-                    AuthorId = author.Id,
-                    Text = c.Text,
-                    CreatedAt = c.Date
-                })
-                .ToList()
-        };
+        var query = from author in authors
+            select new AuthorDTO()
+            {
+                Id = author.Id,
+                Name = author.Name,
+                Email = author.Email,
+                //for each cheep, create new CheepDTO object
+                Cheeps = author.Cheeps
+                    //projects the Author entity into an AuthorDTO including the cheeps
+                    .Select(c => new CheepDTO
+                    {
+                        Id = c.CheepId,
+                        AuthorId = author.Id,
+                        Text = c.Text,
+                        CreatedAt = c.Date
+                    })
+                    .ToList()
+            };
         var result = query.FirstOrDefault();
         return result;
     }
@@ -229,7 +229,5 @@ public class AuthorRepository : IAuthorRepository
         _context.Remove(originalAuthor);
         
         await _context.SaveChangesAsync();
-        
-        
     }
 }

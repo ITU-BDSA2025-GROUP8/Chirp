@@ -87,7 +87,6 @@ public class CheepRepositoryTest : IDisposable
         Assert.Equal(3, allCheeps.Count);
         Assert.Contains(allCheeps, c => c.Text == "hi" && c.AuthorName == "Test1");
         Assert.Contains(allCheeps, c => c.Text == "hello" && c.AuthorName == "Test2");
-        //Assert.All(allCheeps, c => Assert.True(c.Id > 0)); // Id should exist todo: check if this is needed?
 
         //Assert cheeps are in correct order (newest first)
         Assert.True(allCheeps[0].CreatedAt > allCheeps[1].CreatedAt);
@@ -249,7 +248,7 @@ public class CheepRepositoryTest : IDisposable
 
         int cheepId = cheep.CheepId;
 
-        //act
+        // Act
         var dto = new CheepDTO
         {
             Id = cheepId,
@@ -260,11 +259,11 @@ public class CheepRepositoryTest : IDisposable
 
         await repository.UpdateCheep(dto);
 
-        // assert a change has happened
+        // Assert a change has happened
         Assert.True(context.Cheeps.Any(c => c.Text == "altered text"));
-        //assert new time exists
+        // Assert new time exists
         Assert.True(context.Cheeps.Any(c => c.Date == new DateTime(2025, 10, 11)));
-        //assert old text is gone
+        // Assert old text is gone
         Assert.False(context.Cheeps.Any(c => c.Text == "old text"));
 
         // Clean up

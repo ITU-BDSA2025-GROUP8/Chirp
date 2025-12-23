@@ -15,6 +15,7 @@ public class PlaywrightPageButtonTest : PageTest
         await page.GotoAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net/");
         var previous1 = page.GetByRole(AriaRole.Link, new() { Name = "previous" });
         await Expect(previous1).Not.ToBeVisibleAsync();
+       
         // Check next button is visible
         var next1 = page.GetByRole(AriaRole.Link, new() { Name = "next" });
         await Expect(next1).ToBeVisibleAsync();
@@ -33,6 +34,7 @@ public class PlaywrightPageButtonTest : PageTest
         await page.GotoAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net/?page=21");
         var next2 = page.GetByRole(AriaRole.Link, new() { Name = "next" });
         await Expect(next2).Not.ToBeVisibleAsync();
+        
         // Check previous button is visible
         var previous2 = page.GetByRole(AriaRole.Link, new() { Name = "previous" });
         await Expect(previous2).ToBeVisibleAsync();

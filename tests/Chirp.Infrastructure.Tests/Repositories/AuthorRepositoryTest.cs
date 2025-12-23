@@ -24,18 +24,19 @@ public class AuthorRepositoryTest : IDisposable
             .Options;
     }
 
-    ChirpDBContext CreateDbContext() => new ChirpDBContext(_options);
+    ChirpDBContext CreateDbContext() => new (_options);
 
     public void Dispose() => _connection.Dispose();
 
     [Fact]
     public async Task CreateAuthorTest()
     {
-        // Test the method
+        // Arrange
         using var context = CreateDbContext();
         context.Database.EnsureCreated();
         var repository = new AuthorRepository(context);
 
+        // Act
         var authorDTOTest = new AuthorDTO()
         {
             Id = "1",
@@ -92,7 +93,7 @@ public class AuthorRepositoryTest : IDisposable
     [Fact]
     public async Task GetAllAuthorsTest()
     {
-        // Add to the database
+        // Arrange
         using var context = CreateDbContext();
         context.Database.EnsureCreated();
         context.Authors.AddRange(
@@ -102,7 +103,7 @@ public class AuthorRepositoryTest : IDisposable
         );
         context.SaveChanges();
 
-        // Test the method
+        // Act
         var repository = new AuthorRepository(context);
         var authors = await repository.GetAllAuthors();
 
@@ -119,7 +120,7 @@ public class AuthorRepositoryTest : IDisposable
     [Fact]
     public async Task UpdateAuthorTest()
     {
-        // Add to the database
+        // Arrange
         using var context = CreateDbContext();
 
         context.Database.EnsureCreated();
@@ -130,8 +131,7 @@ public class AuthorRepositoryTest : IDisposable
         context.SaveChanges();
 
 
-        // Test the method
-
+        // Act
         var repository = new AuthorRepository(context);
         var authorDtoTest = new AuthorDTO()
         {
@@ -225,6 +225,7 @@ public class AuthorRepositoryTest : IDisposable
     [Fact]
     public async Task FollowUserTest()
     {
+        //Arrange
         using var context = CreateDbContext();
         context.Database.EnsureCreated();
         var a1 = new Author { Id = "1", Name = "test1", Email = "test1@itu.dk", Cheeps = new List<Cheep>(),Following = new List<string>()};
@@ -233,10 +234,13 @@ public class AuthorRepositoryTest : IDisposable
         context.SaveChanges();
         var repository = new AuthorRepository(context);
 
+        //Act
         await repository.FollowUser(
             new AuthorDTO()
                 { Cheeps = new List<CheepDTO>(), Email = a1.Email, Following = a1.Following, Id = a1.Id, Name = a1.Name },
             a2.Name);
+        
+        //Assert
         Assert.True(a1.Following.Contains(a2.Name));
 
         //Clean up
@@ -246,6 +250,7 @@ public class AuthorRepositoryTest : IDisposable
     [Fact]
     public async Task UnFollowUserTest()
     {
+        //Arrange
         using var context = CreateDbContext();
         context.Database.EnsureCreated();
         var a1 = new Author { Id = "1", Name = "test1", Email = "test1@itu.dk", Cheeps = new List<Cheep>(),Following = new List<string>()};
@@ -254,6 +259,7 @@ public class AuthorRepositoryTest : IDisposable
         context.SaveChanges();
         var repository = new AuthorRepository(context);
 
+        //Act
         await repository.FollowUser(
             new AuthorDTO()
                 { Cheeps = new List<CheepDTO>(), Email = a1.Email, Following = a1.Following, Id = a1.Id, Name = a1.Name },
@@ -264,6 +270,8 @@ public class AuthorRepositoryTest : IDisposable
                 Cheeps = new List<CheepDTO>(), Email = a1.Email, Following = a1.Following, Id = a1.Id, Name = a1.Name
             },
             a2.Name);
+
+        //Assert
         Assert.False(a1.Following.Contains(a2.Name));
 
         //Clean up
@@ -273,6 +281,7 @@ public class AuthorRepositoryTest : IDisposable
     [Fact]
     public async Task DeleteAuthorTest()
     {
+        //Arrange
         using var context = CreateDbContext();
         context.Database.EnsureCreated();
         var repository = new AuthorRepository(context);
@@ -286,6 +295,7 @@ public class AuthorRepositoryTest : IDisposable
         };
         context.Authors.AddRange(a1, a2);
         context.SaveChanges();
+
         var authorDTOTest = new AuthorDTO()
         {
             Id = "1",
@@ -293,14 +303,15 @@ public class AuthorRepositoryTest : IDisposable
             Email = "test@itu.dk",
             Cheeps = new List<CheepDTO>()
         };
-
-        // Assert
+       
         var authorsBefore = await repository.GetAllAuthors();
         var numberOfAuthorsBefore = authorsBefore.Count();
         Assert.Equal(2, numberOfAuthorsBefore);
 
+        //Act
         await repository.DeleteAuthor(authorDTOTest);
 
+        //Assert
         var authorsAfter = await repository.GetAllAuthors();
         var numberOfAuthorsAfter = authorsAfter.Count();
         Assert.Equal(1, numberOfAuthorsAfter);

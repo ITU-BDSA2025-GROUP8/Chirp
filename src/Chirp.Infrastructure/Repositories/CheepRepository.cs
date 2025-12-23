@@ -8,7 +8,6 @@ namespace Chirp.Infrastructure.Repositories;
 
 public class CheepRepository : ICheepRepository
 {
-    // Instance of the database context is required for writing queries with EF Core
     private readonly ChirpDBContext  _context; 
 
     public CheepRepository(ChirpDBContext context)
@@ -23,7 +22,7 @@ public class CheepRepository : ICheepRepository
         
         if (author == null)
         {
-            //Throws an exception since it should always have a valid author, registered in the database - Exception created by ChatGPT
+            //Throws an exception since a cheep should always have a valid author, registered in the database - Exception created by ChatGPT
             throw new Exception($"Author with username '{newCheep.AuthorId}' not found."); 
         }
         // Creates new cheep
@@ -62,7 +61,7 @@ public class CheepRepository : ICheepRepository
         return result;
     }
 
-    //Get singe cheep from Id
+    //Get a single cheep from Id
     public async Task<CheepDTO> GetCheep(int id)
     {
         var query = (from cheep in _context.Cheeps
@@ -80,6 +79,7 @@ public class CheepRepository : ICheepRepository
         return result!;
     }
     
+    //Retrieves cheeps by an author for a specific page with 32 cheeps
     public async Task<List<CheepDTO>> ReadCheepsBy(string authorName, int? page = null)
     {
         // Construction of the query that selects cheeps written by the authorName
@@ -123,6 +123,7 @@ public class CheepRepository : ICheepRepository
         return result;
     }
     
+    //Retrieves cheeps by a specific group of authors - showing 32 per page
     public async Task<List<CheepDTO>> ReadCheepsBySelfAndOthers(IList<string> authorNames, int? page = null)
     {
         // Construction of the query that selects cheeps written by the authorName
@@ -145,6 +146,7 @@ public class CheepRepository : ICheepRepository
         return result;
     }
 
+    //Update the properties of a Cheep
     public async Task UpdateCheep(CheepDTO alteredCheep)
     {
         // Selects the original cheep from the database
@@ -187,18 +189,19 @@ public class CheepRepository : ICheepRepository
     }
     
     // Utility method: find the author object
-    private async Task<Author?> FindAuthor(string AuthorId)
+    private async Task<Author?> FindAuthor(string authorId)
     {
         // Suggestion from ChatGPT
         // Gets one Author object from the database
         var query = from author in _context.Authors
-            where  author.Id == AuthorId
+            where  author.Id == authorId
             select author;
         var foundAuthor = await query.FirstOrDefaultAsync();
 
         return foundAuthor;
     }
-    //method to get the offset of the cheeps based on what page we want to read from
+    
+    // Utility method: get the offset of the cheeps based on what page we want to read from
     private static int GetOffset(int? page)
     {
         int offset = 0; //default offset is 0
