@@ -14,7 +14,7 @@ public class CheepService : ICheepService
         _cheepRepository = cheepRepository;       
     }
     
-    // Fetches all cheeps form repository
+    // Fetches all cheeps from repository
     public List<CheepDTO> GetCheeps(out bool hasNext, int? page = null)
     {
         var cheeps = _cheepRepository.GetAllCheeps(page).Result;
