@@ -20,6 +20,10 @@ public class DbInitializer : IDbInitializer
 
     public async Task SeedDatabase()
     {
+        if (_userManager.Users.Any() || _context.Cheeps.Any())
+        {
+            return;
+        }
         await SeedAuthorsAsync();
         await SeedCheepsAsync();
     }
