@@ -39,6 +39,7 @@ builder.Services.AddScoped<ICheepService, CheepService>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 bool gotClientId = Environment.GetEnvironmentVariable("AUTHENTICATION_GITHUB_CLIENTID") != null;
 bool gotClientSecret = Environment.GetEnvironmentVariable("AUTHENTICATION_GITHUB_CLIENTSECRET") != null;
@@ -67,10 +68,11 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-
     var context = services.GetRequiredService<ChirpDBContext>();
-    context.Database.EnsureCreated(); 
-    DbInitializer.SeedDatabase(context);
+    context.Database.Migrate();
+    
+    var initializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+    await initializer.SeedDatabase();
 }
 
 // Configure the HTTP request pipeline.
