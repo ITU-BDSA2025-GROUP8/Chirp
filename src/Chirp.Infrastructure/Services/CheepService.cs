@@ -14,7 +14,7 @@ public class CheepService : ICheepService
         _cheepRepository = cheepRepository;       
     }
     
-    // Fetches all cheeps by form repository
+    // Fetches all cheeps form repository
     public List<CheepDTO> GetCheeps(out bool hasNext, int? page = null)
     {
         var cheeps = _cheepRepository.GetAllCheeps(page).Result;
@@ -33,7 +33,7 @@ public class CheepService : ICheepService
         return cheeps;
     }
     
-    // Festches cheeps by specified author from repository on one page
+    // Fetches all cheeps by specified author on one page from repository 
     public List<CheepDTO> GetCheepsFromAuthorOnOnePage(string author)
     {
         var cheeps = _cheepRepository.ReadCheepsByOnOnePage(author).Result;
@@ -50,7 +50,7 @@ public class CheepService : ICheepService
         return cheeps;
     }
     
-    // Creates new cheep
+    // Creates a new cheep
     public async Task CreateCheepFromDTO(CheepDTO cheep)
     {
         await _cheepRepository.CreateCheep(cheep);
