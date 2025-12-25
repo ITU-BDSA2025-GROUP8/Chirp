@@ -33,13 +33,13 @@ public class PlaywrightForgetMeTest : PageTest
         // Assert user have been logged out and cheep is also deleted
         await Expect(Page.Locator("#messagelist")).Not
             .ToContainTextAsync("Test that this is deleted when i press the 'Forget Me!' button");
-        await Expect(Page.GetByRole(AriaRole.Link, new() { Name = "login" })).ToBeVisibleAsync();
+        await Expect(Page.GetByRole(AriaRole.Link, new() { Name = "Login" })).ToBeVisibleAsync();
         
         // Assert user can't log in again
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
-        await Page.GetByPlaceholder("name@example.com").FillAsync("robert@test.dk");
-        await Page.GetByPlaceholder("password").FillAsync("Robert@test.dk1");
-        await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
+        await Page.GetByPlaceholder("name@example.com").FillAsync("TestOfForgetMe@test.dk");
+        await Page.GetByPlaceholder("password").FillAsync("TestOfForgetMe@test.dk1");
+        await Expect(Page.GetByRole(AriaRole.Link, new() { Name = "Login" })).ToBeVisibleAsync();
         
         // Can register with same credentials
         await Page.GotoAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net");

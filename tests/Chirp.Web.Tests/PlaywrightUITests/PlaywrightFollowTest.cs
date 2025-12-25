@@ -119,6 +119,7 @@ public class PlaywrightFollowTest : PageTest
         }
         // Click unfollow
         var unfollowLink = UnfollowLinkForAuthor(Author);
+        await unfollowLink.First.WaitForAsync();
         await unfollowLink.First.ClickAsync();
 
         // Expect follow
