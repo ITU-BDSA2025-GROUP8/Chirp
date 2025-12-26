@@ -3,6 +3,8 @@ using Microsoft.Playwright.NUnit;
 using NUnit.Framework;
 
 [TestFixture]
+[Category("Playwright")]
+
 public class PlaywrightPageButtonTest : PageTest
 {
     [Test]

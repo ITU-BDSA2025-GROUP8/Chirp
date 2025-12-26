@@ -5,6 +5,7 @@ using Microsoft.Playwright;
 using NUnit.Framework;
 
 [TestFixture]
+[Category("Playwright")]
 public class PlaywrightFollowTest : PageTest
 {
     // Url

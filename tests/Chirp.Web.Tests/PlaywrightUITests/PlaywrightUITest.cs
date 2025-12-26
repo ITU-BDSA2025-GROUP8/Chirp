@@ -7,6 +7,8 @@ using NUnit.Framework;
 
 [Parallelizable(ParallelScope.Self)]
 [TestFixture]
+[Category("Playwright")]
+
 public class PlaywrightUiTest : PageTest
 {
     [Test]
