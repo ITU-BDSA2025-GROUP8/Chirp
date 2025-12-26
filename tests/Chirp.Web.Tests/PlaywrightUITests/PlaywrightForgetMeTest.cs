@@ -21,6 +21,10 @@ public class PlaywrightForgetMeTest : PageTest
         await Page.GetByLabel("Confirm Password", new() { Exact = true }).FillAsync("TestOfForgetMe@test.dk1");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Register" }).ClickAsync();
         
+        // Assert registered
+        await Page.GetByRole(AriaRole.Link, new() { Name = "My timeline" }).WaitForAsync(); // If this times out, there was a problem
+        await Expect(Page.Locator("#CheepText")).ToBeVisibleAsync();
+        
         // Make cheep
         await Page.Locator("#CheepText").ClickAsync();
         await Page.Locator("#CheepText").FillAsync("Test that this is deleted when i press the 'Forget Me!' button");
@@ -28,7 +32,9 @@ public class PlaywrightForgetMeTest : PageTest
         
         // Forget me
         await Page.GetByRole(AriaRole.Link, new() { Name = "About me" }).ClickAsync();
+        await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "About Me" })).ToBeVisibleAsync(); // Assert we are on about me page
         await Page.GetByRole(AriaRole.Button, new() { Name = "Forget me!" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Register" }).WaitForAsync(); // If this times out, there was a problem
         
         // Assert user have been logged out and cheep is also deleted
         await Expect(Page.Locator("#messagelist")).Not
