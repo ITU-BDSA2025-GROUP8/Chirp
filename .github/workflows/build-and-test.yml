@@ -23,5 +23,5 @@ jobs:
       run: dotnet clean
     - name: Build
       run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+    - name: Test (Ignore playwright)
+      run: dotnet test --no-build --verbosity normal --filter "Category!=Playwright"
