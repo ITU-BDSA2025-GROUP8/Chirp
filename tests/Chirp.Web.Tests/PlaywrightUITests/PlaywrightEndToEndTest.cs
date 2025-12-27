@@ -59,7 +59,6 @@ public class PlaywrightEndToEndTest : PageTest
      public async Task RegisterNewUser_AllowsCheeping()
      {
          var (email, password) = await Register();
-         //await Login(email, password);
          await PostCheep("Hi I'm a newly registered user");
          
          Assert.That(await Page.ContentAsync(), Does.Contain("Hi I'm a newly registered user"));
@@ -100,6 +99,21 @@ public class PlaywrightEndToEndTest : PageTest
             .ToBeVisibleAsync(new() { Timeout = 15000 });
 
         await Expect(cheep).ToContainTextAsync("1 Likes", new() { Timeout = 15000 });
+    }
+    
+    [Test]
+    public async Task UnauthenticatedUser_CannotCheep()
+    {
+        await Page.GotoAsync(HomePage);
+        
+        // Public timeline is visible
+        await Expect(Page.GetByRole(AriaRole.Link, new() { Name = "Public timeline"})).ToBeVisibleAsync();
+        
+        // Cheepbox is not visible
+        await Expect(Page.Locator("#CheepText")).Not.ToBeVisibleAsync();
+        
+        //Like is not visible
+        await Expect(Page.GetByRole(AriaRole.Button, new() { Name = "Like"})).Not.ToBeVisibleAsync();
     }
     
 }
