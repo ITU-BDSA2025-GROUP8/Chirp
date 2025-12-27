@@ -77,17 +77,19 @@ public class PlaywrightEndToEndTest : PageTest
         var content = await Page.ContentAsync();
         Assert.That(content.Contains(cheepMessage));
     }
+
     [Test]
-     public async Task Login_CanLikeCheep() 
-     {
-         await Login(TestEmail, TestPassword);
-         await Page.GotoAsync(HomePage);
-         
-         //Click first like button
-         var firstLikeButton = Page.GetByRole(AriaRole.Link, new() { Name = "Like" });
-         await firstLikeButton.ClickAsync();
-         //Assert that page contains liked
-         var content = await Page.ContentAsync();
-         Assert.That(content.Contains("Liked"));
+    public async Task Login_CanLikeCheep()
+    {
+        await Login(TestEmail, TestPassword);
+        await Page.GotoAsync(HomePage);
+
+        // Click first like button when cheep has 0 likes
+        var cheepToTest = Page.Locator("li").Filter(new() { HasText = "0 Likes" }).First;
+        
+ // Click Like
+ await cheepToTest.GetByRole(AriaRole.Button, new() { Name = "Like" }).ClickAsync();
+         //Assert that likes changed
+         await Expect(cheepToTest).ToContainTextAsync("1 Likes", new() { Timeout = 15000});
      }
 }
