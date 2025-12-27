@@ -2,15 +2,14 @@ using Chirp.Core.Interfaces;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Entities;
 using Chirp.Infrastructure.Repositories;
+using Chirp.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
-using Chirp.Web.Services;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using DotNetEnv;
 
 // Load OAuth secrets
 Env.Load();
-
+ILogger<Program> logger = new LoggerFactory().CreateLogger<Program>();
 var builder = WebApplication.CreateBuilder(args);
 
 // Load database connection via configuration - from slides session 6
@@ -40,17 +39,27 @@ builder.Services.AddScoped<ICheepService, CheepService>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+
+bool gotClientId = Environment.GetEnvironmentVariable("AUTHENTICATION_GITHUB_CLIENTID") != null;
+bool gotClientSecret = Environment.GetEnvironmentVariable("AUTHENTICATION_GITHUB_CLIENTSECRET") != null;
 
 // Add OAuth to the App
-builder.Services.AddAuthentication()
-    .AddCookie()
-    .AddGitHub(o =>
-    {
-        o.ClientId = Environment.GetEnvironmentVariable("AUTHENTICATION_GITHUB_CLIENTID")!;
-        o.ClientSecret = Environment.GetEnvironmentVariable("AUTHENTICATION_GITHUB_CLIENTSECRET")!;
-        o.CallbackPath = "/signin-github";
-    });
-
+if (gotClientId && gotClientSecret)
+{
+    builder.Services.AddAuthentication()
+        .AddCookie()
+        .AddGitHub(o =>
+        {
+            o.ClientId = Environment.GetEnvironmentVariable("AUTHENTICATION_GITHUB_CLIENTID")!;
+            o.ClientSecret = Environment.GetEnvironmentVariable("AUTHENTICATION_GITHUB_CLIENTSECRET")!;
+            o.CallbackPath = "/signin-github";
+        });
+}
+else
+{
+    Console.WriteLine("Could not find Github Client ID and or Github Client Secret. OAuth with Github will not be available");
+}
 
 var app = builder.Build();
 
@@ -59,10 +68,11 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-
     var context = services.GetRequiredService<ChirpDBContext>();
-    context.Database.EnsureCreated(); 
-    DbInitializer.SeedDatabase(context);
+    context.Database.Migrate();
+    
+    var initializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+    await initializer.SeedDatabase();
 }
 
 // Configure the HTTP request pipeline.

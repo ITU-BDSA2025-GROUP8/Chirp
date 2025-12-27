@@ -1,5 +1,5 @@
-﻿using Chirp.Infrastructure.Entities;
-using Chirp.Web.Services;
+﻿using Chirp.Core.Interfaces;
+using Chirp.Infrastructure.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -17,6 +17,7 @@ public class FollowModel : PageModel
         _userManager = userManager;
     }
 
+    //OnGet method for when a following/unfollowing-"button" is pressed
     public async Task<IActionResult> OnGetAsync(string target, bool undo, string? returnUrl)
     {
         var current = await _userManager.GetUserAsync(HttpContext.User);

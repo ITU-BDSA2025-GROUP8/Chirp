@@ -1,18 +1,19 @@
 using Chirp.Core.DTO;
 using Chirp.Infrastructure.Entities;
-using Chirp.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using Chirp.Core.Interfaces;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Chirp.Web.Pages.Shared;
 
 public class TimelineBaseModel : PageModel
 {
-    protected readonly ICheepService _cheepService; //set to protected to be accessible in child classes
+    protected readonly ICheepService _cheepService;
     protected readonly IAuthorService _authorService;
-    public List<CheepViewModel>? Cheeps { get; set; }
+    public List<CheepDTO>? Cheeps { get; set; }
     [BindProperty]
     [Required(ErrorMessage ="Your cheep can't be empty.")]
     [StringLength(160, ErrorMessage = "Your cheep is too long. Maximum length is 160 characters.")]
@@ -32,7 +33,8 @@ public class TimelineBaseModel : PageModel
         _cheepService = cheepService;
         _authorService = authorService;
         UserManager = userManager;
-        Cheeps = new List<CheepViewModel>();
+        //Changed form CheepViewModel to CheepDTO to better support like functionality 
+        Cheeps = new List<CheepDTO>();
     }
 
     //Get current user information
@@ -44,7 +46,10 @@ public class TimelineBaseModel : PageModel
             var currentUser = await UserManager.GetUserAsync(User);
             if (currentUser == null)
             {
-                throw new NullReferenceException();
+                // The user is authenticated but not found in the database, sign them out
+                await HttpContext.SignOutAsync();
+                Response.Redirect("/Account/Login");
+                return;
             }
 
             DisplayName = currentUser.Name;
@@ -85,7 +90,7 @@ public class TimelineBaseModel : PageModel
         //Call the repository method for creating a cheep
         await _cheepService.CreateCheepFromDTO(cheepDTO);
         
-        StatusMessage = "Chirp was succesfully created!";
+        StatusMessage = "Chirp was successfully created!";
         
         return RedirectToPage();
     }

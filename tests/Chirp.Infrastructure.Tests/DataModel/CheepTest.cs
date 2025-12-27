@@ -6,10 +6,6 @@ namespace Chirp.Infrastructure.Tests.DataModel;
 
 public class CheepTest
 {
-    /*
-     * This test is currently identical to CheepDTOTest, since Cheep and CheepDTO share the same structure.
-     * As more functionality is implemented, this test will expand to cover logic as well.
-     */
     [Fact]
     public void CheepStoresAndReturnsAssignedValues()
     {
@@ -26,7 +22,7 @@ public class CheepTest
             Text = "This is a test",
             Date = date,
             Author = author,
-            
+            LikedBy = []
         };
         
         Assert.Equal(1, cheep.CheepId);
@@ -56,7 +52,8 @@ public class CheepTest
         {
             Author = author,
             Date = new DateTime(2025, 1, 1),
-            Text = input
+            Text = input,
+            LikedBy = []
         };
 
         var validationContext = new ValidationContext(cheep);
