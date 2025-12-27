@@ -18,7 +18,7 @@ public class PlaywrightFollowTest : PageTest
     {
         //log in
         await Page.GotoAsync(HomePage);
-        await Page.GetByRole(AriaRole.Link, new() { Name = "login" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
         await Page.GetByPlaceholder("name@example.com").FillAsync("robert@test.dk");
         await Page.GetByPlaceholder("password").FillAsync("Robert@test.dk1");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();

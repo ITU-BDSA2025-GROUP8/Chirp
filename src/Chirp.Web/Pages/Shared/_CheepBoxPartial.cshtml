@@ -7,8 +7,8 @@
 
         <form method="post" asp-page-handler="TimelineBaseModel" asp-antiforgery="true">
             <input type="hidden" asp-for="UserId" value="@Model.UserId"/>
-            <input style="float: left" type="text" asp-for="CheepText">
-            <input type="submit" value="Share">
+            <input style="float: left; width: 90%;" type="text" asp-for="CheepText">
+            <input style="width: 8%; margin-left: 1%" type="submit" value="Share">
             <span asp-validation-for="CheepText"></span>
         </form>
 

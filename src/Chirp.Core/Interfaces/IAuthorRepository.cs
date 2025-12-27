@@ -17,4 +17,6 @@ public interface IAuthorRepository
     Task FollowUser(AuthorDTO self,string followAuthorUsername);
     
     Task UnFollowUser(AuthorDTO self,string followAuthorUsername);
+    // Delete author
+    Task DeleteAuthor(AuthorDTO author);
 }

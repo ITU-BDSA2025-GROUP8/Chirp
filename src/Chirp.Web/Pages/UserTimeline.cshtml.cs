@@ -1,4 +1,5 @@
-﻿using Chirp.Infrastructure.Entities;
+﻿using Chirp.Core.Interfaces;
+using Chirp.Infrastructure.Entities;
 using Chirp.Web.Pages.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Chirp.Web.Services;
@@ -61,5 +62,19 @@ public class UserTimelineModel : TimelineBaseModel
         
         
         return Page();
+    }
+    
+    public async Task<ActionResult> OnPostLikeAsync(int cheep, string returnUrl)
+    {
+        var currentUser = await UserManager.GetUserAsync(User);
+        await _cheepService.LikeCheep(cheep, currentUser!.Name);
+        return LocalRedirect(returnUrl);
+    }
+
+    public async Task<ActionResult> OnPostUnLikeAsync(int cheep,string returnUrl)
+    {
+        var currentUser = await UserManager.GetUserAsync(User);
+        await _cheepService.UnLikeCheep(cheep, currentUser!.Name);
+        return LocalRedirect(returnUrl);
     }
 }
