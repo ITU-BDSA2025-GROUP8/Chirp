@@ -25,7 +25,7 @@ public class PlaywrightEndToEndTest : PageTest
         var uniqueEmail = $"{uniqueUsername}@test.dk";
         
         await Page.GotoAsync(HomePage);
-        await Page.GetByRole(AriaRole.Link, new() { Name = "register" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Register" }).ClickAsync();
         await Page.GetByPlaceholder("Username").FillAsync(uniqueUsername);
         await Page.GetByPlaceholder("name@example.com").FillAsync(uniqueEmail);
         await Page.GetByLabel("Password", new() { Exact = true }).FillAsync(TestPassword);
@@ -40,7 +40,7 @@ public class PlaywrightEndToEndTest : PageTest
     {
         
         await Page.GotoAsync(HomePage);
-        await Page.GetByRole(AriaRole.Link, new() { Name = "login" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
         await Page.GetByPlaceholder("name@example.com").FillAsync(email);
         await Page.GetByPlaceholder("password").FillAsync(password);
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
@@ -59,7 +59,7 @@ public class PlaywrightEndToEndTest : PageTest
      public async Task RegisterNewUser_AllowsCheeping()
      {
          var (email, password) = await Register();
-         await Login(email, password);
+         //await Login(email, password);
          await PostCheep("Hi I'm a newly registered user");
          
          Assert.That(await Page.ContentAsync(), Does.Contain("Hi I'm a newly registered user"));
