@@ -39,7 +39,7 @@ Here comes a description of our domain model.
 # Ethics
 
 ## License
-This project is licensed under the MIT License. The MIT License was chosen since the nuget packages this project uses are either licensed under the MIT License, Apache-2.0 License or bsd 3 clause License. Since all these licenses are permissive software licenses there does not arise any conflicts using the MIT License. 
+This project is licensed under the MIT License. The MIT License was chosen since the nuget packages this project uses are either licensed under the MIT License or Apache-2.0 License. Since these licenses are permissive software licenses there does not arise any conflicts using the MIT License. 
 
 ## LLMs, ChatGPT, CoPilot, and others
 ChatGPT and, to a smaller degree, Microsoft Copilot were used during the development of this project.
