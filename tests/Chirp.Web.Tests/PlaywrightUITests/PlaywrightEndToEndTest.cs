@@ -13,12 +13,12 @@ public class PlaywrightEndToEndTest : PageTest
     private const string TestEmail = "robert@test.dk";
     private const string TestPassword = "Robert@test.dk1";
 
-    //Helpers
-    //Registering with test user
+    // Helpers
+    // Registering with test user
 
     private async Task <(string Email, string Password)> Register()
     {
-        //Generate unique suffix
+        // Generate unique suffix
         var unique = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         
         var uniqueUsername = $"Test{unique}";
@@ -35,7 +35,7 @@ public class PlaywrightEndToEndTest : PageTest
         return (uniqueEmail, TestPassword);
     }
 
-//log in with test user
+// Log in with test user
     private async Task Login(string email, string password)
     {
         
@@ -56,15 +56,15 @@ public class PlaywrightEndToEndTest : PageTest
     
     
     [Test]
-     public async Task RegisterNewUser_AllowsCheeping()
-     {
-         var (email, password) = await Register();
-         await PostCheep("Hi I'm a newly registered user");
+    public async Task RegisterNewUser_AllowsCheeping()
+    {
+        var (email, password) = await Register();
+        await PostCheep("Hi I'm a newly registered user");
          
-         Assert.That(await Page.ContentAsync(), Does.Contain("Hi I'm a newly registered user"));
-     }
+        Assert.That(await Page.ContentAsync(), Does.Contain("Hi I'm a newly registered user"));
+    }
 
-    //follow link for specific author
+    // Follow link for specific author
 
     [Test]
     public async Task Login_AllowsCheeping()
@@ -99,6 +99,11 @@ public class PlaywrightEndToEndTest : PageTest
             .ToBeVisibleAsync(new() { Timeout = 15000 });
 
         await Expect(cheep).ToContainTextAsync("1 Likes", new() { Timeout = 15000 });
+
+        // Stored in DB: navigate to About me and confirm the cheep is listed
+        await Page.GetByRole(AriaRole.Link, new() { Name = "About me" }).ClickAsync();
+        await Expect(Page.GetByText(msg)).ToBeVisibleAsync(new() {Timeout = 15000
+        });
     }
     
     [Test]
