@@ -68,6 +68,20 @@ as well as choose to delete their account from the application.
 *A typical authorized user's journey through the Chirp! application.*
 
 ## Sequence of functionality/calls trough _Chirp!_
+![Illustration of code base](images/sequence_of_functionality_unauthorized.png)
+*Illustration of the sequence of functionality/calls trough _Chirp!_ from an unauthorized user's perspective.*
+
+The image above illustrates the sequence of interactions which occurs, when an unauthorized user first 
+accesses the application on the public timeline. An HTTP GET request to the root endpoint "/" is received by 
+ASP.Net Core, which calls the Public Models (`public.cshtml.cs`) OnGetAsync method.
+From there, the user is identified as unauthenticated by the ASP.NET Core authentication system and treated as 
+anonymous. Through a couple of lifelines, a list of cheeps is collected and returned to ASP.Net Core. ASP.Net 
+Core then renders the `public.cshtml` page through the Razor Page engine and returns the rendered HTML 
+to the user.
+TimelineBaseModel is illustrated in the diagram to for transparancy about communication as the calls between the 
+Razor Pages otherwise would be be hidden due to being internal.
+
+
 
 # Process
 
