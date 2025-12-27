@@ -5,6 +5,7 @@ using NUnit.Framework;
 namespace Chirp.Web.Tests.PlaywrightUITests;
 
 [TestFixture]
+[Category("Playwright")]
 
 public class PlaywrightAboutMeTest : PageTest
 {

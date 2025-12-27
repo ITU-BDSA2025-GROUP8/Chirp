@@ -5,6 +5,7 @@ using Microsoft.Playwright;
 using NUnit.Framework;
 
 [TestFixture]
+[Category("Playwright")]
 public class PlaywrightFollowTest : PageTest
 {
     // Url
@@ -111,18 +112,26 @@ public class PlaywrightFollowTest : PageTest
         await LoginHelperTestUser();
         await GoToPageWhereAuthorIsVisible(Author);
 
-        // Start by following Jacqualine
-        var followLink = FollowLinkForAuthor(Author);
-        if (await followLink.CountAsync() > 0)
+        // Ensure we are not already following Jacqualine
+        var existingUnfollow = UnfollowLinkForAuthor(Author);
+        if (await existingUnfollow.CountAsync() > 0)
         {
-            await followLink.First.ClickAsync();
+            await existingUnfollow.First.ClickAsync();
+            await FollowLinkForAuthor(Author).First.WaitForAsync();
         }
+        
+        // Follow Jacqualine
+        var followLink = FollowLinkForAuthor(Author);
+        await followLink.First.ClickAsync();
+        
         // Click unfollow
         var unfollowLink = UnfollowLinkForAuthor(Author);
+        await unfollowLink.First.WaitForAsync();
         await unfollowLink.First.ClickAsync();
 
         // Expect follow
         var newFollowLinks = FollowLinkForAuthor(Author);
+        await newFollowLinks.First.WaitForAsync();
         Assert.That(await newFollowLinks.CountAsync(), Is.GreaterThan(0));
     }
 }
