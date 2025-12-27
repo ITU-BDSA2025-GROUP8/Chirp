@@ -27,7 +27,7 @@ public class PlaywrightUiTest : PageTest
         // Go back to homepage after login
         await Page.GotoAsync("https://bdsa2024group8chirprazor2025.azurewebsites.net/");
         // CheepBox should be visible
-        cheepBox = Page.Locator(".CheepBox");
+        cheepBox = Page.Locator("#CheepText");
         await Expect(cheepBox).ToBeVisibleAsync();
     }
     
