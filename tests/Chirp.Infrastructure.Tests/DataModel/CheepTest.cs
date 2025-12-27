@@ -6,10 +6,6 @@ namespace Chirp.Infrastructure.Tests.DataModel;
 
 public class CheepTest
 {
-    /*
-     * This test is currently identical to CheepDTOTest, since Cheep and CheepDTO share the same structure.
-     * As more functionality is implemented, this test will expand to cover logic as well.
-     */
     [Fact]
     public void CheepStoresAndReturnsAssignedValues()
     {

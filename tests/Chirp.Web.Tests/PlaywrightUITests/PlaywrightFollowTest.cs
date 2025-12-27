@@ -7,41 +7,41 @@ using NUnit.Framework;
 [TestFixture]
 public class PlaywrightFollowTest : PageTest
 {
-    //url
+    // Url
     private const string HomePage = "https://bdsa2024group8chirprazor2025.azurewebsites.net/";
 
     const string Author = "Jacqualine Gilcoine";
 
-    //loginHelper
-    //logs in Robert and ensures return to public timeline
+    // LoginHelper
+    // Logs in Robert and ensures return to public timeline
     private async Task LoginHelperTestUser()
     {
-        //log in
+        // Log in
         await Page.GotoAsync(HomePage);
         await Page.GetByRole(AriaRole.Link, new() { Name = "Login" }).ClickAsync();
         await Page.GetByPlaceholder("name@example.com").FillAsync("robert@test.dk");
         await Page.GetByPlaceholder("password").FillAsync("Robert@test.dk1");
         await Page.GetByRole(AriaRole.Button, new() { Name = "Log in" }).ClickAsync();
-        //go back to homepage after login
+        // Redirect to homepage after login
         await Page.GotoAsync(HomePage);
     }
 
-    //follow link for specific author
+    // Follow link for specific author
     private ILocator FollowLinkForAuthor(string authorName)
     {
         // Find the locator that contains the author's name
         var cheep = Page.Locator("p").Filter(new() { HasText = authorName });
 
-        //For that cheep, return the follow link
+        // For that cheep, return the follow link
         return cheep.GetByRole(AriaRole.Link, new() { Name = "Follow" });
     }
 
-    //unfollow link for specific author
+    // Unfollow link for specific author
     private ILocator UnfollowLinkForAuthor(string authorName)
     {
-        //find locator containing the author´s name
+        // Find locator containing the author´s name
         var cheep = Page.Locator("p").Filter(new() { HasText = authorName });
-        //For that cheep. return the unfollow link
+        // For that cheep. return the unfollow link
         return cheep.GetByRole(AriaRole.Link, new() { Name = "Unfollow" });
     }
 
@@ -56,7 +56,7 @@ public class PlaywrightFollowTest : PageTest
             var cheepsByAuthor = Page.Locator("p").Filter(new() { HasText = authorName });
             if (await cheepsByAuthor.CountAsync() > 0)
             {
-                return; //found author, stay on this page
+                return; // Found author, stay on this page
             }
 
             // If there is a "next" link, go to next page
@@ -93,19 +93,19 @@ public class PlaywrightFollowTest : PageTest
     {
         await LoginHelperTestUser();
 
-        //stort by not following Jacqualine
+        // Start by not following Jacqualine
         var unfollowLink = UnfollowLinkForAuthor(Author);
         if (await unfollowLink.CountAsync() > 0)
         {
             await unfollowLink.First.ClickAsync(); // reset to follow
         }
 
-        //Click follow
+        // Click follow
         var followLink = FollowLinkForAuthor(Author);
         Assert.That(await followLink.CountAsync(), Is.GreaterThan(0));
         await followLink.First.ClickAsync(); //follow
 
-        //expect unfollow
+        // Expect unfollow
         var newUnfollowLinks = UnfollowLinkForAuthor(Author);
         Assert.That(await newUnfollowLinks.CountAsync(), Is.GreaterThan(0));
     }
@@ -116,17 +116,17 @@ public class PlaywrightFollowTest : PageTest
         await LoginHelperTestUser();
         await GoToPageWhereAuthorIsVisible(Author);
 
-        //stort by following Jacqualine
+        // Start by following Jacqualine
         var followLink = FollowLinkForAuthor(Author);
         if (await followLink.CountAsync() > 0)
         {
             await followLink.First.ClickAsync();
         }
-        //Click unfollow
+        // Click unfollow
         var unfollowLink = UnfollowLinkForAuthor(Author);
         await unfollowLink.First.ClickAsync();
 
-        //Expect follow
+        // Expect follow
         var newFollowLinks = FollowLinkForAuthor(Author);
         Assert.That(await newFollowLinks.CountAsync(), Is.GreaterThan(0));
     }
