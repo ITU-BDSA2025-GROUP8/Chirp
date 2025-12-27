@@ -83,16 +83,19 @@ public class PlaywrightEndToEndTest : PageTest
     {
         await Login(TestEmail, TestPassword);
 
+        // Cheep unique cheep
         var msg = $"Like test {DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}";
         await PostCheep(msg);
 
         var cheep = Page.Locator("li").Filter(new() { HasText = msg }).First;
 
+        // Like the cheep
         await Task.WhenAll(
             Page.WaitForLoadStateAsync(LoadState.NetworkIdle),
             cheep.GetByRole(AriaRole.Button, new() { Name = "Like" }).ClickAsync()
         );
 
+        // Expect UnLike and 1 Likes
         await Expect(cheep.GetByRole(AriaRole.Button, new() { Name = "UnLike" }))
             .ToBeVisibleAsync(new() { Timeout = 15000 });
 
