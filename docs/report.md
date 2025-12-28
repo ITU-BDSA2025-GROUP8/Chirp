@@ -38,9 +38,8 @@ Below is an overview of the codebase structure.
 
 - `Chirp.Core` contains the interfaces and data transfer objects (DTOs).
 - `Chirp.Infrastructure` contains the domain entities, repositories, and the Data package,
-which is responsible for the DB context and initializing.
+which is responsible for the DB context and initializing. The Cheep and Author services are also situated here.
 - `Chirp.Web` contains the Program.cs file, all razor pages and their respective page handlers.
-The Cheep and Author services are also located here.
 - The test suite resides in a separate directory that mirrors the structure of the source code. I.e. the tests for
 `src/Chirp.Infrastructure/Repositories/CheepRepository.cs`
 are found in
