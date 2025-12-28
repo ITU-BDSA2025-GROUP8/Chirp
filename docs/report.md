@@ -138,7 +138,7 @@ Now you can run Chirp! using the the command:
 
 `dotnet run`
 
-If execution was succesful you should receive a terminal output that looks like so:
+If execution was successful you should receive a terminal output that looks like so:
 <br>
 <img src="images/terminalOutputV2.png" alt="terminal output" width="50%"/>
 
