@@ -4,13 +4,6 @@ using Chirp.Infrastructure.Entities;
 
 namespace Chirp.Web.Services;
 
-public interface IAuthorService
-{
-    public Task<AuthorDTO?> GetAuthorByName(string authorUsername);
-    public Task Follow(string thisUsername, string otherUsername);
-    public Task Unfollow(string thisUsername, string otherUsername);
-}
-
 public class AuthorService : IAuthorService
 {
     private readonly IAuthorRepository _authorRepository;
@@ -34,5 +27,11 @@ public class AuthorService : IAuthorService
     {
         AuthorDTO? self = await GetAuthorByName(thisUsername);
         await _authorRepository.UnFollowUser(self!, otherUsername);
+    }
+
+    public async Task DeleteAuthor(string thisUsername)
+    {
+        AuthorDTO? self = await GetAuthorByName(thisUsername);
+        await _authorRepository.DeleteAuthor(self!);
     }
 }    
