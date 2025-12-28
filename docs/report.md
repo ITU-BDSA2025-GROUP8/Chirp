@@ -33,6 +33,7 @@ Besides this discrepancy, the Chirp! application adheres to the standard onion a
 Below is an overview of the codebase structure.
 
 ![Illustration of code base](images/onion_architecture.png)
+<br>
 *Illustration of the Chirp! app codebase structure - based on onion architecture.*
 
 - `Chirp.Core` contains the interfaces and data transfer objects (DTOs).
@@ -50,6 +51,7 @@ UI and end-to-end tests generated using Playwright are located in `Chirp.Web.Tes
 The diagram below shows the deployment architecture of the Chirp! application. The system follows a client-server architecture, where users interact with the application through a web browser. Client requests are sent over HTTPS to an ASP.NET Core Razor Pages application deployed on Azure App Service.
 <br> The web application is responsible for handling application logic. Data is stored in a local SQLite database file that is deployed together with the application. A single client node is shown in the diagram, representing multiple possible concurrent clients can interact with the deployed application.
 ![Illustration of architecture of deployed application](images/architecture_deployed_application.png)
+<br>
 *Deployment architecture of the Chirp! application.*
 
 ## User activities
@@ -73,6 +75,7 @@ as well as choose to delete their account from the application.
 
 ## Sequence of functionality/calls trough _Chirp!_
 ![Illustration of code base](images/sequence_of_functionality_unauthorized.png)
+<br>
 *Illustration of the sequence of functionality/calls trough _Chirp!_ from an unauthorized user's perspective.*
 
 The image above illustrates the sequence of interactions which occurs, when an unauthorized user first 
