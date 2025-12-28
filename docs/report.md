@@ -44,7 +44,14 @@ The last workflow builds and deploys the Chirp! application to Azure upon a push
 
 
 ## Team work
-There is going to be a picture of project board here.
+Below is a screenshot of our Project board.
+<Br>![Project Board](images/project_board.png)
+<br>*Screenshot of Project Board in Github.*
+<br>All issues have been completed and moved to *Done*, except those in the *Ongoing* column. 
+The issues in this column represent the practices that were applied continuosly throughout the whole project rather than issues with a clear completion point.
+<br> An example of this is "5.2.c Use Pull-requests with code reviews".
+Such issues were intentionally kept in the *Ongoing* column, as they served as reminders of the practices the team should follow for every issue.
+<br> Although these issues could formally be moved to *Done* upon project submission, we chose to leave them to reflect their role as ongoing guidelines rather than one-time activities.
 
 Shown in the flow of activities below is the workflow of our project development. 
 <br>Development starts with issue creation in GitHub, specified using user stories that describes the desired functionality and acceptance criteria.
