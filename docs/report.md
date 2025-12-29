@@ -59,7 +59,7 @@ The diagram below shows the deployment architecture of the Chirp! application. T
 The first page any Chirp! user sees is the public timeline which displays all cheeps.
 Unauthorized users are limited to browsing cheeps on this public timeline
 and visiting other authors' private timelines. If a user wishes to further interact with
-cheeps and authors, authentication is required as illustrated by the diagram below.
+the application, authentication is required as illustrated by the diagram below.
 
 ![Illustration of unauthorized user and authentication process](images/user_activities_unauthorized.png)
 <br>
