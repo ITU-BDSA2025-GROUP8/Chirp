@@ -14,11 +14,11 @@ numbersections: true
 
 ## Domain model
 
-Here comes a description of our domain model.
-
-![Illustration of the _Chirp!_ data model as UML class diagram.](docs/images/domain_model.png)
-
 The Domain Model of the Chirp! application consists of `Cheep`, `Author` and `IdentityUser`. A `Cheep` is written by an `Author` that inherits from `IdentityUser` as visualized below.
+
+![Illustration of the _Chirp!_ data model as UML class diagram.](images/domain_model.png)
+<br>
+*Illustration of the _Chirp!_ Domain Model*
 
 ## Architecture — In the small
 The code base is structured according to the onion architecture template,
