@@ -24,9 +24,9 @@ The Domain Model of the Chirp! application consists of `Cheep`, `Author` and `Id
 The code base is structured according to the onion architecture template,
 with one notable exception. Usually, the domain entities are situated within the core of the application,
 which was also the case for this app, before EF Core Identity was implemented.
-With this task came some decisions about how to handle the author/Identity user semantics.
-Ultimately, it was decided that Identity users and cheep authors would be combined
-by having the Author class inherit from Identity user,
+With this task came some decisions about how to handle the Author/IdentityUser semantics.
+Ultimately, it was decided that IdentityUsers and Cheep Authors would be combined
+by having the Author class inherit from IdentityUser,
 to avoid complications between different types of user accounts.
 As a result, the domain entities were moved to `Chirp.Infrastructure`
 to accommodate this decision.
@@ -56,9 +56,9 @@ The diagram below shows the deployment architecture of the Chirp! application. T
 *Deployment architecture of the Chirp! application.*
 
 ## User activities
-The first page any Chirp! user sees is the public timeline which displays all cheeps.
-Unauthorized users are limited to browsing cheeps on this public timeline
-and visiting other authors' private timelines. If a user wishes to further interact with
+The first page any Chirp! user sees is the public timeline which displays all Cheeps.
+Unauthorized users are limited to browsing Cheeps on this public timeline
+and visiting other Authors' private timelines. If a user wishes to further interact with
 the application, authentication is required as illustrated by the diagram below.
 
 ![Illustration of unauthorized user and authentication process](images/user_activities_unauthorized.png)
@@ -66,7 +66,7 @@ the application, authentication is required as illustrated by the diagram below.
 *A typical unauthorized user's journey before and through the authentication process.*
 
 The majority of the app's functionality is exclusively available to authorized users.
-Specifically, creating cheeps, liking cheeps and following other authors.
+Specifically, creating Cheeps, liking Cheeps and following other Authors.
 Authorized users can also view their user-information on the About Me page,
 as well as choose to delete their account from the application.
 
@@ -83,7 +83,7 @@ The image above illustrates the sequence of interactions which occurs, when an u
 accesses the application on the public timeline. An HTTP GET request to the root endpoint "/" is received by 
 ASP.NET Core, which calls the Public Model's (`public.cshtml.cs`) OnGetAsync method.
 From there, the user is identified as unauthenticated by the ASP.NET Core authentication system and treated as 
-anonymous. Through a couple of lifelines, a list of cheeps is collected and returned to ASP.NET Core. ASP.NET 
+anonymous. Through a couple of lifelines, a list of Cheeps is collected and returned to ASP.NET Core. ASP.NET 
 Core then renders the `public.cshtml` page through the Razor Page engine and returns the rendered HTML 
 to the user.
 TimelineBaseModel is illustrated in the diagram to for transparency about communication as the calls between the 
