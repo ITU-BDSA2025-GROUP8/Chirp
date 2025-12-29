@@ -81,9 +81,9 @@ as well as choose to delete their account from the application.
 
 The image above illustrates the sequence of interactions which occurs, when an unauthorized user first 
 accesses the application on the public timeline. An HTTP GET request to the root endpoint "/" is received by 
-ASP.Net Core, which calls the Public Model's (`public.cshtml.cs`) OnGetAsync method.
+ASP.NET Core, which calls the Public Model's (`public.cshtml.cs`) OnGetAsync method.
 From there, the user is identified as unauthenticated by the ASP.NET Core authentication system and treated as 
-anonymous. Through a couple of lifelines, a list of cheeps is collected and returned to ASP.Net Core. ASP.Net 
+anonymous. Through a couple of lifelines, a list of cheeps is collected and returned to ASP.NET Core. ASP.NET 
 Core then renders the `public.cshtml` page through the Razor Page engine and returns the rendered HTML 
 to the user.
 TimelineBaseModel is illustrated in the diagram to for transparency about communication as the calls between the 
@@ -93,7 +93,7 @@ Razor Pages otherwise would be hidden due to being internal.
 # Process
 
 ## Build, test, release, and deployment
-The building, testing, releasing and deploying with GitHub is done using GitHub Actions and their respective workflow. For this project there are 3 workflow files that completes those actions.    
+The building, testing, releasing and deploying with GitHub is done using GitHub Actions and their respective workflows. For this project there are 3 workflow files that complete these actions.    
 The first workflow builds and tests the Chirp! application upon a push or pull request to the main branch. The activity diagram for the workflow can be seen below, where the note for the initial node also mentions the condition for when the workflow runs.
 
 ![build and test](images/build_and_test_activity_diagram.png) <br> *Activity diagram for building and testing Chirp!*
