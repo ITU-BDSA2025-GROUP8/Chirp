@@ -63,7 +63,7 @@ cheeps and authors, authentication is required as illustrated by the diagram bel
 
 ![Illustration of unauthorized user and authentication process](images/user_activities_unauthorized.png)
 <br>
-*A typical unathorized user's journey before and through the authentication process.*
+*A typical unauthorized user's journey before and through the authentication process.*
 
 The majority of the app's functionality is exclusively available to authorized users.
 Specifically, creating cheeps, liking cheeps and following other authors.
@@ -74,7 +74,7 @@ as well as choose to delete their account from the application.
 <br>
 *A typical authorized user's journey through the Chirp! application.*
 
-## Sequence of functionality/calls trough _Chirp!_
+## Sequence of functionality/calls through _Chirp!_
 ![Illustration of code base](images/sequence_of_functionality_unauthorized.png)
 <br>
 *Illustration of the sequence of functionality/calls trough _Chirp!_ from an unauthorized user's perspective.*
@@ -86,8 +86,8 @@ From there, the user is identified as unauthenticated by the ASP.NET Core authen
 anonymous. Through a couple of lifelines, a list of cheeps is collected and returned to ASP.Net Core. ASP.Net 
 Core then renders the `public.cshtml` page through the Razor Page engine and returns the rendered HTML 
 to the user.
-TimelineBaseModel is illustrated in the diagram to for transparancy about communication as the calls between the 
-Razor Pages otherwise would be be hidden due to being internal.
+TimelineBaseModel is illustrated in the diagram to for transparency about communication as the calls between the 
+Razor Pages otherwise would be hidden due to being internal.
 
 
 # Process
@@ -110,9 +110,9 @@ The last workflow builds and deploys the Chirp! application to Azure upon a push
 ## Team work
 Below is a screenshot of our Project board.
 <Br>![Project Board](images/project_board.png)
-<br>*Screenshot of Project Board in Github.*
+<br>*Screenshot of Project Board in GitHub.*
 <br>All issues have been completed and moved to *Done*, except those in the *Ongoing* column. 
-The issues in this column represent the practices that were applied continuosly throughout the whole project rather than issues with a clear completion point.
+The issues in this column represent the practices that were applied continuously throughout the whole project rather than issues with a clear completion point.
 <br> An example of this is "5.2.c Use Pull-requests with code reviews".
 Such issues were intentionally kept in the *Ongoing* column, as they served as reminders of the practices the team should follow for every issue.
 <br> Although these issues could formally be moved to *Done* upon project submission, we chose to leave them to reflect their role as ongoing guidelines rather than one-time activities.
@@ -128,13 +128,13 @@ Shown in the flow of activities below is the workflow of our project development
 ## How to make _Chirp!_ work locally
 The Chirp! application runs on .NET 8 so you need to have that installed before you can run it. It can be downloaded here: https://dotnet.microsoft.com/en-us/download/dotnet/8.0
 
-To run Chirp! locally you first need to clone the repository. There are different ways to do this depending on your operation system and own preferences using git. Here is a general guide on how to do it: https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository?tool=webui 
+To run Chirp! locally you first need to clone the repository. There are different ways to do this depending on your operating system and own preferences using git. Here is a general guide on how to do it: https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository?tool=webui 
 
 After you have cloned the repository, open it in either a code editor or terminal and locate the solution folder. Before you can run the program you first need to navigate to the directory that has the program.cs file, which can be done with the following command:
 
 `cd .\src\Chirp.Web\`
 
-Now you can run Chirp! using the the command:  
+Now you can run Chirp! using the command:  
 
 `dotnet run`
 
@@ -146,9 +146,9 @@ Then open the url. The default is http://localhost:5273.
 
 Because of how OAuth works, you will not be able register or login with GitHub locally, as stated in the terminal:
 
-> Could not find Github Client ID and or Github Client Secret. OAuth with Github will not be available
+> Could not find GitHub Client ID and or GitHub Client Secret. OAuth with GitHub will not be available
 
-If you want to try the OAuth functionallity, use the deployed version found here: https://bdsa2024group8chirprazor2025.azurewebsites.net/
+If you want to try the OAuth functionality, use the deployed version found here: https://bdsa2024group8chirprazor2025.azurewebsites.net/
 ## How to run test suite locally
 ### Prerequisites
 1. Clone the repository. Follow the steps outlined in the previous section.
@@ -185,7 +185,7 @@ ChatGPT and, to a smaller degree, Microsoft Copilot were used during the develop
 Let's briefly discuss how these were used and how helpful they were.
 <br><br>
 Debugging. Since no group members have prior experience with C# and many other concepts of this course,
-when particularly tricky errors occured LLMs were frequently used to help debug the problem. However,
+when particularly tricky errors occurred LLMs were frequently used to help debug the problem. However,
 we would strive to first try and solve it ourselves. In this use case LLMs were invaluable,
 as they served as a TA guiding us through the debugging process, in cases where Googling was not sufficient and no actual TA was nearby.
 <br><br>
@@ -198,12 +198,12 @@ and discussing semantics with the rest of the group, which allowed everyone to f
 <br><br>
 Code generation. Very little code in this project was generated by LLMs and copy/pasted directly,
 and in cases where it was, it is marked by comments and/or in the commit message as co-author.
-The group feels largely unconfortable using AI generated code and opted to only use it in certain cases.
+The group feels largely uncomfortable using AI generated code and opted to only use it in certain cases.
 For example, the GitHub workflows are mostly generated by ChatGPT and modified afterwards.
 As these workflows are mostly boilerplate and not part of the application code,
-it did not take away from our learning experience but allowed us to prioritize our time and ressources in other areas.
-Additionally, smaller snippits were copy/pasted from ChatGPT when debugging.
+it did not take away from our learning experience but allowed us to prioritize our time and resources in other areas.
+Additionally, smaller snippets were copy/pasted from ChatGPT when debugging.
 <br><br>
 Overall, the use of LLMs, ChatGPT in particular, has indeed sped up development significantly.
 Not so much as a code-generation tool, but as a virtual, on-demand TA that helped
-understanding new concepts, getting started on new tasks, and debug persistant errors.
+understanding new concepts, getting started on new tasks, and debug persistent errors.
