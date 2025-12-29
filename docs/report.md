@@ -109,9 +109,10 @@ The last workflow builds and deploys the Chirp! application to Azure upon a push
 
 ## Team work
 Below is a screenshot of our Project board.
-<Br>![Project Board](images/project_board.png)
-<br>*Screenshot of Project Board in GitHub.*
-<br>All issues have been completed and moved to *Done*, except those in the *Ongoing* column. 
+
+![Project Board](images/project_board.png)
+<br> *Screenshot of Project Board in GitHub.*   
+<br> All issues have been completed and moved to *Done*, except those in the *Ongoing* column. 
 The issues in this column represent the practices that were applied continuously throughout the whole project rather than issues with a clear completion point.
 <br> An example of this is "5.2.c Use Pull-requests with code reviews".
 Such issues were intentionally kept in the *Ongoing* column, as they served as reminders of the practices the team should follow for every issue.
@@ -122,13 +123,13 @@ Shown in the flow of activities below is the workflow of our project development
 <br>After issue creation, the team agrees on responsibility for the task, researching the subject and consulting the lecture material. A dedicated feature branch is created, as we work with trunk-based development. The functionality is then developed and tested in isolation, often utilizing pair programming.
 <br>When the feature is completed, a pull request is opened and thereafter reviewed by teammates. If the pull request is not approved, the assignee makes changes according to reviewer feedback. Once approved, the changes are merged into the main branch.
 
-![Workflow of project development](images/team_work.png)
-<br>*Workflow showing the development process from issue creation to merging into the main branch.*
+![Workflow of project development](images/team_work.png)   
+<br> *Workflow showing the development process from issue creation to merging into the main branch.*
 
 ## How to make _Chirp!_ work locally
-The Chirp! application runs on .NET 8 so you need to have that installed before you can run it. It can be downloaded [here](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+The Chirp! application runs on .NET 8 so you need to have that installed before you can run it. It can be downloaded **_[here](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)_**
 
-To run Chirp! locally you first need to clone the repository. There are different ways to do this depending on your operating system and own preferences using git. [Here](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository?tool=webui) is a general guide on how to do it 
+To run Chirp! locally you first need to clone the repository. There are different ways to do this depending on your operating system and own preferences using git. **_[Here](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository?tool=webui)_** is a general guide on how to do it 
 
 After you have cloned the repository, open it in either a code editor or terminal and locate the solution folder. Before you can run the program you first need to navigate to the directory that has the program.cs file, which can be done with the following command:
 
@@ -138,9 +139,10 @@ Now you can run Chirp! using the command:
 
 `dotnet run`
 
-If execution was successful you should receive a terminal output that looks like so:
-<br>
-<img src="images/terminalOutputV2.png" alt="terminal output" width="50%"/>
+If execution was successful you should receive a terminal output that looks like this:    
+
+![terminal output](images/terminalOutputV2.png)    
+*Output from terminal when starting the program*
 
 Then open the url. The default is http://localhost:5273.
 
@@ -148,15 +150,16 @@ Because of how OAuth works, you will not be able register or login with GitHub l
 
 > Could not find GitHub Client ID and or GitHub Client Secret. OAuth with GitHub will not be available
 
-If you want to try the OAuth functionality, use the deployed version found [here](https://bdsa2024group8chirprazor2025.azurewebsites.net/)
+If you want to try the OAuth functionality, use the deployed version found **_[here](https://bdsa2024group8chirprazor2025.azurewebsites.net/)_**
 
 ## How to run test suite locally
 
 ### Prerequisites
 1. Clone the repository. Follow the steps outlined in the previous section.
 2. Install Playwright, which is required for the integration tests.
-Follow the official documentation [here](https://playwright.dev/docs/intro) - or if you are
+Follow the official documentation **_[here](https://playwright.dev/docs/intro)_** - or if you are
 on Windows, install by running the following commands from the project root:
+
     ```
     cd .\tests\Chirp.Web.Tests\
     dotnet restore
