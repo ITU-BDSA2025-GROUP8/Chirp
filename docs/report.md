@@ -126,9 +126,9 @@ Shown in the flow of activities below is the workflow of our project development
 <br>*Workflow showing the development process from issue creation to merging into the main branch.*
 
 ## How to make _Chirp!_ work locally
-The Chirp! application runs on .NET 8 so you need to have that installed before you can run it. It can be downloaded here: https://dotnet.microsoft.com/en-us/download/dotnet/8.0
+The Chirp! application runs on .NET 8 so you need to have that installed before you can run it. It can be downloaded [here](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 
-To run Chirp! locally you first need to clone the repository. There are different ways to do this depending on your operating system and own preferences using git. Here is a general guide on how to do it: https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository?tool=webui 
+To run Chirp! locally you first need to clone the repository. There are different ways to do this depending on your operating system and own preferences using git. [Here](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository?tool=webui) is a general guide on how to do it 
 
 After you have cloned the repository, open it in either a code editor or terminal and locate the solution folder. Before you can run the program you first need to navigate to the directory that has the program.cs file, which can be done with the following command:
 
@@ -148,8 +148,10 @@ Because of how OAuth works, you will not be able register or login with GitHub l
 
 > Could not find GitHub Client ID and or GitHub Client Secret. OAuth with GitHub will not be available
 
-If you want to try the OAuth functionality, use the deployed version found here: https://bdsa2024group8chirprazor2025.azurewebsites.net/
+If you want to try the OAuth functionality, use the deployed version found [here](https://bdsa2024group8chirprazor2025.azurewebsites.net/)
+
 ## How to run test suite locally
+
 ### Prerequisites
 1. Clone the repository. Follow the steps outlined in the previous section.
 2. Install Playwright, which is required for the integration tests.
