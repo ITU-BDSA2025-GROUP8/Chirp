@@ -2,8 +2,8 @@
 title: _Chirp!_ Project Report
 subtitle: ITU BDSA 2025 Group 8
 author:
-- "Charlotte Plateig <cpla@itu.dk>"
-- "Frederik Hørup <frap@itu.dk>"
+- "Charlotte Planteig <cpla@itu.dk>"
+- "Frederik Hørup Petersen <frap@itu.dk>"
 - "Marie Johansen <majoh@itu.dk>"
 - "Nikolej Lundquist <nivl@itu.dk>"
 - "Sara Bagger <salb@itu.dk>"
