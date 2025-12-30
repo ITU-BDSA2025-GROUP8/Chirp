@@ -169,7 +169,7 @@ on Windows, install by running the following commands from the project root:
 
 ### Execute tests
 To run the tests, open a terminal in the project root and run `dotnet test`.
-This should run the entire test suite.
+This will run the entire test suite.
 
 ### Test suite description
 The test suite consists of unit tests pertaining to the code found in
