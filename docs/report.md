@@ -187,7 +187,7 @@ This project is licensed under the MIT License. The MIT License was chosen since
 
 ## LLMs, ChatGPT, CoPilot, and others
 ChatGPT and, to a smaller degree, Microsoft Copilot were used during the development of this project.
-Let's briefly discuss how these were used and how helpful they were.
+This section discusses in which areas they where used and how helpful they were.
 <br><br>
 Debugging. Since no group members have prior experience with C# and many other concepts of this course,
 when particularly tricky errors occurred LLMs were frequently used to help debug the problem. However,
