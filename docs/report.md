@@ -1,13 +1,16 @@
 ---
 title: _Chirp!_ Project Report
-subtitle: ITU BDSA 2025 Group 8
-author:
-- "Charlotte Planteig <cpla@itu.dk>"
-- "Frederik Hørup Petersen <frap@itu.dk>"
-- "Marie Johansen <majoh@itu.dk>"
-- "Nikolej Lundquist <nivl@itu.dk>"
-- "Sara Bagger <salb@itu.dk>"
+subtitle: |
+  ITU BDSA 2025 Group 8  
+  **Course code:** BSANDSA1KU
+author: |
+  Charlotte Planteig <cpla@itu.dk>  
+  Frederik Hørup Petersen <frap@itu.dk>  
+  Marie Johansen <majoh@itu.dk>  
+  Nikolej Lundquist <nivl@itu.dk>  
+  Sara Bagger <salb@itu.dk>
 numbersections: true
+geometry: margin=1in  
 ---
 
 # Design and Architecture of _Chirp!_
@@ -108,7 +111,7 @@ The last workflow builds and deploys the Chirp! application to Azure upon a push
 
 
 ## Team work
-The picture below shows the GitHub project board used by the group to coordinate and track development work.
+The picture below shows the GitHub project board used by the group to coordinate and track development work.   
 <br>
 ![Project Board](images/project_board.png)
 <br> *Screenshot of Project Board in GitHub.*   
