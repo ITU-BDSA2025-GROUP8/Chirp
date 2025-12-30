@@ -108,8 +108,8 @@ The last workflow builds and deploys the Chirp! application to Azure upon a push
 
 
 ## Team work
-Below is a screenshot of our Project board.
-
+The picture below shows the GitHub project board used by the group to coordinate and track development work.
+<br>
 ![Project Board](images/project_board.png)
 <br> *Screenshot of Project Board in GitHub.*   
 <br> All issues have been completed and moved to *Done*, except those in the *Ongoing* column. 
