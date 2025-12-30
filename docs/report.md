@@ -196,8 +196,8 @@ as they served as a TA guiding us through the debugging process, in cases where 
 <br><br>
 Coder's block. As mentioned, this project introduced many new and unfamiliar concepts,
 which meant that for some tasks, we would have no clue where to begin.
-LLMs were used as a spring board in these cases to get started on a new feature for example.
-Specifically, when refactoring to Onion Architecture ChatGPT was used to help translate theory into practice
+As such, LLMs were ocasionally used as a starting point when creating new features or refactoring.
+For example, when refactoring to Onion Architecture ChatGPT was used to help translate theory into practice
 by suggesting a template for how our project should be organized. This saved a lot of time making decisions
 and discussing semantics with the rest of the group, which allowed everyone to focus on their own tasks.
 <br><br>
